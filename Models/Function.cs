@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Function
+    public partial class Function : BaseEntity
     {
         public Function()
         {
@@ -15,10 +14,9 @@ namespace BackendJPMAnalysis.Models
         /// Function name in snake_case
         /// </summary>
         public string Id { get; set; } = null!;
-        public string? FunctionName { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
+
+        [Required(ErrorMessage = "La propiedad `functionName` es requerida")]
+        public string FunctionName { get; set; } = null!;
 
         public virtual ICollection<ProfilesFunction> ProfilesFunctions { get; set; }
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
