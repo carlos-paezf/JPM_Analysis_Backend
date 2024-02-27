@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Account
+    public partial class Account : BaseEntity
     {
         public Account()
         {
@@ -11,16 +11,16 @@ namespace BackendJPMAnalysis.Models
             UserEntitlements = new HashSet<UserEntitlement>();
         }
 
-        /// <summary>
-        /// Los valores que sean null se reemplazan por un 0
-        /// </summary>
+        [Required(ErrorMessage = "El número de cuenta es requerido")]
         public string AccountNumber { get; set; } = null!;
-        public string? AccountName { get; set; }
-        public string? AccountType { get; set; }
+
+        [Required(ErrorMessage = "El nombre de cuenta es requerido")]
+        public string AccountName { get; set; } = null!;
+
+        [Required(ErrorMessage = "El tipo de cuenta es requerido")]
+        public string AccountType { get; set; } = null!;
+
         public string? BankCurrency { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
 
         public virtual ICollection<Client> Clients { get; set; }
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
