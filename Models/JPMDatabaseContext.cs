@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class jpm_analysis_databaseContext : DbContext
+    public partial class JPMDatabaseContext : DbContext
     {
-        public jpm_analysis_databaseContext()
+        public JPMDatabaseContext()
         {
         }
 
-        public jpm_analysis_databaseContext(DbContextOptions<jpm_analysis_databaseContext> options)
+        public JPMDatabaseContext(DbContextOptions<JPMDatabaseContext> options)
             : base(options)
         {
         }
