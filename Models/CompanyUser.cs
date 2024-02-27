@@ -1,38 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class CompanyUser
+    public partial class CompanyUser : BaseEntity
     {
         public CompanyUser()
         {
             UserEntitlements = new HashSet<UserEntitlement>();
         }
 
+        [Required(ErrorMessage = "La propiedad `accessId` es requerida")]
         public string AccessId { get; set; } = null!;
-        public string? UserName { get; set; }
-        public bool? UserStatus { get; set; }
-        public string? UserType { get; set; }
+
+        [Required(ErrorMessage = "La propiedad `username` es requerida")]
+        public string UserName { get; set; } = null!;
+
+        [Required(ErrorMessage = "La propiedad `userStatus` es requerida")]
+        public bool UserStatus { get; set; } = false;
+
+        [Required(ErrorMessage = "La propiedad `userType` es requerida")]
+        public string UserType { get; set; } = null!;
+
         public string? EmployeeId { get; set; }
-        public string? EmailAddress { get; set; }
+
+        [Required(ErrorMessage = "La propiedad `emailAddress` es requerida")]
+        public string EmailAddress { get; set; } = null!;
+
         public string? UserLocation { get; set; }
-        public string? UserCountry { get; set; }
+
+        [Required(ErrorMessage = "La propiedad `userCountry` es requerida")]
+        public string? UserCountry { get; set; } = null!;
+
         /// <summary>
-        /// RSA Token o Password
+        /// RSA Token or Password
         /// </summary>
-        public string? UserLogonType { get; set; }
-        /// <summary>
-        /// Se debe hacer una conversión
-        /// </summary>
+        [Required(ErrorMessage = "La propiedad `userLogonType` es requerida")]
+        public string? UserLogonType { get; set; } = null!;
+
         public DateTime? UserLastLogonDt { get; set; }
+
         public string? UserLogonStatus { get; set; }
+
         public string? UserGroupMembership { get; set; }
-        public string? UserRole { get; set; }
-        public string? ProfileId { get; set; }
-        public DateTime? CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
+
+        [Required(ErrorMessage = "La propiedad `userRole` es requerida")]
+        public string UserRole { get; set; } = null!;
+
+        [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
+        public string? ProfileId { get; set; } = null!;
 
         public virtual Profile? Profile { get; set; }
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
