@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using BackendJPMAnalysis.Helpers;
 using BackendJPMAnalysis.Models;
 
 namespace BackendJPMAnalysis.DTO

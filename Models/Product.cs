@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using BackendJPMAnalysis.Helpers;
 
 
 namespace BackendJPMAnalysis.Models
@@ -8,6 +9,8 @@ namespace BackendJPMAnalysis.Models
     {
         public Product()
         {
+            Id = StringUtil.SnakeCase(ProductName);
+
             Clients = new HashSet<Client>();
             UserEntitlements = new HashSet<UserEntitlement>();
         }
@@ -16,7 +19,7 @@ namespace BackendJPMAnalysis.Models
         /// Product name in snake_case
         /// </summary>
         [Key]
-        public string Id { get; set; } = null!;
+        public string Id { get; } = null!;
 
         [Required(ErrorMessage = "La propiedad `productName` es requerida")]
         public string ProductName { get; set; } = null!;

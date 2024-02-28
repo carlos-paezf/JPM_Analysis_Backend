@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using BackendJPMAnalysis.Helpers;
 using BackendJPMAnalysis.Models;
 
 
 namespace BackendJPMAnalysis.DTO
 {
-    public abstract class ProfileDTO
+    public abstract class ProfileDTO : BaseDTO
     {
         [Key]
         public string Id { get; set; } = null!;

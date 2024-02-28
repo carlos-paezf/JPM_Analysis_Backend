@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using BackendJPMAnalysis.Helpers;
 
 
 namespace BackendJPMAnalysis.Models
@@ -8,6 +9,8 @@ namespace BackendJPMAnalysis.Models
     {
         public Function()
         {
+            Id = StringUtil.SnakeCase(FunctionName);
+
             ProfilesFunctions = new HashSet<ProfilesFunction>();
             UserEntitlements = new HashSet<UserEntitlement>();
         }
@@ -16,7 +19,7 @@ namespace BackendJPMAnalysis.Models
         /// Function name in snake_case
         /// </summary>
         [Key]
-        public string Id { get; set; } = null!;
+        public string Id { get; } = null!;
 
         [Required(ErrorMessage = "La propiedad `functionName` es requerida")]
         public string FunctionName { get; set; } = null!;
