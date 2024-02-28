@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 
 namespace BackendJPMAnalysis.Models
 {
@@ -30,13 +32,13 @@ namespace BackendJPMAnalysis.Models
         public string? UserLocation { get; set; }
 
         [Required(ErrorMessage = "La propiedad `userCountry` es requerida")]
-        public string? UserCountry { get; set; } = null!;
+        public string UserCountry { get; set; } = null!;
 
         /// <summary>
         /// RSA Token or Password
         /// </summary>
         [Required(ErrorMessage = "La propiedad `userLogonType` es requerida")]
-        public string? UserLogonType { get; set; } = null!;
+        public string UserLogonType { get; set; } = null!;
 
         public DateTime? UserLastLogonDt { get; set; }
 
@@ -48,9 +50,12 @@ namespace BackendJPMAnalysis.Models
         public string UserRole { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
-        public string? ProfileId { get; set; } = null!;
+        public string ProfileId { get; set; } = null!;
 
-        public virtual Profile? Profile { get; set; }
+        [JsonIgnore]
+        public virtual Profile Profile { get; set; } = null!;
+
+        [JsonIgnore]
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
     }
 }

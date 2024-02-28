@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 
 namespace BackendJPMAnalysis.Models
 {
@@ -12,7 +14,10 @@ namespace BackendJPMAnalysis.Models
         public string? ProductId { get; set; }
         public string? AccountNumber { get; set; }
 
+        [JsonIgnore]
         public virtual Account? AccountNumberNavigation { get; set; }
+
+        [JsonIgnore]
         public virtual Product? Product { get; set; }
     }
 }

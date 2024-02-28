@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
 
 
 namespace BackendJPMAnalysis.Models
@@ -464,7 +459,7 @@ namespace BackendJPMAnalysis.Models
                     .HasColumnName("updated_at")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.HasOne(d => d.Access)
+                entity.HasOne(d => d.CompanyUser)
                     .WithMany(p => p.UserEntitlements)
                     .HasForeignKey(d => d.AccessId)
                     .HasConstraintName("user_entitlements_ibfk_1");

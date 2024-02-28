@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 
 namespace BackendJPMAnalysis.Models
@@ -22,7 +23,10 @@ namespace BackendJPMAnalysis.Models
 
         public string? SubProduct { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Client> Clients { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
     }
 }

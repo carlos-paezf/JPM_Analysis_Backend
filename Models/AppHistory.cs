@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
+
 
 namespace BackendJPMAnalysis.Models
 {
@@ -13,6 +13,7 @@ namespace BackendJPMAnalysis.Models
         public string? AppFunction { get; set; }
         public string? AppTable { get; set; }
 
+        [JsonIgnore]
         public virtual AppUser? AppUser { get; set; }
     }
 }

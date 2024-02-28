@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Text.Json.Serialization;
+
 
 namespace BackendJPMAnalysis.Models
 {
@@ -24,7 +24,9 @@ namespace BackendJPMAnalysis.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<AppHistory> AppHistories { get; set; }
+        [JsonIgnore]
         public virtual ICollection<ReportHistory> ReportHistories { get; set; }
     }
 }

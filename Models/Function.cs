@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
 
 namespace BackendJPMAnalysis.Models
 {
@@ -19,7 +21,10 @@ namespace BackendJPMAnalysis.Models
         [Required(ErrorMessage = "La propiedad `functionName` es requerida")]
         public string FunctionName { get; set; } = null!;
 
+        [JsonIgnore]
         public virtual ICollection<ProfilesFunction> ProfilesFunctions { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 
 namespace BackendJPMAnalysis.Models
@@ -23,9 +24,16 @@ namespace BackendJPMAnalysis.Models
 
         public string? FunctionId { get; set; }
 
-        public virtual CompanyUser? Access { get; set; }
+        [JsonIgnore]
+        public virtual CompanyUser? CompanyUser { get; set; }
+
+        [JsonIgnore]
         public virtual Account? AccountNumberNavigation { get; set; }
+
+        [JsonIgnore]
         public virtual Function? Function { get; set; }
+
+        [JsonIgnore]
         public virtual Product? Product { get; set; }
     }
 }
