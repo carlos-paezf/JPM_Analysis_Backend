@@ -3,7 +3,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Account : BaseEntity
+    public partial class Account : BaseModel
     {
         public Account()
         {

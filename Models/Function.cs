@@ -2,7 +2,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Function : BaseEntity
+    public partial class Function : BaseModel
     {
         public Function()
         {

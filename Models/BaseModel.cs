@@ -1,6 +1,6 @@
 namespace BackendJPMAnalysis.Models
 {
-    public abstract class BaseEntity
+    public abstract class BaseModel
     {
         public DateTime CreatedAt { get; }
         public DateTime UpdatedAt { get; }

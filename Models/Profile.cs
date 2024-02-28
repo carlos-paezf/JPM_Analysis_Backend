@@ -3,7 +3,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Profile : BaseEntity
+    public partial class Profile : BaseModel
     {
         public Profile()
         {

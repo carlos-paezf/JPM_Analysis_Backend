@@ -3,7 +3,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class UserEntitlement : BaseEntity
+    public partial class UserEntitlement : BaseModel
     {
         /// <summary>
         /// Auto-incremental ID

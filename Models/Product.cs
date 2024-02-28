@@ -3,7 +3,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Product : BaseEntity
+    public partial class Product : BaseModel
     {
         public Product()
         {

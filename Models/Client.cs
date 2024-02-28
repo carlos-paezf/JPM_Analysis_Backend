@@ -1,6 +1,6 @@
 ﻿namespace BackendJPMAnalysis.Models
 {
-    public partial class Client : BaseEntity
+    public partial class Client : BaseModel
     {
         /// <summary>
         /// Auto-incremental ID

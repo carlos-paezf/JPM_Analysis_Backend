@@ -2,7 +2,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class CompanyUser : BaseEntity
+    public partial class CompanyUser : BaseModel
     {
         public CompanyUser()
         {
