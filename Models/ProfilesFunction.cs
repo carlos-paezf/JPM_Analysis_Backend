@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace BackendJPMAnalysis.Models
 {
     public partial class ProfilesFunction
     {
         /// <summary>
-        /// Autoincremental
+        /// Auto-incremental ID
         /// </summary>
-        public int Id { get; set; }
-        public string? ProfileId { get; set; }
-        public string? FunctionId { get; set; }
+        public int Id { get; }
+
+        [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
+        public string ProfileId { get; set; } = null!;
+
+        [Required(ErrorMessage = "La propiedad `functionId` es requerida")]
+        public string FunctionId { get; set; } = null!;
 
         public virtual Function? Function { get; set; }
         public virtual Profile? Profile { get; set; }
