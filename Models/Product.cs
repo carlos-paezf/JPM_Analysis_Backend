@@ -14,6 +14,7 @@ namespace BackendJPMAnalysis.Models
         /// <summary>
         /// Product name in snake_case
         /// </summary>
+        [Key]
         public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `productName` es requerida")]

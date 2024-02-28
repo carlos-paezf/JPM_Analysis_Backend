@@ -9,6 +9,7 @@ namespace BackendJPMAnalysis.Models
             UserEntitlements = new HashSet<UserEntitlement>();
         }
 
+        [Key]
         [Required(ErrorMessage = "La propiedad `accessId` es requerida")]
         public string AccessId { get; set; } = null!;
 

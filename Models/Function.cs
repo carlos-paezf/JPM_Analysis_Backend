@@ -13,6 +13,7 @@ namespace BackendJPMAnalysis.Models
         /// <summary>
         /// Function name in snake_case
         /// </summary>
+        [Key]
         public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `functionName` es requerida")]

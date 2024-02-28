@@ -14,6 +14,7 @@ namespace BackendJPMAnalysis.Models
         /// <summary>
         /// Profile name in snake_case
         /// </summary>
+        [Key]
         public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `profileName` es requerida")]

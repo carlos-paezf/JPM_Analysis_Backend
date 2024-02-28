@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 
 namespace BackendJPMAnalysis.Models
@@ -11,6 +12,7 @@ namespace BackendJPMAnalysis.Models
             UserEntitlements = new HashSet<UserEntitlement>();
         }
 
+        [Key]
         [Required(ErrorMessage = "El número de cuenta es requerido")]
         public string AccountNumber { get; set; } = null!;
 
@@ -22,7 +24,10 @@ namespace BackendJPMAnalysis.Models
 
         public string? BankCurrency { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Client> Clients { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
     }
 }
