@@ -19,6 +19,8 @@ namespace BackendJPMAnalysis.DTO
 
     public class ProfilesFunctionSimpleDTO : ProfilesFunctionDTO
     {
+        public ProfilesFunctionSimpleDTO() { }
+
         public ProfilesFunctionSimpleDTO(ProfilesFunction profilesFunction)
         {
             Id = profilesFunction.Id;
