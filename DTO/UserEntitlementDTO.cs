@@ -19,7 +19,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public UserEntitlementSimpleDTO() { }
 
-        public UserEntitlementSimpleDTO(UserEntitlement userEntitlement)
+        public UserEntitlementSimpleDTO(UserEntitlementModel userEntitlement)
         {
             Id = userEntitlement.Id;
             AccessId = userEntitlement.AccessId;
@@ -42,7 +42,7 @@ namespace BackendJPMAnalysis.DTO
         public ProductSimpleDTO? Product { get; set; }
 
         public UserEntitlementEagerDTO(
-            UserEntitlement userEntitlement, CompanyUserSimpleDTO companyUserDTO,
+            UserEntitlementModel userEntitlement, CompanyUserSimpleDTO companyUserDTO,
             AccountSimpleDTO accountDTO, FunctionSimpleDTO functionDTO, ProductSimpleDTO productDTO
             )
         {

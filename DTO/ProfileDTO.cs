@@ -19,7 +19,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public ProfileSimpleDTO() { }
 
-        public ProfileSimpleDTO(Profile profile)
+        public ProfileSimpleDTO(ProfileModel profile)
         {
             Id = profile.Id;
             ProfileName = profile.ProfileName;
@@ -35,7 +35,7 @@ namespace BackendJPMAnalysis.DTO
         public ICollection<CompanyUserSimpleDTO> CompanyUsers { get; set; }
         public ICollection<ProfilesFunctionSimpleDTO> ProfilesFunctions { get; set; }
 
-        public ProfileEagerDTO(Profile profile, ICollection<CompanyUserSimpleDTO> companyUserDTOs, ICollection<ProfilesFunctionSimpleDTO> profilesFunctionDTOs)
+        public ProfileEagerDTO(ProfileModel profile, ICollection<CompanyUserSimpleDTO> companyUserDTOs, ICollection<ProfilesFunctionSimpleDTO> profilesFunctionDTOs)
         {
             Id = profile.Id;
             ProfileName = profile.ProfileName;

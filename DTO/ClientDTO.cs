@@ -18,7 +18,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public ClientSimpleDTO() { }
 
-        public ClientSimpleDTO(Client client)
+        public ClientSimpleDTO(ClientModel client)
         {
             Id = client.Id;
             ProductId = client.ProductId;
@@ -35,7 +35,7 @@ namespace BackendJPMAnalysis.DTO
         public ProductSimpleDTO Product { get; set; }
         public AccountSimpleDTO Account { get; set; }
 
-        public ClientEagerDTO(Client client, ProductSimpleDTO product, AccountSimpleDTO account)
+        public ClientEagerDTO(ClientModel client, ProductSimpleDTO product, AccountSimpleDTO account)
         {
             Id = client.Id;
             ProductId = client.ProductId;

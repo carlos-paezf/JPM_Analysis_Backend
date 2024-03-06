@@ -21,7 +21,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public ProductSimpleDTO() { }
 
-        public ProductSimpleDTO(Product product)
+        public ProductSimpleDTO(ProductModel product)
         {
             Id = product.Id;
             ProductName = product.ProductName;
@@ -38,7 +38,7 @@ namespace BackendJPMAnalysis.DTO
         public ICollection<ClientSimpleDTO> Clients { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; }
 
-        public ProductEagerDTO(Product product, ICollection<ClientSimpleDTO> clientDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public ProductEagerDTO(ProductModel product, ICollection<ClientSimpleDTO> clientDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             Id = product.Id;
             ProductName = product.ProductName;

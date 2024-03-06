@@ -19,7 +19,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public FunctionSimpleDTO() { }
 
-        public FunctionSimpleDTO(Function function)
+        public FunctionSimpleDTO(FunctionModel function)
         {
             Id = function.Id;
             FunctionName = function.FunctionName;
@@ -35,7 +35,7 @@ namespace BackendJPMAnalysis.DTO
         public ICollection<ProfilesFunctionSimpleDTO> ProfilesFunctions { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; }
 
-        public FunctionEagerDTO(Function function, ICollection<ProfilesFunctionSimpleDTO> profilesFunctionDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public FunctionEagerDTO(FunctionModel function, ICollection<ProfilesFunctionSimpleDTO> profilesFunctionDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             Id = function.Id;
             FunctionName = function.FunctionName;

@@ -52,7 +52,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public CompanyUserSimpleDTO() { }
 
-        public CompanyUserSimpleDTO(CompanyUser companyUser)
+        public CompanyUserSimpleDTO(CompanyUserModel companyUser)
         {
             AccessId = companyUser.AccessId;
             UserName = companyUser.UserName;
@@ -80,7 +80,7 @@ namespace BackendJPMAnalysis.DTO
         public ProfileSimpleDTO Profile { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; } = null!;
 
-        public CompanyUSerEagerDTO(CompanyUser companyUser, ProfileSimpleDTO profile, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public CompanyUSerEagerDTO(CompanyUserModel companyUser, ProfileSimpleDTO profile, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             AccessId = companyUser.AccessId;
             UserName = companyUser.UserName;

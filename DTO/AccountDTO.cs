@@ -23,7 +23,7 @@ namespace BackendJPMAnalysis.DTO
     {
         public AccountSimpleDTO() { }
 
-        public AccountSimpleDTO(Account account)
+        public AccountSimpleDTO(AccountModel account)
         {
             AccountNumber = account.AccountNumber;
             AccountName = account.AccountName;
@@ -41,7 +41,7 @@ namespace BackendJPMAnalysis.DTO
         public ICollection<ClientSimpleDTO> Clients { get; set; } = null!;
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; } = null!;
 
-        public AccountEagerDTO(Account account, ICollection<ClientSimpleDTO> clientDTO, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public AccountEagerDTO(AccountModel account, ICollection<ClientSimpleDTO> clientDTO, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             AccountNumber = account.AccountNumber;
             AccountName = account.AccountName;
