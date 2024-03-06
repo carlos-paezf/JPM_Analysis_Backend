@@ -50,6 +50,8 @@ namespace BackendJPMAnalysis.DTO
 
     public class CompanyUserSimpleDTO : CompanyUserDTO
     {
+        public CompanyUserSimpleDTO() { }
+
         public CompanyUserSimpleDTO(CompanyUser companyUser)
         {
             AccessId = companyUser.AccessId;
@@ -66,6 +68,9 @@ namespace BackendJPMAnalysis.DTO
             UserGroupMembership = companyUser.UserGroupMembership;
             UserRole = companyUser.UserRole;
             ProfileId = companyUser.ProfileId;
+            CreatedAt = companyUser.CreatedAt;
+            UpdatedAt = companyUser.UpdatedAt;
+            DeletedAt = companyUser.DeletedAt;
         }
     }
 
@@ -93,6 +98,9 @@ namespace BackendJPMAnalysis.DTO
             ProfileId = companyUser.ProfileId;
             Profile = profile;
             UserEntitlements = userEntitlementDTOs;
+            CreatedAt = companyUser.CreatedAt;
+            UpdatedAt = companyUser.UpdatedAt;
+            DeletedAt = companyUser.DeletedAt;
         }
     }
 }
