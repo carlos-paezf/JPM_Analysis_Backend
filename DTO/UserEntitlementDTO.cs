@@ -17,6 +17,8 @@ namespace BackendJPMAnalysis.DTO
 
     public class UserEntitlementSimpleDTO : UserEntitlementDTO
     {
+        public UserEntitlementSimpleDTO() { }
+
         public UserEntitlementSimpleDTO(UserEntitlement userEntitlement)
         {
             Id = userEntitlement.Id;
@@ -25,6 +27,9 @@ namespace BackendJPMAnalysis.DTO
             AccountNumber = userEntitlement.AccountNumber;
             ProductId = userEntitlement.ProductId;
             FunctionId = userEntitlement.FunctionId;
+            CreatedAt = userEntitlement.CreatedAt;
+            UpdatedAt = userEntitlement.UpdatedAt;
+            DeletedAt = userEntitlement.DeletedAt;
         }
     }
 
@@ -51,6 +56,9 @@ namespace BackendJPMAnalysis.DTO
             AccountNumberNavigation = accountDTO;
             Function = functionDTO;
             Product = productDTO;
+            CreatedAt = userEntitlement.CreatedAt;
+            UpdatedAt = userEntitlement.UpdatedAt;
+            DeletedAt = userEntitlement.DeletedAt;
         }
     }
 }
