@@ -27,3 +27,7 @@ $: docker compose up -d
 ```txt
 $: dotnet ef dbcontext scaffold "Server=localhost;Uid=root;Pwd=1234;Database=jpm_analysis_database" MySql.EntityFrameworkCore -o Models
 ```
+
+```txt
+$: dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
+```
