@@ -16,11 +16,16 @@ namespace BackendJPMAnalysis.DTO
 
     public class ClientSimpleDTO : ClientDTO
     {
+        public ClientSimpleDTO() { }
+
         public ClientSimpleDTO(Client client)
         {
             Id = client.Id;
             ProductId = client.ProductId;
             AccountNumber = client.AccountNumber;
+            CreatedAt = client.CreatedAt;
+            UpdatedAt = client.UpdatedAt;
+            DeletedAt = client.DeletedAt;
         }
     }
 
@@ -37,6 +42,9 @@ namespace BackendJPMAnalysis.DTO
             AccountNumber = client.AccountNumber;
             Product = product;
             Account = account;
+            CreatedAt = client.CreatedAt;
+            UpdatedAt = client.UpdatedAt;
+            DeletedAt = client.DeletedAt;
         }
     }
 }
