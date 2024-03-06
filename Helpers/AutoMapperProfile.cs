@@ -7,7 +7,7 @@ namespace BackendJPMAnalysis.Helpers
 {
     public class AutoMapperProfile : Profile
     {
-        protected AutoMapperProfile()
+        public AutoMapperProfile()
         {
             CreateMap<AccountModel, AccountSimpleDTO>();
             CreateMap<AccountSimpleDTO, AccountModel>();
