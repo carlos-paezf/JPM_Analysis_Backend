@@ -17,10 +17,15 @@ namespace BackendJPMAnalysis.DTO
 
     public class FunctionSimpleDTO : FunctionDTO
     {
+        public FunctionSimpleDTO() { }
+
         public FunctionSimpleDTO(Function function)
         {
             Id = function.Id;
             FunctionName = function.FunctionName;
+            CreatedAt = function.CreatedAt;
+            UpdatedAt = function.UpdatedAt;
+            DeletedAt = function.DeletedAt;
         }
     }
 
@@ -36,6 +41,9 @@ namespace BackendJPMAnalysis.DTO
             FunctionName = function.FunctionName;
             ProfilesFunctions = profilesFunctionDTOs;
             UserEntitlements = userEntitlementDTOs;
+            CreatedAt = function.CreatedAt;
+            UpdatedAt = function.UpdatedAt;
+            DeletedAt = function.DeletedAt;
         }
     }
 }
