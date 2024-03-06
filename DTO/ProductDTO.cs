@@ -19,11 +19,16 @@ namespace BackendJPMAnalysis.DTO
 
     public class ProductSimpleDTO : ProductDTO
     {
+        public ProductSimpleDTO() { }
+
         public ProductSimpleDTO(Product product)
         {
             Id = product.Id;
             ProductName = product.ProductName;
             SubProduct = product.SubProduct;
+            CreatedAt = product.CreatedAt;
+            UpdatedAt = product.UpdatedAt;
+            DeletedAt = product.DeletedAt;
         }
     }
 
@@ -40,6 +45,9 @@ namespace BackendJPMAnalysis.DTO
             SubProduct = product.SubProduct;
             Clients = clientDTOs;
             UserEntitlements = userEntitlementDTOs;
+            CreatedAt = product.CreatedAt;
+            UpdatedAt = product.UpdatedAt;
+            DeletedAt = product.DeletedAt;
         }
     }
 }
