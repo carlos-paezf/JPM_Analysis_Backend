@@ -17,10 +17,15 @@ namespace BackendJPMAnalysis.DTO
 
     public class ProfileSimpleDTO : ProfileDTO
     {
+        public ProfileSimpleDTO() { }
+
         public ProfileSimpleDTO(Profile profile)
         {
             Id = profile.Id;
             ProfileName = profile.ProfileName;
+            CreatedAt = profile.CreatedAt;
+            UpdatedAt = profile.UpdatedAt;
+            DeletedAt = profile.DeletedAt;
         }
     }
 
@@ -36,6 +41,9 @@ namespace BackendJPMAnalysis.DTO
             ProfileName = profile.ProfileName;
             CompanyUsers = companyUserDTOs;
             ProfilesFunctions = profilesFunctionDTOs;
+            CreatedAt = profile.CreatedAt;
+            UpdatedAt = profile.UpdatedAt;
+            DeletedAt = profile.DeletedAt;
         }
     }
 }
