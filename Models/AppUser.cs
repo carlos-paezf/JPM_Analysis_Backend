@@ -3,12 +3,12 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class AppUser
+    public partial class AppUserModel
     {
-        public AppUser()
+        public AppUserModel()
         {
-            AppHistories = new HashSet<AppHistory>();
-            ReportHistories = new HashSet<ReportHistory>();
+            AppHistories = new HashSet<AppHistoryModel>();
+            ReportHistories = new HashSet<ReportHistoryModel>();
         }
 
         /// <summary>
@@ -25,8 +25,8 @@ namespace BackendJPMAnalysis.Models
         public DateTime? DeletedAt { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<AppHistory> AppHistories { get; set; }
+        public virtual ICollection<AppHistoryModel> AppHistories { get; set; }
         [JsonIgnore]
-        public virtual ICollection<ReportHistory> ReportHistories { get; set; }
+        public virtual ICollection<ReportHistoryModel> ReportHistories { get; set; }
     }
 }

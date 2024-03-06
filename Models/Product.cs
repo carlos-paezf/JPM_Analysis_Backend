@@ -5,14 +5,14 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Product : BaseModel
+    public partial class ProductModel : BaseModel
     {
-        public Product()
+        public ProductModel()
         {
             Id = StringUtil.SnakeCase(ProductName);
 
-            Clients = new HashSet<Client>();
-            UserEntitlements = new HashSet<UserEntitlement>();
+            Clients = new HashSet<ClientModel>();
+            UserEntitlements = new HashSet<UserEntitlementModel>();
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace BackendJPMAnalysis.Models
         public string? SubProduct { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<ClientModel> Clients { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
+        public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
     }
 }

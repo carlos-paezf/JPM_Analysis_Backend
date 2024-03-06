@@ -5,7 +5,7 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Client : BaseModel
+    public partial class ClientModel : BaseModel
     {
         /// <summary>
         /// Auto-incremental ID
@@ -16,9 +16,9 @@ namespace BackendJPMAnalysis.Models
         public string? AccountNumber { get; set; }
 
         [JsonIgnore]
-        public virtual Account? AccountNumberNavigation { get; set; }
+        public virtual AccountModel? AccountNumberNavigation { get; set; }
 
         [JsonIgnore]
-        public virtual Product? Product { get; set; }
+        public virtual ProductModel? Product { get; set; }
     }
 }

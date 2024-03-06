@@ -5,11 +5,11 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class CompanyUser : BaseModel
+    public partial class CompanyUserModel : BaseModel
     {
-        public CompanyUser()
+        public CompanyUserModel()
         {
-            UserEntitlements = new HashSet<UserEntitlement>();
+            UserEntitlements = new HashSet<UserEntitlementModel>();
         }
 
         [Key]
@@ -54,9 +54,9 @@ namespace BackendJPMAnalysis.Models
         public string ProfileId { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual Profile Profile { get; set; } = null!;
+        public virtual ProfileModel Profile { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
+        public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
     }
 }

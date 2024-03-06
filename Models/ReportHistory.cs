@@ -3,7 +3,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class ReportHistory
+    public partial class ReportHistoryModel
     {
         /// <summary>
         /// Autoincremental
@@ -14,6 +14,6 @@ namespace BackendJPMAnalysis.Models
         public DateTime? ReportUploadDate { get; set; }
 
         [JsonIgnore]
-        public virtual AppUser? AppUser { get; set; }
+        public virtual AppUserModel? AppUser { get; set; }
     }
 }

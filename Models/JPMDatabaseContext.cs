@@ -14,17 +14,17 @@ namespace BackendJPMAnalysis.Models
         {
         }
 
-        public virtual DbSet<Account> Accounts { get; set; } = null!;
-        public virtual DbSet<AppHistory> AppHistories { get; set; } = null!;
-        public virtual DbSet<AppUser> AppUsers { get; set; } = null!;
-        public virtual DbSet<Client> Clients { get; set; } = null!;
-        public virtual DbSet<CompanyUser> CompanyUsers { get; set; } = null!;
-        public virtual DbSet<Function> Functions { get; set; } = null!;
-        public virtual DbSet<Product> Products { get; set; } = null!;
-        public virtual DbSet<Profile> Profiles { get; set; } = null!;
-        public virtual DbSet<ProfilesFunction> ProfilesFunctions { get; set; } = null!;
-        public virtual DbSet<ReportHistory> ReportHistories { get; set; } = null!;
-        public virtual DbSet<UserEntitlement> UserEntitlements { get; set; } = null!;
+        public virtual DbSet<AccountModel> Accounts { get; set; } = null!;
+        public virtual DbSet<AppHistoryModel> AppHistories { get; set; } = null!;
+        public virtual DbSet<AppUserModel> AppUsers { get; set; } = null!;
+        public virtual DbSet<ClientModel> Clients { get; set; } = null!;
+        public virtual DbSet<CompanyUserModel> CompanyUsers { get; set; } = null!;
+        public virtual DbSet<FunctionModel> Functions { get; set; } = null!;
+        public virtual DbSet<ProductModel> Products { get; set; } = null!;
+        public virtual DbSet<ProfileModel> Profiles { get; set; } = null!;
+        public virtual DbSet<ProfilesFunctionModel> ProfilesFunctions { get; set; } = null!;
+        public virtual DbSet<ReportHistoryModel> ReportHistories { get; set; } = null!;
+        public virtual DbSet<UserEntitlementModel> UserEntitlements { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,7 +38,7 @@ namespace BackendJPMAnalysis.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>(entity =>
+            modelBuilder.Entity<AccountModel>(entity =>
             {
                 entity.HasKey(e => e.AccountNumber)
                     .HasName("PRIMARY");
@@ -78,7 +78,7 @@ namespace BackendJPMAnalysis.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
-            modelBuilder.Entity<AppHistory>(entity =>
+            modelBuilder.Entity<AppHistoryModel>(entity =>
             {
                 entity.ToTable("app_history");
 
@@ -104,7 +104,7 @@ namespace BackendJPMAnalysis.Models
                     .HasConstraintName("app_history_ibfk_1");
             });
 
-            modelBuilder.Entity<AppUser>(entity =>
+            modelBuilder.Entity<AppUserModel>(entity =>
             {
                 entity.ToTable("app_users");
 
@@ -150,7 +150,7 @@ namespace BackendJPMAnalysis.Models
                 entity.Property(e => e.Username).HasColumnName("username");
             });
 
-            modelBuilder.Entity<Client>(entity =>
+            modelBuilder.Entity<ClientModel>(entity =>
             {
                 entity.ToTable("clients");
 
@@ -193,7 +193,7 @@ namespace BackendJPMAnalysis.Models
                     .HasConstraintName("clients_ibfk_2");
             });
 
-            modelBuilder.Entity<CompanyUser>(entity =>
+            modelBuilder.Entity<CompanyUserModel>(entity =>
             {
                 entity.HasKey(e => e.AccessId)
                     .HasName("PRIMARY");
@@ -275,7 +275,7 @@ namespace BackendJPMAnalysis.Models
                     .HasConstraintName("company_users_ibfk_1");
             });
 
-            modelBuilder.Entity<Function>(entity =>
+            modelBuilder.Entity<FunctionModel>(entity =>
             {
                 entity.ToTable("functions");
 
@@ -304,7 +304,7 @@ namespace BackendJPMAnalysis.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
-            modelBuilder.Entity<Product>(entity =>
+            modelBuilder.Entity<ProductModel>(entity =>
             {
                 entity.ToTable("products");
 
@@ -336,7 +336,7 @@ namespace BackendJPMAnalysis.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
-            modelBuilder.Entity<Profile>(entity =>
+            modelBuilder.Entity<ProfileModel>(entity =>
             {
                 entity.ToTable("profiles");
 
@@ -361,7 +361,7 @@ namespace BackendJPMAnalysis.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
-            modelBuilder.Entity<ProfilesFunction>(entity =>
+            modelBuilder.Entity<ProfilesFunctionModel>(entity =>
             {
                 entity.ToTable("profiles_functions");
 
@@ -389,7 +389,7 @@ namespace BackendJPMAnalysis.Models
                     .HasConstraintName("profiles_functions_ibfk_1");
             });
 
-            modelBuilder.Entity<ReportHistory>(entity =>
+            modelBuilder.Entity<ReportHistoryModel>(entity =>
             {
                 entity.ToTable("report_history");
 
@@ -416,7 +416,7 @@ namespace BackendJPMAnalysis.Models
                     .HasConstraintName("report_history_ibfk_1");
             });
 
-            modelBuilder.Entity<UserEntitlement>(entity =>
+            modelBuilder.Entity<UserEntitlementModel>(entity =>
             {
                 entity.ToTable("user_entitlements");
 

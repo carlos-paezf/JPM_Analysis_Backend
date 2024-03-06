@@ -3,7 +3,7 @@
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class AppHistory
+    public partial class AppHistoryModel
     {
         /// <summary>
         /// Autoincremental
@@ -14,6 +14,6 @@ namespace BackendJPMAnalysis.Models
         public string? AppTable { get; set; }
 
         [JsonIgnore]
-        public virtual AppUser? AppUser { get; set; }
+        public virtual AppUserModel? AppUser { get; set; }
     }
 }

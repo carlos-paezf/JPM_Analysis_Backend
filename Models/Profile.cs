@@ -5,14 +5,14 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Profile : BaseModel
+    public partial class ProfileModel : BaseModel
     {
-        public Profile()
+        public ProfileModel()
         {
             Id = StringUtil.SnakeCase(ProfileName);
 
-            CompanyUsers = new HashSet<CompanyUser>();
-            ProfilesFunctions = new HashSet<ProfilesFunction>();
+            CompanyUsers = new HashSet<CompanyUserModel>();
+            ProfilesFunctions = new HashSet<ProfilesFunctionModel>();
         }
 
         /// <summary>
@@ -25,9 +25,9 @@ namespace BackendJPMAnalysis.Models
         public string ProfileName { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual ICollection<CompanyUser> CompanyUsers { get; set; }
+        public virtual ICollection<CompanyUserModel> CompanyUsers { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<ProfilesFunction> ProfilesFunctions { get; set; }
+        public virtual ICollection<ProfilesFunctionModel> ProfilesFunctions { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class ProfilesFunction
+    public partial class ProfilesFunctionModel
     {
         /// <summary>
         /// Auto-incremental ID
@@ -19,9 +19,9 @@ namespace BackendJPMAnalysis.Models
         public string FunctionId { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual Function? Function { get; set; }
+        public virtual FunctionModel? Function { get; set; }
 
         [JsonIgnore]
-        public virtual Profile? Profile { get; set; }
+        public virtual ProfileModel? Profile { get; set; }
     }
 }

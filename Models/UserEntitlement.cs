@@ -5,7 +5,7 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class UserEntitlement : BaseModel
+    public partial class UserEntitlementModel : BaseModel
     {
         /// <summary>
         /// Auto-incremental ID
@@ -26,15 +26,15 @@ namespace BackendJPMAnalysis.Models
         public string? FunctionId { get; set; }
 
         [JsonIgnore]
-        public virtual CompanyUser? CompanyUser { get; set; }
+        public virtual CompanyUserModel? CompanyUser { get; set; }
 
         [JsonIgnore]
-        public virtual Account? AccountNumberNavigation { get; set; }
+        public virtual AccountModel? AccountNumberNavigation { get; set; }
 
         [JsonIgnore]
-        public virtual Function? Function { get; set; }
+        public virtual FunctionModel? Function { get; set; }
 
         [JsonIgnore]
-        public virtual Product? Product { get; set; }
+        public virtual ProductModel? Product { get; set; }
     }
 }

@@ -5,12 +5,12 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class Account : BaseModel
+    public partial class AccountModel : BaseModel
     {
-        public Account()
+        public AccountModel()
         {
-            Clients = new HashSet<Client>();
-            UserEntitlements = new HashSet<UserEntitlement>();
+            Clients = new HashSet<ClientModel>();
+            UserEntitlements = new HashSet<UserEntitlementModel>();
         }
 
         [Key]
@@ -26,9 +26,9 @@ namespace BackendJPMAnalysis.Models
         public string? BankCurrency { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<ClientModel> Clients { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<UserEntitlement> UserEntitlements { get; set; }
+        public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
     }
 }
