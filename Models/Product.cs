@@ -7,10 +7,10 @@ namespace BackendJPMAnalysis.Models
 {
     public partial class ProductModel : BaseModel
     {
+        private string? _productName;
+
         public ProductModel()
         {
-            Id = StringUtil.SnakeCase(ProductName);
-
             Clients = new HashSet<ClientModel>();
             UserEntitlements = new HashSet<UserEntitlementModel>();
         }
@@ -19,10 +19,18 @@ namespace BackendJPMAnalysis.Models
         /// Product name in snake_case
         /// </summary>
         [Key]
-        public string Id { get; } = null!;
+        public string Id { get; private set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `productName` es requerida")]
-        public string ProductName { get; set; } = null!;
+        public string ProductName
+        {
+            get => _productName!;
+            set
+            {
+                _productName = value;
+                Id = StringUtil.SnakeCase(value);
+            }
+        }
 
         public string? SubProduct { get; set; }
 
