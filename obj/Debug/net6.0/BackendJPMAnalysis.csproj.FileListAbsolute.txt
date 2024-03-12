@@ -78,3 +78,5 @@ C:\Users\carlo\Documents\BANREP\BackendJPMAnalysis\obj\Debug\net6.0\BackendJPMAn
 C:\Users\carlo\Documents\BANREP\BackendJPMAnalysis\obj\Debug\net6.0\BackendJPMAnalysis.pdb
 C:\Users\carlo\Documents\BANREP\BackendJPMAnalysis\obj\Debug\net6.0\BackendJPMAnalysis.genruntimeconfig.cache
 C:\Users\carlo\Documents\BANREP\BackendJPMAnalysis\obj\Debug\net6.0\ref\BackendJPMAnalysis.dll
+C:\Users\carlo\Documents\BANREP\BackendJPMAnalysis\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\carlo\Documents\BANREP\BackendJPMAnalysis\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

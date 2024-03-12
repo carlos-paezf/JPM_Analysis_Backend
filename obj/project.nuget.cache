@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "AXOadCmEOG/XswgwmeGlAgCKxWCoVGKHUP5jH/sfYaLhLPEAnIfEsm9iVmHtFT10fQUZZBr7Q2GncucNCvp/fw==",
+  "dgSpecHash": "9dft2qqVydza4AgIMg9qkca1KVwzkMaRwQeyVOMJCtn1cEc8vyH1uz6fN/SkZLZnBEAvndSOYS9WXIH0I6XYyQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\carlo\\Documents\\BANREP\\BackendJPMAnalysis\\BackendJPMAnalysis.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\carlo\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\carlo\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\carlo\\.nuget\\packages\\bouncycastle.cryptography\\2.2.1\\bouncycastle.cryptography.2.2.1.nupkg.sha512",
     "C:\\Users\\carlo\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\carlo\\.nuget\\packages\\google.protobuf\\3.25.1\\google.protobuf.3.25.1.nupkg.sha512",
