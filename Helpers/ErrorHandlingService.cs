@@ -1,4 +1,6 @@
+using System.Data.Entity.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 
 
 namespace BackendJPMAnalysis.Helpers
@@ -38,7 +40,18 @@ namespace BackendJPMAnalysis.Helpers
         /// </returns>
         public async Task<ActionResult> HandleExceptionAsync(Exception ex, ILogger logger, string className, string methodName)
         {
-            if (ex is ItemNotFoundException)
+            if (ex is BadRequestException)
+            {
+                return new BadRequestObjectResult(
+                    new
+                    {
+                        message = ex.Message,
+                        status = 404,
+                        error = true
+                    }
+                );
+            }
+            else if (ex is ItemNotFoundException)
             {
                 return new NotFoundObjectResult(
                     new
@@ -55,6 +68,17 @@ namespace BackendJPMAnalysis.Helpers
                     new
                     {
                         message = ex.Message,
+                        status = 409,
+                        error = true
+                    }
+                );
+            }
+            else if (ex is DbUpdateException dbUpdateException && dbUpdateException.InnerException is MySqlException mySqlException && mySqlException.Number == 1062)
+            {
+                return new ConflictObjectResult(
+                    new
+                    {
+                        message = "Ya existe un registro duplicado en la base de datos.",
                         status = 409,
                         error = true
                     }
