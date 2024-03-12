@@ -11,4 +11,10 @@ namespace BackendJPMAnalysis.Helpers
         public DuplicateException(string id)
             : base($"Ya se encuentra un registro con el id '{id}' registrado") { }
     }
+
+
+    public class BadRequestException : Exception
+    {
+        public BadRequestException(string message) : base(message) { }
+    }
 }
