@@ -182,7 +182,7 @@ namespace BackendJPMAnalysis.Models
                     .HasColumnName("updated_at")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                entity.HasOne(d => d.AccountNumberNavigation)
+                entity.HasOne(d => d.Account)
                     .WithMany(p => p.Clients)
                     .HasForeignKey(d => d.AccountNumber)
                     .HasConstraintName("clients_ibfk_1");

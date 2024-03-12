@@ -16,7 +16,7 @@ namespace BackendJPMAnalysis.Models
         public string? AccountNumber { get; set; }
 
         [JsonIgnore]
-        public virtual AccountModel? AccountNumberNavigation { get; set; }
+        public virtual AccountModel? Account { get; set; }
 
         [JsonIgnore]
         public virtual ProductModel? Product { get; set; }
