@@ -32,10 +32,10 @@ namespace BackendJPMAnalysis.DTO
 
     public class ClientEagerDTO : ClientDTO
     {
-        public ProductSimpleDTO Product { get; set; }
-        public AccountSimpleDTO Account { get; set; }
+        public ProductSimpleDTO? Product { get; set; }
+        public AccountSimpleDTO? Account { get; set; }
 
-        public ClientEagerDTO(ClientModel client, ProductSimpleDTO product, AccountSimpleDTO account)
+        public ClientEagerDTO(ClientModel client, ProductSimpleDTO? product, AccountSimpleDTO? account)
         {
             Id = client.Id;
             ProductId = client.ProductId;
