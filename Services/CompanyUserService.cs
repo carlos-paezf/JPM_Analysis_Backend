@@ -80,9 +80,9 @@ namespace BackendJPMAnalysis.Services
             try
             {
                 var companyUser = await _context.CompanyUsers
-                                        .Where(a => a.AccessId == accessId)
-                                        .Include(a => a.Profile)
-                                        .Include(a => a.UserEntitlements)
+                                        .Where(cu => cu.AccessId == accessId)
+                                        .Include(cu => cu.Profile)
+                                        .Include(cu => cu.UserEntitlements)
                                         .FirstOrDefaultAsync()
                                         ?? throw new ItemNotFoundException(accessId);
 
@@ -120,7 +120,7 @@ namespace BackendJPMAnalysis.Services
             {
                 return await _context.CompanyUsers
                                     .AsNoTracking()
-                                    .FirstOrDefaultAsync(c => c.AccessId == accessId);
+                                    .FirstOrDefaultAsync(cu => cu.AccessId == accessId);
             }
             catch (Exception ex)
             {
