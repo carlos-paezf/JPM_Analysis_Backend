@@ -75,12 +75,12 @@ namespace BackendJPMAnalysis.DTO
     }
 
 
-    public class CompanyUSerEagerDTO : CompanyUserDTO
+    public class CompanyUserEagerDTO : CompanyUserDTO
     {
         public ProfileSimpleDTO Profile { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; } = null!;
 
-        public CompanyUSerEagerDTO(CompanyUserModel companyUser, ProfileSimpleDTO profile, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public CompanyUserEagerDTO(CompanyUserModel companyUser, ProfileSimpleDTO profile, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             AccessId = companyUser.AccessId;
             UserName = companyUser.UserName;
