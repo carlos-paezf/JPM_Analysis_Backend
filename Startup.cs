@@ -70,6 +70,7 @@ public class Startup
         services.AddScoped<ClientService>();
         services.AddScoped<CompanyUserService>();
         services.AddScoped<FunctionService>();
+        services.AddScoped<ProductService>();
     }
 
 
