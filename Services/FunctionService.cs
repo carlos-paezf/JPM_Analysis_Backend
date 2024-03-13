@@ -180,7 +180,6 @@ namespace BackendJPMAnalysis.Services
                                                         ?? throw new ItemNotFoundException(id); ;
 
                 _mapper.Map(updatedBody, existingFunction);
-                // existingFunction.FunctionName = updatedBody.FunctionName;
 
                 _context.Entry(existingFunction).State = EntityState.Modified;
 
