@@ -29,6 +29,13 @@ namespace BackendJPMAnalysis.Helpers
             CreateMap<CompanyUserEagerDTO, CompanyUserModel>();
             CreateMap<CompanyUserSimpleDTO, CompanyUserEagerDTO>();
             CreateMap<CompanyUserEagerDTO, CompanyUserSimpleDTO>();
+
+            CreateMap<FunctionModel, FunctionSimpleDTO>();
+            CreateMap<FunctionSimpleDTO, FunctionModel>();
+            CreateMap<FunctionModel, FunctionEagerDTO>();
+            CreateMap<FunctionEagerDTO, FunctionModel>();
+            CreateMap<FunctionSimpleDTO, FunctionEagerDTO>();
+            CreateMap<FunctionEagerDTO, FunctionSimpleDTO>();
         }
     }
 }
