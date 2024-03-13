@@ -124,7 +124,7 @@ namespace BackendJPMAnalysis.Services
             {
                 await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(GetByPk));
+                    className: nameof(AccountService), methodName: nameof(GetByPkNoTracking));
                 throw;
             }
         }

@@ -85,8 +85,6 @@ namespace BackendJPMAnalysis.Services
                                         .FirstOrDefaultAsync(c => c.Id == long.Parse(pk))
                                         ?? throw new ItemNotFoundException(pk);
 
-                _logger.LogInformation($"{client}");
-
                 var productDTO = (client.Product == null) ? null : new ProductSimpleDTO(client.Product);
                 var accountDTO = (client.Account == null) ? null : new AccountSimpleDTO(client.Account);
 
@@ -125,7 +123,7 @@ namespace BackendJPMAnalysis.Services
             {
                 await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientService), methodName: nameof(GetByPk));
+                    className: nameof(ClientService), methodName: nameof(GetByPkNoTracking));
                 throw;
             }
         }
