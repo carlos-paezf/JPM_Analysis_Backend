@@ -54,7 +54,7 @@ namespace BackendJPMAnalysis.Models
         public string ProfileId { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual ProfileModel Profile { get; set; } = null!;
+        public virtual ProfileModel? Profile { get; set; } = null!;
 
         [JsonIgnore]
         public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
