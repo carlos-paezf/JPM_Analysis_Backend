@@ -111,7 +111,7 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="201">Returns the new client</response>
         /// <response code="409">Returns an error message by duplicate id</response>
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpPost(Name = "Post Client")]
+        [HttpPost(Name = "PostClient")]
         public async Task<ActionResult> Post([FromBody] ClientModel body)
         {
             try
@@ -166,7 +166,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientController), methodName: nameof(Post));
+                    className: nameof(ClientController), methodName: nameof(UpdateByPK));
             }
         }
 

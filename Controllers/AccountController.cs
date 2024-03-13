@@ -120,7 +120,7 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="201">Returns the new account</response>
         /// <response code="409">Returns an error message by duplicate account number</response>
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpPost(Name = "Post Account")]
+        [HttpPost(Name = "PostAccount")]
         public async Task<ActionResult> Post([FromBody] AccountModel body)
         {
             try
@@ -175,7 +175,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(AccountController), methodName: nameof(Post));
+                    className: nameof(AccountController), methodName: nameof(UpdateByPK));
             }
         }
 
