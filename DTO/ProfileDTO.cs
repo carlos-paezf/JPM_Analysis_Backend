@@ -1,17 +1,19 @@
 using System.ComponentModel.DataAnnotations;
-using BackendJPMAnalysis.Helpers;
 using BackendJPMAnalysis.Models;
 
 
 namespace BackendJPMAnalysis.DTO
 {
-    public abstract class ProfileDTO : BaseDTO
+    public abstract class ProfileDTO
     {
         [Key]
         public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `profileName` es requerida")]
         public string ProfileName { get; set; } = null!;
+
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
 
@@ -25,7 +27,6 @@ namespace BackendJPMAnalysis.DTO
             ProfileName = profile.ProfileName;
             CreatedAt = profile.CreatedAt;
             UpdatedAt = profile.UpdatedAt;
-            DeletedAt = profile.DeletedAt;
         }
     }
 
@@ -43,7 +44,6 @@ namespace BackendJPMAnalysis.DTO
             ProfilesFunctions = profilesFunctionDTOs;
             CreatedAt = profile.CreatedAt;
             UpdatedAt = profile.UpdatedAt;
-            DeletedAt = profile.DeletedAt;
         }
     }
 }
