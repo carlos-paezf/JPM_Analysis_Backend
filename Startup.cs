@@ -69,6 +69,7 @@ public class Startup
         services.AddScoped<AccountService>();
         services.AddScoped<ClientService>();
         services.AddScoped<CompanyUserService>();
+        services.AddScoped<FunctionService>();
     }
 
 
