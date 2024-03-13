@@ -62,8 +62,8 @@ namespace BackendJPMAnalysis.Controllers
 
 
         /// <summary>
-        /// This endpoint retrieves an CompanyUser entity by its id along with related product
-        /// and companyUser details, or a 404 code status if not found.
+        /// This endpoint retrieves an CompanyUser entity by its id along with related profile
+        /// and userEntitlements details, or a 404 code status if not found.
         /// </summary>
         /// <param name="accessId">
         /// The id is the unique identifier for each CompanyUser entry.
