@@ -40,8 +40,7 @@ namespace BackendJPMAnalysis.DTO
 
         public string? UserGroupMembership { get; set; }
 
-        [Required(ErrorMessage = "La propiedad `userRole` es requerida")]
-        public string UserRole { get; set; } = null!;
+        public string? UserRole { get; set; }
 
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;

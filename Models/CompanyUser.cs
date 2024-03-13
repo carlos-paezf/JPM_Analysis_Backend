@@ -43,12 +43,12 @@ namespace BackendJPMAnalysis.Models
 
         public DateTime? UserLastLogonDt { get; set; }
 
-        public string? UserLogonStatus { get; set; }
+        [Required(ErrorMessage = "La propiedad `userLogonStatus` es requerida")]
+        public string UserLogonStatus { get; set; } = null!;
 
         public string? UserGroupMembership { get; set; }
 
-        [Required(ErrorMessage = "La propiedad `userRole` es requerida")]
-        public string UserRole { get; set; } = null!;
+        public string? UserRole { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
