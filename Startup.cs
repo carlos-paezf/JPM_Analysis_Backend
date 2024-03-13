@@ -68,6 +68,7 @@ public class Startup
         services.AddScoped<ErrorHandlingService>();
         services.AddScoped<AccountService>();
         services.AddScoped<ClientService>();
+        services.AddScoped<CompanyUserService>();
     }
 
 
