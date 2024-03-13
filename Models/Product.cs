@@ -7,7 +7,7 @@ namespace BackendJPMAnalysis.Models
 {
     public partial class ProductModel : BaseModel
     {
-        private string? _productName;
+        private string? _subProduct;
 
         public ProductModel()
         {
@@ -16,23 +16,23 @@ namespace BackendJPMAnalysis.Models
         }
 
         /// <summary>
-        /// Product name in snake_case
+        /// Product name and sub-product in snake_case
         /// </summary>
         [Key]
         public string Id { get; private set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `productName` es requerida")]
-        public string ProductName
+        public string ProductName { get; set; } = null!;
+
+        public string? SubProduct
         {
-            get => _productName!;
+            get => _subProduct;
             set
             {
-                _productName = value;
-                Id = StringUtil.SnakeCase(value);
+                _subProduct = value;
+                Id ??= StringUtil.SnakeCase(ProductName) + ((value != null) ? "_" + StringUtil.SnakeCase(value) : "");
             }
         }
-
-        public string? SubProduct { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<ClientModel> Clients { get; set; }
