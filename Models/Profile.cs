@@ -28,7 +28,7 @@ namespace BackendJPMAnalysis.Models
             set
             {
                 _profileName = value;
-                Id = StringUtil.SnakeCase(value);
+                Id ??= StringUtil.SnakeCase(value);
             }
         }
 

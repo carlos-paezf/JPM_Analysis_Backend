@@ -7,10 +7,10 @@ namespace BackendJPMAnalysis.Models
 {
     public partial class FunctionModel : BaseModel
     {
+        private string? _functionName;
+
         public FunctionModel()
         {
-            Id = StringUtil.SnakeCase(FunctionName);
-
             ProfilesFunctions = new HashSet<ProfilesFunctionModel>();
             UserEntitlements = new HashSet<UserEntitlementModel>();
         }
@@ -19,10 +19,18 @@ namespace BackendJPMAnalysis.Models
         /// Function name in snake_case
         /// </summary>
         [Key]
-        public string Id { get; } = null!;
+        public string Id { get; private set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `functionName` es requerida")]
-        public string FunctionName { get; set; } = null!;
+        public string FunctionName
+        {
+            get => _functionName!;
+            set
+            {
+                _functionName = value;
+                Id ??= StringUtil.SnakeCase(value);
+            }
+        }
 
         [JsonIgnore]
         public virtual ICollection<ProfilesFunctionModel> ProfilesFunctions { get; set; }
