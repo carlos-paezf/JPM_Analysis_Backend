@@ -16,12 +16,12 @@ namespace BackendJPMAnalysis.Helpers
             CreateMap<AccountSimpleDTO, AccountEagerDTO>();
             CreateMap<AccountEagerDTO, AccountSimpleDTO>();
 
-            CreateMap<ClientModel, ClientSimpleDTO>();
-            CreateMap<ClientSimpleDTO, ClientModel>();
-            CreateMap<ClientModel, ClientEagerDTO>();
-            CreateMap<ClientEagerDTO, ClientModel>();
-            CreateMap<ClientSimpleDTO, ClientEagerDTO>();
-            CreateMap<ClientEagerDTO, ClientSimpleDTO>();
+            CreateMap<ProductAccountModel, ProductAccountSimpleDTO>();
+            CreateMap<ProductAccountSimpleDTO, ProductAccountModel>();
+            CreateMap<ProductAccountModel, ProductAccountEagerDTO>();
+            CreateMap<ProductAccountEagerDTO, ProductAccountModel>();
+            CreateMap<ProductAccountSimpleDTO, ProductAccountEagerDTO>();
+            CreateMap<ProductAccountEagerDTO, ProductAccountSimpleDTO>();
 
             CreateMap<CompanyUserModel, CompanyUserSimpleDTO>();
             CreateMap<CompanyUserSimpleDTO, CompanyUserModel>();
@@ -51,12 +51,12 @@ namespace BackendJPMAnalysis.Helpers
             CreateMap<ProfileSimpleDTO, ProfileEagerDTO>();
             CreateMap<ProfileEagerDTO, ProfileSimpleDTO>();
 
-            CreateMap<ProfilesFunctionModel, ProfilesFunctionSimpleDTO>();
-            CreateMap<ProfilesFunctionSimpleDTO, ProfilesFunctionModel>();
-            CreateMap<ProfilesFunctionModel, ProfilesFunctionEagerDTO>();
-            CreateMap<ProfilesFunctionEagerDTO, ProfilesFunctionModel>();
-            CreateMap<ProfilesFunctionSimpleDTO, ProfilesFunctionEagerDTO>();
-            CreateMap<ProfilesFunctionEagerDTO, ProfilesFunctionSimpleDTO>();
+            CreateMap<ProfileFunctionModel, ProfileFunctionSimpleDTO>();
+            CreateMap<ProfileFunctionSimpleDTO, ProfileFunctionModel>();
+            CreateMap<ProfileFunctionModel, ProfileFunctionEagerDTO>();
+            CreateMap<ProfileFunctionEagerDTO, ProfileFunctionModel>();
+            CreateMap<ProfileFunctionSimpleDTO, ProfileFunctionEagerDTO>();
+            CreateMap<ProfileFunctionEagerDTO, ProfileFunctionSimpleDTO>();
         }
     }
 }
