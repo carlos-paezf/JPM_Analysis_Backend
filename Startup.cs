@@ -71,6 +71,7 @@ public class Startup
         services.AddScoped<CompanyUserService>();
         services.AddScoped<FunctionService>();
         services.AddScoped<ProductService>();
+        services.AddScoped<ProfileService>();
     }
 
 
