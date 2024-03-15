@@ -72,6 +72,7 @@ public class Startup
         services.AddScoped<FunctionService>();
         services.AddScoped<ProductService>();
         services.AddScoped<ProfileService>();
+        services.AddScoped<ProfilesFunctionService>();
     }
 
 
