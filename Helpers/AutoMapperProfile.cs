@@ -36,6 +36,20 @@ namespace BackendJPMAnalysis.Helpers
             CreateMap<FunctionEagerDTO, FunctionModel>();
             CreateMap<FunctionSimpleDTO, FunctionEagerDTO>();
             CreateMap<FunctionEagerDTO, FunctionSimpleDTO>();
+
+            CreateMap<ProductModel, ProductSimpleDTO>();
+            CreateMap<ProductSimpleDTO, ProductModel>();
+            CreateMap<ProductModel, ProductEagerDTO>();
+            CreateMap<ProductEagerDTO, ProductModel>();
+            CreateMap<ProductSimpleDTO, ProductEagerDTO>();
+            CreateMap<ProductEagerDTO, ProductSimpleDTO>();
+
+            CreateMap<ProfileModel, ProfileSimpleDTO>();
+            CreateMap<ProfileSimpleDTO, ProfileModel>();
+            CreateMap<ProfileModel, ProfileEagerDTO>();
+            CreateMap<ProfileEagerDTO, ProfileModel>();
+            CreateMap<ProfileSimpleDTO, ProfileEagerDTO>();
+            CreateMap<ProfileEagerDTO, ProfileSimpleDTO>();
         }
     }
 }
