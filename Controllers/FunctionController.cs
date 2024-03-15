@@ -184,7 +184,7 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="204">If the delete process was success, returns an status code 204 without content</response>
         /// <response code="404">The function was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpDelete("delete/{id}", Name = "DeleteFunction")]
+        [HttpPatch("delete/{id}", Name = "DeleteFunction")]
         public async Task<ActionResult> SoftDelete([FromRoute] string id)
         {
             try

@@ -184,7 +184,7 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="204">If the delete process was success, returns an status code 204 without content</response>
         /// <response code="404">The companyUser was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpDelete("delete/{accessId}", Name = "DeleteCompanyUser")]
+        [HttpPatch("delete/{accessId}", Name = "DeleteCompanyUser")]
         public async Task<ActionResult> SoftDelete([FromRoute] string accessId)
         {
             try

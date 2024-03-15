@@ -82,6 +82,9 @@ namespace BackendJPMAnalysis.Controllers
         {
             try
             {
+                if (!int.TryParse(id, out int result))
+                    return BadRequest("El id debe ser un número entero");
+
                 var response = await _service.GetByPk(id);
 
                 return Ok(response);
@@ -156,6 +159,9 @@ namespace BackendJPMAnalysis.Controllers
         {
             try
             {
+                if (!int.TryParse(id, out int result))
+                    return BadRequest("El id debe ser un número entero");
+
                 if (id != body.Id.ToString()) return BadRequest();
 
                 var response = await _service.UpdateByPK(id, body);
@@ -185,11 +191,14 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="204">If the delete process was success, returns an status code 204 without content</response>
         /// <response code="404">The client was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpDelete("delete/{id}", Name = "DeleteClient")]
+        [HttpPatch("delete/{id}", Name = "DeleteClient")]
         public async Task<ActionResult> SoftDelete([FromRoute] string id)
         {
             try
             {
+                if (!int.TryParse(id, out int result))
+                    return BadRequest("El id debe ser un número entero");
+
                 await _service.SoftDelete(id);
 
                 return NoContent();
@@ -223,6 +232,9 @@ namespace BackendJPMAnalysis.Controllers
         {
             try
             {
+                if (!int.TryParse(id, out int result))
+                    return BadRequest("El id debe ser un número entero");
+
                 await _service.Restore(id);
 
                 return NoContent();
