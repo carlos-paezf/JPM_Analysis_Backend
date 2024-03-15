@@ -10,6 +10,10 @@ namespace BackendJPMAnalysis.Helpers
         public abstract Task<Model?> GetByPkNoTracking(string pk);
         public abstract Task Post(Model postBody);
         public abstract Task<DTOSimple> UpdateByPK(string pk, DTOSimple updatedBody);
+    }
+
+    public interface IDeletionService
+    {
         public abstract Task Delete(string pk);
         public abstract Task Restore(string pk);
     }

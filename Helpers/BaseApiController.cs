@@ -10,6 +10,11 @@ namespace BackendJPMAnalysis.Helpers
         public abstract Task<ActionResult<Model>> GetByPk([FromRoute] string pk);
         public abstract Task<ActionResult> Post([FromBody] Model body);
         public abstract Task<ActionResult> UpdateByPK([FromRoute] string pk, [FromBody] DTOSimple body);
+    }
+
+
+    public interface IDeletionController
+    {
         public abstract Task<ActionResult> Delete([FromRoute] string pk);
         public abstract Task<ActionResult> Restore([FromRoute] string pk);
     }

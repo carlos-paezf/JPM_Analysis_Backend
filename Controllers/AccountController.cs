@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("accounts", Name = "AccountController")]
     [Produces("application/json")]
-    public class AccountController : ControllerBase, IBaseApiController<AccountModel, AccountSimpleDTO>
+    public class AccountController : ControllerBase, IBaseApiController<AccountModel, AccountSimpleDTO>, IDeletionController
     {
         private readonly JPMDatabaseContext _context;
 

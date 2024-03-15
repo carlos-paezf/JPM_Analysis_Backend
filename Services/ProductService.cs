@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendJPMAnalysis.Services
 {
-    public class ProductService : IBaseService<ProductModel, ProductEagerDTO, ProductSimpleDTO>
+    public class ProductService : IBaseService<ProductModel, ProductEagerDTO, ProductSimpleDTO>, IDeletionService
     {
         private readonly JPMDatabaseContext _context;
         private readonly ILogger<ProductService> _logger;

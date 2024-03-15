@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("functions", Name = "Functions")]
     [Produces("application/json")]
-    public class FunctionController : ControllerBase, IBaseApiController<FunctionModel, FunctionSimpleDTO>
+    public class FunctionController : ControllerBase, IBaseApiController<FunctionModel, FunctionSimpleDTO>, IDeletionController
     {
         private readonly JPMDatabaseContext _context;
 
@@ -130,7 +130,6 @@ namespace BackendJPMAnalysis.Controllers
                     ex: ex, logger: _logger,
                     className: nameof(FunctionController), methodName: nameof(Post));
             }
-            throw new NotImplementedException();
         }
 
 

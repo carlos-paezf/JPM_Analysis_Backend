@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("companyUsers", Name = "CompanyUsers")]
     [Produces("application/json")]
-    public class CompanyUserController : ControllerBase, IBaseApiController<CompanyUserModel, CompanyUserSimpleDTO>
+    public class CompanyUserController : ControllerBase, IBaseApiController<CompanyUserModel, CompanyUserSimpleDTO>, IDeletionController
     {
         private readonly JPMDatabaseContext _context;
 

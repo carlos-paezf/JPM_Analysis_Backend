@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("clients", Name = "ClientController")]
     [Produces("application/json")]
-    public class ClientController : ControllerBase, IBaseApiController<ClientModel, ClientSimpleDTO>
+    public class ClientController : ControllerBase, IBaseApiController<ClientModel, ClientSimpleDTO>, IDeletionController
     {
         private readonly JPMDatabaseContext _context;
 

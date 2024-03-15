@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendJPMAnalysis.Services
 {
-    public class AccountService : IBaseService<AccountModel, AccountEagerDTO, AccountSimpleDTO>
+    public class AccountService : IBaseService<AccountModel, AccountEagerDTO, AccountSimpleDTO>, IDeletionService
     {
         private readonly JPMDatabaseContext _context;
         private readonly ILogger<AccountService> _logger;

@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("products", Name = "Products")]
     [Produces("application/json")]
-    public class ProductController : ControllerBase, IBaseApiController<ProductModel, ProductSimpleDTO>
+    public class ProductController : ControllerBase, IBaseApiController<ProductModel, ProductSimpleDTO>, IDeletionController
     {
         private readonly JPMDatabaseContext _context;
 
@@ -130,7 +130,6 @@ namespace BackendJPMAnalysis.Controllers
                     ex: ex, logger: _logger,
                     className: nameof(FunctionController), methodName: nameof(Post));
             }
-            throw new NotImplementedException();
         }
 
 
