@@ -24,4 +24,16 @@ namespace BackendJPMAnalysis.Helpers
     {
         public abstract Task<ActionResult> HardDelete([FromRoute] string pk);
     }
+
+
+    public interface IBulkPostController<Model> where Model : class
+    {
+        public abstract Task<ActionResult> BulkPost([FromBody] ICollection<Model> collectionBody);
+    }
+
+
+    public interface IBulkHardDeleteController
+    {
+        public abstract Task<ActionResult> BulkHardDelete([FromBody] ICollection<string> pks);
+    }
 }

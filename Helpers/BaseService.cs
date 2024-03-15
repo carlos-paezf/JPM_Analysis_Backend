@@ -12,14 +12,28 @@ namespace BackendJPMAnalysis.Helpers
         public abstract Task<DTOSimple> UpdateByPK(string pk, DTOSimple updatedBody);
     }
 
+
     public interface ISoftDeleteService
     {
         public abstract Task SoftDelete(string pk);
         public abstract Task Restore(string pk);
     }
 
+
     public interface IHardDeleteService
     {
         public abstract Task HardDelete(string pk);
+    }
+
+
+    public interface IBulkPostService<Model> where Model : class
+    {
+        public abstract Task BulkPost(ICollection<Model> collectionBody);
+    }
+
+
+    public interface IBulkHardDeleteService
+    {
+        public abstract Task BulkHardDelete(ICollection<string> pks);
     }
 }
