@@ -8,22 +8,25 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendJPMAnalysis.Controllers
 {
     [ApiController]
-    [Route("clients", Name = "ClientController")]
+    [Route("productAccount", Name = "ProductAccountController")]
     [Produces("application/json")]
-    public class ClientController : ControllerBase, IBaseApiController<ClientModel, ClientSimpleDTO>, ISoftDeleteController
+    public class ProductAccountController
+        : ControllerBase
+            , IBaseApiController<ProductAccountModel, ProductAccountSimpleDTO>
+            , ISoftDeleteController
     {
         private readonly JPMDatabaseContext _context;
 
-        private readonly ILogger<ClientController> _logger;
+        private readonly ILogger<ProductAccountController> _logger;
 
-        private readonly ClientService _service;
+        private readonly ProductAccountService _service;
 
         private readonly IErrorHandlingService _errorHandlingService;
 
-        public ClientController(
+        public ProductAccountController(
             JPMDatabaseContext context,
-            ClientService service,
-            ILogger<ClientController> logger,
+            ProductAccountService service,
+            ILogger<ProductAccountController> logger,
             ErrorHandlingService errorHandlingService
         )
         {
@@ -44,8 +47,8 @@ namespace BackendJPMAnalysis.Controllers
         /// </returns>
         /// <response code="200">Returns the clients list. If there are no records in the DB, it returns an empty array/// </response>
         /// <response code="500">Returns an alert by Internal Server Error </response>
-        [HttpGet(Name = "GetClients")]
-        public async Task<ActionResult<ListResponseDTO<ClientModel>>> GetAll()
+        [HttpGet(Name = "GetProductsAccounts")]
+        public async Task<ActionResult<ListResponseDTO<ProductAccountModel>>> GetAll()
         {
             try
             {
@@ -56,20 +59,20 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientController), methodName: nameof(GetAll));
+                    className: nameof(ProductAccountController), methodName: nameof(GetAll));
             }
         }
 
 
         /// <summary>
-        /// This endpoint retrieves an Client entity by its id along with related product
+        /// This endpoint retrieves an ProductAccount entity by its id along with related product
         /// and client details, or a 404 code status if not found.
         /// </summary>
         /// <param name="id">
-        /// The id is the unique identifier for each Client entry.
+        /// The id is the unique identifier for each ProductAccount entry.
         /// </param>
         /// <returns>
-        /// The GetById method is returning an ActionResult of type Client. If the entity is found in
+        /// The GetById method is returning an ActionResult of type ProductAccount. If the entity is found in
         /// the database based on the provided id, it returns the entity. If the entity is
         /// not found (entity is null), it returns a NotFound result with a message indicating that the
         /// client was not found for the specified id.
@@ -77,14 +80,11 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="200">Returns an client by its id</response>
         /// <response code="404">Returns an error message by not found item</response>
         /// <response code="500">Returns an alert by Internal Server Error </response>
-        [HttpGet("{id}", Name = "GetClientById")]
-        public async Task<ActionResult<ClientModel>> GetByPk([FromRoute] string id)
+        [HttpGet("{id}", Name = "GetProductAccountById")]
+        public async Task<ActionResult<ProductAccountModel>> GetByPk([FromRoute] string id)
         {
             try
             {
-                if (!int.TryParse(id, out int result))
-                    return BadRequest("El id debe ser un número entero");
-
                 var response = await _service.GetByPk(id);
 
                 return Ok(response);
@@ -93,7 +93,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientController), methodName: nameof(GetByPk));
+                    className: nameof(ProductAccountController), methodName: nameof(GetByPk));
             }
         }
 
@@ -104,18 +104,18 @@ namespace BackendJPMAnalysis.Controllers
         /// </summary>
         /// <param name="body">
         /// The code you provided is a POST method in a controller that receives
-        /// an Client object in the request body. The method calls a service to save the client
+        /// an ProductAccount object in the request body. The method calls a service to save the client
         /// information and returns an appropriate response based on the outcome.
         /// </param>
         /// <returns>
-        /// The Post method in the ClientController is returning different types of ActionResult based
+        /// The Post method in the ProductAccountController is returning different types of ActionResult based
         /// on the outcome of the operation:
         /// </returns>
         /// <response code="201">Returns the new client</response>
         /// <response code="409">Returns an error message by duplicate id</response>
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpPost(Name = "PostClient")]
-        public async Task<ActionResult> Post([FromBody] ClientModel body)
+        [HttpPost(Name = "PostProductAccount")]
+        public async Task<ActionResult> Post([FromBody] ProductAccountModel body)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientController), methodName: nameof(Post));
+                    className: nameof(ProductAccountController), methodName: nameof(Post));
             }
         }
 
@@ -154,15 +154,12 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="404">The client was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
         /// 
-        [HttpPut("update/{id}", Name = "UpdateClient")]
-        public async Task<ActionResult> UpdateByPK([FromRoute] string id, [FromBody] ClientSimpleDTO body)
+        [HttpPut("update/{id}", Name = "UpdateProductAccount")]
+        public async Task<ActionResult> UpdateByPK([FromRoute] string id, [FromBody] ProductAccountSimpleDTO body)
         {
             try
             {
-                if (!int.TryParse(id, out int result))
-                    return BadRequest("El id debe ser un número entero");
-
-                if (id != body.Id.ToString()) return BadRequest();
+                if (id != body.Id) return BadRequest();
 
                 var response = await _service.UpdateByPK(id, body);
 
@@ -172,7 +169,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientController), methodName: nameof(UpdateByPK));
+                    className: nameof(ProductAccountController), methodName: nameof(UpdateByPK));
             }
         }
 
@@ -191,14 +188,11 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="204">If the delete process was success, returns an status code 204 without content</response>
         /// <response code="404">The client was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpPatch("delete/{id}", Name = "DeleteClient")]
+        [HttpPatch("delete/{id}", Name = "DeleteProductAccount")]
         public async Task<ActionResult> SoftDelete([FromRoute] string id)
         {
             try
             {
-                if (!int.TryParse(id, out int result))
-                    return BadRequest("El id debe ser un número entero");
-
                 await _service.SoftDelete(id);
 
                 return NoContent();
@@ -207,7 +201,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                    ex: ex, logger: _logger,
-                   className: nameof(ClientController), methodName: nameof(SoftDelete));
+                   className: nameof(ProductAccountController), methodName: nameof(SoftDelete));
             }
         }
 
@@ -227,14 +221,11 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="204">If the restore process was success, returns an status code 204 without content</response>
         /// <response code="404">The client was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
-        [HttpPatch("restore/{id}", Name = "RestoreClient")]
+        [HttpPatch("restore/{id}", Name = "RestoreProductAccount")]
         public async Task<ActionResult> Restore([FromRoute] string id)
         {
             try
             {
-                if (!int.TryParse(id, out int result))
-                    return BadRequest("El id debe ser un número entero");
-
                 await _service.Restore(id);
 
                 return NoContent();
@@ -243,7 +234,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                    ex: ex, logger: _logger,
-                   className: nameof(ClientController), methodName: nameof(Restore));
+                   className: nameof(ProductAccountController), methodName: nameof(Restore));
             }
         }
     }

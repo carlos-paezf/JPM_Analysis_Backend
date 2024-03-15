@@ -5,13 +5,13 @@ using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class ClientModel : BaseModel
+    public partial class ProductAccountModel : BaseModel
     {
         /// <summary>
         /// Auto-incremental ID
         /// </summary>
         [Key]
-        public int Id { get; }
+        public string Id { get; } = null!;
         public string? ProductId { get; set; }
         public string? AccountNumber { get; set; }
 
