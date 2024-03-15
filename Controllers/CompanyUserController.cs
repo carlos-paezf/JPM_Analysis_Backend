@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("companyUsers", Name = "CompanyUsers")]
     [Produces("application/json")]
-    public class CompanyUserController : ControllerBase, IBaseApiController<CompanyUserModel, CompanyUserSimpleDTO>, IDeletionController
+    public class CompanyUserController : ControllerBase, IBaseApiController<CompanyUserModel, CompanyUserSimpleDTO>, ISoftDeleteController
     {
         private readonly JPMDatabaseContext _context;
 
@@ -185,11 +185,11 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="404">The companyUser was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
         [HttpDelete("delete/{accessId}", Name = "DeleteCompanyUser")]
-        public async Task<ActionResult> Delete([FromRoute] string accessId)
+        public async Task<ActionResult> SoftDelete([FromRoute] string accessId)
         {
             try
             {
-                await _service.Delete(accessId);
+                await _service.SoftDelete(accessId);
 
                 return NoContent();
             }
@@ -197,7 +197,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                    ex: ex, logger: _logger,
-                   className: nameof(CompanyUserController), methodName: nameof(Delete));
+                   className: nameof(CompanyUserController), methodName: nameof(SoftDelete));
             }
         }
 

@@ -12,9 +12,14 @@ namespace BackendJPMAnalysis.Helpers
         public abstract Task<DTOSimple> UpdateByPK(string pk, DTOSimple updatedBody);
     }
 
-    public interface IDeletionService
+    public interface ISoftDeleteService
     {
-        public abstract Task Delete(string pk);
+        public abstract Task SoftDelete(string pk);
         public abstract Task Restore(string pk);
+    }
+
+    public interface IHardDeleteService
+    {
+        public abstract Task HardDelete(string pk);
     }
 }

@@ -13,9 +13,15 @@ namespace BackendJPMAnalysis.Helpers
     }
 
 
-    public interface IDeletionController
+    public interface ISoftDeleteController
     {
-        public abstract Task<ActionResult> Delete([FromRoute] string pk);
+        public abstract Task<ActionResult> SoftDelete([FromRoute] string pk);
         public abstract Task<ActionResult> Restore([FromRoute] string pk);
+    }
+
+
+    public interface IHardDeleteController
+    {
+        public abstract Task<ActionResult> HardDelete([FromRoute] string pk);
     }
 }

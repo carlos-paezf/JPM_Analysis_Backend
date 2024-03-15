@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("functions", Name = "Functions")]
     [Produces("application/json")]
-    public class FunctionController : ControllerBase, IBaseApiController<FunctionModel, FunctionSimpleDTO>, IDeletionController
+    public class FunctionController : ControllerBase, IBaseApiController<FunctionModel, FunctionSimpleDTO>, ISoftDeleteController
     {
         private readonly JPMDatabaseContext _context;
 
@@ -185,11 +185,11 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="404">The function was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
         [HttpDelete("delete/{id}", Name = "DeleteFunction")]
-        public async Task<ActionResult> Delete([FromRoute] string id)
+        public async Task<ActionResult> SoftDelete([FromRoute] string id)
         {
             try
             {
-                await _service.Delete(id);
+                await _service.SoftDelete(id);
 
                 return NoContent();
             }
@@ -197,7 +197,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                    ex: ex, logger: _logger,
-                   className: nameof(FunctionController), methodName: nameof(Delete));
+                   className: nameof(FunctionController), methodName: nameof(SoftDelete));
             }
         }
 

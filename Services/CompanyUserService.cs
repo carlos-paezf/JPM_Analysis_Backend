@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendJPMAnalysis.Services
 {
-    public class CompanyUserService : IBaseService<CompanyUserModel, CompanyUserEagerDTO, CompanyUserSimpleDTO>, IDeletionService
+    public class CompanyUserService : IBaseService<CompanyUserModel, CompanyUserEagerDTO, CompanyUserSimpleDTO>, ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
         private readonly ILogger<CompanyUserService> _logger;
@@ -232,7 +232,7 @@ namespace BackendJPMAnalysis.Services
         /// <param name="accessId">The `accessId` parameter in the `Delete` method is used to identify
         /// the company user that needs to be deleted. It is a unique identifier for the company user
         /// that is being targeted for deletion.</param>
-        public async Task Delete(string accessId)
+        public async Task SoftDelete(string accessId)
         {
             try
             {
@@ -248,7 +248,7 @@ namespace BackendJPMAnalysis.Services
             {
                 await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(Delete));
+                    className: nameof(CompanyUserService), methodName: nameof(SoftDelete));
                 throw;
             }
         }

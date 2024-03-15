@@ -10,7 +10,7 @@ namespace BackendJPMAnalysis.Controllers
     [ApiController]
     [Route("accounts", Name = "AccountController")]
     [Produces("application/json")]
-    public class AccountController : ControllerBase, IBaseApiController<AccountModel, AccountSimpleDTO>, IDeletionController
+    public class AccountController : ControllerBase, IBaseApiController<AccountModel, AccountSimpleDTO>, ISoftDeleteController
     {
         private readonly JPMDatabaseContext _context;
 
@@ -195,11 +195,11 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="404">The account was not found in the database</response>  
         /// <response code="500">Returns an alert by Internal Server Error</response>
         [HttpDelete("delete/{accountNumber}", Name = "DeleteAccount")]
-        public async Task<ActionResult> Delete([FromRoute] string accountNumber)
+        public async Task<ActionResult> SoftDelete([FromRoute] string accountNumber)
         {
             try
             {
-                await _service.Delete(accountNumber);
+                await _service.SoftDelete(accountNumber);
 
                 return NoContent();
             }
@@ -207,7 +207,7 @@ namespace BackendJPMAnalysis.Controllers
             {
                 return await _errorHandlingService.HandleExceptionAsync(
                    ex: ex, logger: _logger,
-                   className: nameof(AccountController), methodName: nameof(Delete));
+                   className: nameof(AccountController), methodName: nameof(SoftDelete));
             }
         }
 

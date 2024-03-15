@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendJPMAnalysis.Services
 {
-    public class ProductService : IBaseService<ProductModel, ProductEagerDTO, ProductSimpleDTO>, IDeletionService
+    public class ProductService : IBaseService<ProductModel, ProductEagerDTO, ProductSimpleDTO>, ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
         private readonly ILogger<ProductService> _logger;
@@ -202,7 +202,7 @@ namespace BackendJPMAnalysis.Services
         /// </summary>
         /// <param name="id">The `id` parameter in the `Delete` method is the identifier of the product
         /// that needs to be deleted from the database.</param>
-        public async Task Delete(string id)
+        public async Task SoftDelete(string id)
         {
             try
             {
@@ -218,7 +218,7 @@ namespace BackendJPMAnalysis.Services
             {
                 await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(Delete));
+                    className: nameof(ProductService), methodName: nameof(SoftDelete));
                 throw;
             }
         }

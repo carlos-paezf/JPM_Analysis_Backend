@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendJPMAnalysis.Services
 {
-    public class ClientService : IBaseService<ClientModel, ClientEagerDTO, ClientSimpleDTO>, IDeletionService
+    public class ClientService : IBaseService<ClientModel, ClientEagerDTO, ClientSimpleDTO>, ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
         private readonly ILogger<ClientService> _logger;
@@ -236,7 +236,7 @@ namespace BackendJPMAnalysis.Services
         /// </summary>
         /// <param name="pk">The `pk` parameter in the `Delete` method is a string representing the
         /// primary key of the client that needs to be deleted.</param>
-        public async Task Delete(string pk)
+        public async Task SoftDelete(string pk)
         {
             try
             {
@@ -252,7 +252,7 @@ namespace BackendJPMAnalysis.Services
             {
                 await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
-                    className: nameof(ClientService), methodName: nameof(Delete));
+                    className: nameof(ClientService), methodName: nameof(SoftDelete));
                 throw;
             }
         }
