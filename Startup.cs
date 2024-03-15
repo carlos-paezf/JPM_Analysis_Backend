@@ -67,12 +67,12 @@ public class Startup
         // Register custom services
         services.AddScoped<ErrorHandlingService>();
         services.AddScoped<AccountService>();
-        services.AddScoped<ClientService>();
+        services.AddScoped<ProductAccountService>();
         services.AddScoped<CompanyUserService>();
         services.AddScoped<FunctionService>();
         services.AddScoped<ProductService>();
         services.AddScoped<ProfileService>();
-        services.AddScoped<ProfilesFunctionService>();
+        services.AddScoped<ProfileFunctionService>();
     }
 
 

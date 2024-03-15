@@ -85,7 +85,7 @@ namespace BackendJPMAnalysis.Services
                                         .FirstOrDefaultAsync()
                                         ?? throw new ItemNotFoundException(id);
 
-                var profilesFunctionsDTO = function.ProfilesFunctions.Select(pf => new ProfilesFunctionSimpleDTO(pf)).ToList();
+                var profilesFunctionsDTO = function.ProfilesFunctions.Select(pf => new ProfileFunctionSimpleDTO(pf)).ToList();
                 var userEntitlementDTOs = function.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
                 return new FunctionEagerDTO(function, profilesFunctionsDTO, userEntitlementDTOs);

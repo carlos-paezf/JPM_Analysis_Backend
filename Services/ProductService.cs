@@ -80,15 +80,15 @@ namespace BackendJPMAnalysis.Services
             {
                 var product = await _context.Products
                                         .Where(p => p.Id == id)
-                                        .Include(p => p.Clients)
+                                        .Include(p => p.ProductsAccounts)
                                         .Include(p => p.UserEntitlements)
                                         .FirstOrDefaultAsync()
                                         ?? throw new ItemNotFoundException(id);
 
-                var clientsDTO = product.Clients.Select(pf => new ClientSimpleDTO(pf)).ToList();
+                var productsAccountsDTO = product.ProductsAccounts.Select(pf => new ProductAccountSimpleDTO(pf)).ToList();
                 var userEntitlementDTOs = product.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-                return new ProductEagerDTO(product, clientsDTO, userEntitlementDTOs);
+                return new ProductEagerDTO(product, productsAccountsDTO, userEntitlementDTOs);
             }
             catch (Exception ex)
             {

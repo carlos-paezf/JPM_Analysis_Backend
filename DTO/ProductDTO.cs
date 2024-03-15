@@ -38,12 +38,12 @@ namespace BackendJPMAnalysis.DTO
         public ICollection<ProductAccountSimpleDTO> ProductsAccounts { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; }
 
-        public ProductEagerDTO(ProductModel product, ICollection<ProductAccountSimpleDTO> clientDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public ProductEagerDTO(ProductModel product, ICollection<ProductAccountSimpleDTO> productsAccountsDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             Id = product.Id;
             ProductName = product.ProductName;
             SubProduct = product.SubProduct;
-            ProductsAccounts = clientDTOs;
+            ProductsAccounts = productsAccountsDTOs;
             UserEntitlements = userEntitlementDTOs;
             CreatedAt = product.CreatedAt;
             UpdatedAt = product.UpdatedAt;

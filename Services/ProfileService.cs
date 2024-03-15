@@ -65,7 +65,7 @@ namespace BackendJPMAnalysis.Services
                                         ?? throw new ItemNotFoundException(id);
 
                 var companyUserDTOs = function.CompanyUsers.Select(cu => new CompanyUserSimpleDTO(cu)).ToList();
-                var profilesFunctionsDTO = function.ProfilesFunctions.Select(pf => new ProfilesFunctionSimpleDTO(pf)).ToList();
+                var profilesFunctionsDTO = function.ProfilesFunctions.Select(pf => new ProfileFunctionSimpleDTO(pf)).ToList();
 
                 return new ProfileEagerDTO(function, companyUserDTOs, profilesFunctionsDTO);
             }

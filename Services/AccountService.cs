@@ -7,7 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BackendJPMAnalysis.Services
 {
-    public class AccountService : IBaseService<AccountModel, AccountEagerDTO, AccountSimpleDTO>, ISoftDeleteService
+    public class AccountService
+        : IBaseService<AccountModel, AccountEagerDTO, AccountSimpleDTO>
+            , ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
         private readonly ILogger<AccountService> _logger;
@@ -72,7 +74,7 @@ namespace BackendJPMAnalysis.Services
         /// The `GetByPk` method is returning an `AccountDetailsDTO` object or `null` if no matching
         /// account is found in the database. The `AccountDetailsDTO` object contains details about the
         /// account, including account number, account name, account type, a list of clients associated
-        /// with the account (represented as `ClientDTO` objects), and a list of user entitlements
+        /// with the account (represented as `ProductAccountDTO` objects), and a list of user entitlements
         /// associated with the account (represented as `UserEntitlementsDTO` objects).
         /// </returns>
         public async Task<AccountEagerDTO?> GetByPk(string accountNumber)
@@ -81,15 +83,15 @@ namespace BackendJPMAnalysis.Services
             {
                 var account = await _context.Accounts
                                         .Where(a => a.AccountNumber == accountNumber)
-                                        .Include(a => a.Clients)
+                                        .Include(a => a.ProductsAccounts)
                                         .Include(a => a.UserEntitlements)
                                         .FirstOrDefaultAsync()
                                         ?? throw new ItemNotFoundException(accountNumber);
 
-                var clientDTOs = account.Clients.Select(c => new ClientSimpleDTO(c)).ToList();
+                var productAccountDTOs = account.ProductsAccounts.Select(c => new ProductAccountSimpleDTO(c)).ToList();
                 var userEntitlementDTOs = account.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-                return new AccountEagerDTO(account, clientDTOs, userEntitlementDTOs);
+                return new AccountEagerDTO(account, productAccountDTOs, userEntitlementDTOs);
             }
             catch (Exception ex)
             {
