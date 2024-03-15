@@ -4,10 +4,10 @@ using BackendJPMAnalysis.Models;
 
 namespace BackendJPMAnalysis.DTO
 {
-    public abstract class ProfilesFunctionDTO
+    public abstract class ProfileFunctionDTO
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
@@ -17,11 +17,11 @@ namespace BackendJPMAnalysis.DTO
     }
 
 
-    public class ProfilesFunctionSimpleDTO : ProfilesFunctionDTO
+    public class ProfileFunctionSimpleDTO : ProfileFunctionDTO
     {
-        public ProfilesFunctionSimpleDTO() { }
+        public ProfileFunctionSimpleDTO() { }
 
-        public ProfilesFunctionSimpleDTO(ProfilesFunctionModel profilesFunction)
+        public ProfileFunctionSimpleDTO(ProfileFunctionModel profilesFunction)
         {
             Id = profilesFunction.Id;
             ProfileId = profilesFunction.ProfileId;
@@ -30,12 +30,12 @@ namespace BackendJPMAnalysis.DTO
     }
 
 
-    public class ProfilesFunctionEagerDTO : ProfilesFunctionDTO
+    public class ProfileFunctionEagerDTO : ProfileFunctionDTO
     {
         public FunctionSimpleDTO Function { get; set; }
         public ProfileSimpleDTO Profile { get; set; }
 
-        public ProfilesFunctionEagerDTO(ProfilesFunctionModel profilesFunction, FunctionSimpleDTO functionDTO, ProfileSimpleDTO profileDTO)
+        public ProfileFunctionEagerDTO(ProfileFunctionModel profilesFunction, FunctionSimpleDTO functionDTO, ProfileSimpleDTO profileDTO)
         {
             Id = profilesFunction.Id;
             ProfileId = profilesFunction.ProfileId;

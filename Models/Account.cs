@@ -9,7 +9,7 @@ namespace BackendJPMAnalysis.Models
     {
         public AccountModel()
         {
-            Clients = new HashSet<ClientModel>();
+            ProductsAccounts = new HashSet<ProductAccountModel>();
             UserEntitlements = new HashSet<UserEntitlementModel>();
         }
 
@@ -26,7 +26,7 @@ namespace BackendJPMAnalysis.Models
         public string? BankCurrency { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<ClientModel> Clients { get; set; }
+        public virtual ICollection<ProductAccountModel> ProductsAccounts { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }

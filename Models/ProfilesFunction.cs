@@ -4,13 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace BackendJPMAnalysis.Models
 {
-    public partial class ProfilesFunctionModel
+    public partial class ProfileFunctionModel
     {
         /// <summary>
         /// Auto-incremental ID
         /// </summary>
         [Key]
-        public int Id { get; }
+        public string Id { get; } = null!;
 
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;

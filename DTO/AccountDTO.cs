@@ -38,16 +38,16 @@ namespace BackendJPMAnalysis.DTO
 
     public class AccountEagerDTO : AccountDTO
     {
-        public ICollection<ClientSimpleDTO> Clients { get; set; } = null!;
+        public ICollection<ProductAccountSimpleDTO> ProductsAccounts { get; set; } = null!;
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; } = null!;
 
-        public AccountEagerDTO(AccountModel account, ICollection<ClientSimpleDTO> clientDTO, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public AccountEagerDTO(AccountModel account, ICollection<ProductAccountSimpleDTO> clientDTO, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             AccountNumber = account.AccountNumber;
             AccountName = account.AccountName;
             AccountType = account.AccountType;
             BankCurrency = account.BankCurrency;
-            Clients = clientDTO;
+            ProductsAccounts = clientDTO;
             UserEntitlements = userEntitlementDTOs;
             CreatedAt = account.CreatedAt;
             UpdatedAt = account.UpdatedAt;

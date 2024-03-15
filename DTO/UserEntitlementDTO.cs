@@ -6,7 +6,7 @@ namespace BackendJPMAnalysis.DTO
 {
     public abstract class UserEntitlementDTO : BaseDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; } = null!;
         public string AccessId { get; set; } = null!;
         public string? FunctionType { get; set; }
         public string? AccountNumber { get; set; }

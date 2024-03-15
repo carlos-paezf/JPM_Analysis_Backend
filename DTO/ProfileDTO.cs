@@ -34,9 +34,9 @@ namespace BackendJPMAnalysis.DTO
     public class ProfileEagerDTO : ProfileDTO
     {
         public ICollection<CompanyUserSimpleDTO> CompanyUsers { get; set; }
-        public ICollection<ProfilesFunctionSimpleDTO> ProfilesFunctions { get; set; }
+        public ICollection<ProfileFunctionSimpleDTO> ProfilesFunctions { get; set; }
 
-        public ProfileEagerDTO(ProfileModel profile, ICollection<CompanyUserSimpleDTO> companyUserDTOs, ICollection<ProfilesFunctionSimpleDTO> profilesFunctionDTOs)
+        public ProfileEagerDTO(ProfileModel profile, ICollection<CompanyUserSimpleDTO> companyUserDTOs, ICollection<ProfileFunctionSimpleDTO> profilesFunctionDTOs)
         {
             Id = profile.Id;
             ProfileName = profile.ProfileName;

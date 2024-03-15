@@ -32,10 +32,10 @@ namespace BackendJPMAnalysis.DTO
 
     public class FunctionEagerDTO : FunctionDTO
     {
-        public ICollection<ProfilesFunctionSimpleDTO> ProfilesFunctions { get; set; }
+        public ICollection<ProfileFunctionSimpleDTO> ProfilesFunctions { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; }
 
-        public FunctionEagerDTO(FunctionModel function, ICollection<ProfilesFunctionSimpleDTO> profilesFunctionDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public FunctionEagerDTO(FunctionModel function, ICollection<ProfileFunctionSimpleDTO> profilesFunctionDTOs, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             Id = function.Id;
             FunctionName = function.FunctionName;

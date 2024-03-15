@@ -12,7 +12,7 @@ namespace BackendJPMAnalysis.Models
         public ProfileModel()
         {
             CompanyUsers = new HashSet<CompanyUserModel>();
-            ProfilesFunctions = new HashSet<ProfilesFunctionModel>();
+            ProfilesFunctions = new HashSet<ProfileFunctionModel>();
         }
 
         /// <summary>
@@ -40,6 +40,6 @@ namespace BackendJPMAnalysis.Models
         public virtual ICollection<CompanyUserModel> CompanyUsers { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<ProfilesFunctionModel> ProfilesFunctions { get; set; }
+        public virtual ICollection<ProfileFunctionModel> ProfilesFunctions { get; set; }
     }
 }

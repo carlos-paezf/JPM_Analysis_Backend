@@ -11,7 +11,7 @@ namespace BackendJPMAnalysis.Models
 
         public FunctionModel()
         {
-            ProfilesFunctions = new HashSet<ProfilesFunctionModel>();
+            ProfilesFunctions = new HashSet<ProfileFunctionModel>();
             UserEntitlements = new HashSet<UserEntitlementModel>();
         }
 
@@ -33,7 +33,7 @@ namespace BackendJPMAnalysis.Models
         }
 
         [JsonIgnore]
-        public virtual ICollection<ProfilesFunctionModel> ProfilesFunctions { get; set; }
+        public virtual ICollection<ProfileFunctionModel> ProfilesFunctions { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }

@@ -17,12 +17,12 @@ namespace BackendJPMAnalysis.Models
         public virtual DbSet<AccountModel> Accounts { get; set; } = null!;
         public virtual DbSet<AppHistoryModel> AppHistories { get; set; } = null!;
         public virtual DbSet<AppUserModel> AppUsers { get; set; } = null!;
-        public virtual DbSet<ClientModel> Clients { get; set; } = null!;
+        public virtual DbSet<ProductAccountModel> ProductsAccounts { get; set; } = null!;
         public virtual DbSet<CompanyUserModel> CompanyUsers { get; set; } = null!;
         public virtual DbSet<FunctionModel> Functions { get; set; } = null!;
         public virtual DbSet<ProductModel> Products { get; set; } = null!;
         public virtual DbSet<ProfileModel> Profiles { get; set; } = null!;
-        public virtual DbSet<ProfilesFunctionModel> ProfilesFunctions { get; set; } = null!;
+        public virtual DbSet<ProfileFunctionModel> ProfilesFunctions { get; set; } = null!;
         public virtual DbSet<ReportHistoryModel> ReportHistories { get; set; } = null!;
         public virtual DbSet<UserEntitlementModel> UserEntitlements { get; set; } = null!;
 
@@ -93,7 +93,7 @@ namespace BackendJPMAnalysis.Models
                     .HasColumnName("app_function");
 
                 entity.Property(e => e.AppTable)
-                    .HasColumnType("enum('profiles','sheets','functions','profiles_functions','company_users','user_entitlements','clients','accounts','tim_cash','tim_fx','tim_listed_sec','tim_import_template')")
+                    .HasColumnType("enum('profiles','sheets','functions','profiles_functions','company_users','user_entitlements','products_accounts','accounts','tim_cash','tim_fx','tim_listed_sec','tim_import_template')")
                     .HasColumnName("app_table");
 
                 entity.Property(e => e.AppUserId).HasColumnName("app_user_id");
@@ -150,13 +150,13 @@ namespace BackendJPMAnalysis.Models
                 entity.Property(e => e.Username).HasColumnName("username");
             });
 
-            modelBuilder.Entity<ClientModel>(entity =>
+            modelBuilder.Entity<ProductAccountModel>(entity =>
             {
-                entity.ToTable("clients");
+                entity.ToTable("products_accounts");
 
                 entity.HasIndex(e => e.AccountNumber, "account_number");
 
-                entity.HasIndex(e => new { e.ProductId, e.AccountNumber }, "clients_index_1")
+                entity.HasIndex(e => new { e.ProductId, e.AccountNumber }, "products_accounts_index_1")
                     .IsUnique();
 
                 entity.Property(e => e.Id)
@@ -183,14 +183,14 @@ namespace BackendJPMAnalysis.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                 entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Clients)
+                    .WithMany(p => p.ProductsAccounts)
                     .HasForeignKey(d => d.AccountNumber)
-                    .HasConstraintName("clients_ibfk_1");
+                    .HasConstraintName("products_accounts_ibfk_1");
 
                 entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Clients)
+                    .WithMany(p => p.ProductsAccounts)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("clients_ibfk_2");
+                    .HasConstraintName("products_accounts_ibfk_2");
             });
 
             modelBuilder.Entity<CompanyUserModel>(entity =>
@@ -361,7 +361,7 @@ namespace BackendJPMAnalysis.Models
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
 
-            modelBuilder.Entity<ProfilesFunctionModel>(entity =>
+            modelBuilder.Entity<ProfileFunctionModel>(entity =>
             {
                 entity.ToTable("profiles_functions");
 

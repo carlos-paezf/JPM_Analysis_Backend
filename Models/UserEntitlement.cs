@@ -11,7 +11,7 @@ namespace BackendJPMAnalysis.Models
         /// Auto-incremental ID
         /// </summary>
         [Key]
-        public int Id { get; }
+        public string Id { get; } = null!;
 
         [Required(ErrorMessage = "La propiedad `accessId` es requerida")]
         public string AccessId { get; set; } = null!;
