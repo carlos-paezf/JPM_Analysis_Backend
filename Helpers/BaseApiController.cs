@@ -28,7 +28,7 @@ namespace BackendJPMAnalysis.Helpers
 
     public interface IBulkPostController<Model> where Model : class
     {
-        public abstract Task<ActionResult> BulkPost([FromBody] ICollection<Model> collectionBody);
+        public abstract Task<ActionResult<ListResponseDTO<Model>>> BulkPost([FromBody] ICollection<Model> collectionBody);
     }
 
 
