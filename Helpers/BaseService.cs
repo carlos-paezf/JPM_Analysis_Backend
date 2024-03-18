@@ -28,12 +28,12 @@ namespace BackendJPMAnalysis.Helpers
 
     public interface IBulkPostService<Model> where Model : class
     {
-        public abstract Task BulkPost(ICollection<Model> collectionBody);
+        public abstract Task<ListResponseDTO<Model>> BulkPost(ICollection<Model> collectionBody);
     }
 
 
     public interface IBulkHardDeleteService
     {
-        public abstract Task BulkHardDelete(ICollection<string> pks);
+        public abstract Task<int> BulkHardDelete(ICollection<string> pks);
     }
 }
