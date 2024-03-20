@@ -15,5 +15,10 @@ namespace BackendJPMAnalysis.Models
 
         [JsonIgnore]
         public virtual AppUserModel? AppUser { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, AppUserId: {AppUserId}, ReportName: {ReportName}, ReportUploadDate: {ReportUploadDate}";
+        }
     }
 }

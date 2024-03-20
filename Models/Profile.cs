@@ -41,5 +41,10 @@ namespace BackendJPMAnalysis.Models
 
         [JsonIgnore]
         public virtual ICollection<ProfileFunctionModel> ProfilesFunctions { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, ProfileName: {ProfileName}";
+        }
     }
 }

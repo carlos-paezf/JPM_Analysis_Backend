@@ -28,5 +28,10 @@ namespace BackendJPMAnalysis.Models
         public virtual ICollection<AppHistoryModel> AppHistories { get; set; }
         [JsonIgnore]
         public virtual ICollection<ReportHistoryModel> ReportHistories { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Username: {Username}, Name: {Name}, AppRole: {AppRole}, Email: {Email}";
+        }
     }
 }

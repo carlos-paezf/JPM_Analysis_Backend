@@ -163,7 +163,7 @@ namespace BackendJPMAnalysis.Services
                 var existingEntity = await _context.ProductsAccounts
                                     .FirstOrDefaultAsync(c => c.ProductId == postBody.ProductId && c.AccountNumber == postBody.AccountNumber);
 
-                if (existingEntity != null) throw new DuplicateException($"{postBody.ProductId}-{postBody.AccountNumber}");
+                if (existingEntity != null) throw new DuplicateException(postBody.ToString()!);
 
                 if ((postBody.ProductId != null && !await ProductExistsAsync(postBody.ProductId))
                     || (postBody.AccountNumber != null && !await AccountExistsAsync(postBody.AccountNumber)))

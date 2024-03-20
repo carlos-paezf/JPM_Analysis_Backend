@@ -51,5 +51,10 @@ namespace BackendJPMAnalysis.Models
 
         [JsonIgnore]
         public virtual ProductModel? Product { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, AccessId: {AccessId}, AccountNumber: {AccountNumber}, ProductId: {ProductId}, FunctionId: {FunctionId}, FunctionType: {FunctionType}";
+        }
     }
 }

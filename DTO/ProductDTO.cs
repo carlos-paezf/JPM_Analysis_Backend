@@ -30,6 +30,11 @@ namespace BackendJPMAnalysis.DTO
             UpdatedAt = product.UpdatedAt;
             DeletedAt = product.DeletedAt;
         }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, ProductName: {ProductName}, SubProduct: {SubProduct}";
+        }
     }
 
 

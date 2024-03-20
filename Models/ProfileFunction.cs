@@ -34,5 +34,10 @@ namespace BackendJPMAnalysis.Models
 
         [JsonIgnore]
         public virtual ProfileModel? Profile { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, ProfileId: {ProfileId}, FunctionId: {FunctionId}";
+        }
     }
 }

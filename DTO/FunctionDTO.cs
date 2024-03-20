@@ -27,6 +27,11 @@ namespace BackendJPMAnalysis.DTO
             UpdatedAt = function.UpdatedAt;
             DeletedAt = function.DeletedAt;
         }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, FunctionName: {FunctionName}";
+        }
     }
 
 

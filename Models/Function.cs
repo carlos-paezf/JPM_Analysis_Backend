@@ -37,5 +37,10 @@ namespace BackendJPMAnalysis.Models
 
         [JsonIgnore]
         public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, FunctionName: {FunctionName}";
+        }
     }
 }

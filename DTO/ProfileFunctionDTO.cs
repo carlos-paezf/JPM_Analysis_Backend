@@ -27,6 +27,11 @@ namespace BackendJPMAnalysis.DTO
             ProfileId = profilesFunction.ProfileId;
             FunctionId = profilesFunction.FunctionId;
         }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, ProfileId: {ProfileId}, FunctionId: {FunctionId}";
+        }
     }
 
 

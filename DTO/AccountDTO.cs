@@ -33,6 +33,11 @@ namespace BackendJPMAnalysis.DTO
             UpdatedAt = account.UpdatedAt;
             DeletedAt = account.DeletedAt;
         }
+
+        public override string ToString()
+        {
+            return $"AccountNumber: {AccountNumber}, AccountName: {AccountName}, AccountType: {AccountType}, BankCurrency: {BankCurrency}";
+        }
     }
 
 

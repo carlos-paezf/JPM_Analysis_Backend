@@ -28,6 +28,11 @@ namespace BackendJPMAnalysis.DTO
             CreatedAt = profile.CreatedAt;
             UpdatedAt = profile.UpdatedAt;
         }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, ProfileName: {ProfileName}";
+        }
     }
 
 

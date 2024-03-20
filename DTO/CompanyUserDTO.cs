@@ -71,6 +71,11 @@ namespace BackendJPMAnalysis.DTO
             UpdatedAt = companyUser.UpdatedAt;
             DeletedAt = companyUser.DeletedAt;
         }
+
+        public override string ToString()
+        {
+            return $"AccessId: {AccessId}, UserName: {UserName}, UserStatus: {UserStatus}, UserType: {UserType}, EmployeeId: {EmployeeId}, EmailAddress: {EmailAddress}, UserLocation: {UserLocation}, UserCountry: {UserCountry}, UserLogonType: {UserLogonType}, UserLastLogonDt: {UserLastLogonDt}, UserLogonStatus: {UserLogonStatus}, UserGroupMembership: {UserGroupMembership}, UserRole: {UserRole}, ProfileId: {ProfileId}";
+        }
     }
 
 

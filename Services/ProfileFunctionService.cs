@@ -161,7 +161,7 @@ namespace BackendJPMAnalysis.Services
                 var existingEntity = await _context.ProfilesFunctions
                                     .FirstOrDefaultAsync(pf => pf.ProfileId == postBody.ProfileId && pf.FunctionId == postBody.FunctionId);
 
-                if (existingEntity != null) throw new DuplicateException($"{postBody.ProfileId}-{postBody.FunctionId}");
+                if (existingEntity != null) throw new DuplicateException(postBody.ToString()!);
 
                 if ((postBody.ProfileId != null && !await ProfileExistsAsync(postBody.ProfileId))
                     || (postBody.FunctionId != null && !await FunctionExistsAsync(postBody.FunctionId)))
@@ -204,7 +204,7 @@ namespace BackendJPMAnalysis.Services
                 var existingEntity = await _context.ProfilesFunctions
                                                     .FirstOrDefaultAsync(pf => pf.ProfileId == updatedBody.ProfileId && pf.FunctionId == updatedBody.FunctionId);
 
-                if (existingEntity != null) throw new DuplicateException($"{updatedBody.ProfileId}-{updatedBody.FunctionId}");
+                if (existingEntity != null) throw new DuplicateException(updatedBody.ToString()!);
 
                 if ((updatedBody.ProfileId != null && !await ProfileExistsAsync(updatedBody.ProfileId))
                                     || (updatedBody.FunctionId != null && !await FunctionExistsAsync(updatedBody.FunctionId)))
