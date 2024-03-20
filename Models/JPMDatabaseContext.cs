@@ -464,7 +464,7 @@ namespace BackendJPMAnalysis.Models
                     .HasForeignKey(d => d.AccessId)
                     .HasConstraintName("user_entitlements_ibfk_1");
 
-                entity.HasOne(d => d.AccountNumberNavigation)
+                entity.HasOne(d => d.Account)
                     .WithMany(p => p.UserEntitlements)
                     .HasForeignKey(d => d.AccountNumber)
                     .HasConstraintName("user_entitlements_ibfk_2");
