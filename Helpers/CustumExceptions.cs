@@ -8,8 +8,8 @@ namespace BackendJPMAnalysis.Helpers
 
     public class DuplicateException : Exception
     {
-        public DuplicateException(string id)
-            : base($"Ya se encuentra un registro con el id '{id}' registrado") { }
+        public DuplicateException(string properties)
+            : base($"Ya se encuentra un registro con el las mismas propiedades registrado: '{properties}'") { }
     }
 
 
