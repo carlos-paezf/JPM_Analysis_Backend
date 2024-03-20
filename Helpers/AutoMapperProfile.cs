@@ -57,6 +57,13 @@ namespace BackendJPMAnalysis.Helpers
             CreateMap<ProfileFunctionEagerDTO, ProfileFunctionModel>();
             CreateMap<ProfileFunctionSimpleDTO, ProfileFunctionEagerDTO>();
             CreateMap<ProfileFunctionEagerDTO, ProfileFunctionSimpleDTO>();
+
+            CreateMap<UserEntitlementModel, UserEntitlementSimpleDTO>();
+            CreateMap<UserEntitlementSimpleDTO, UserEntitlementModel>();
+            CreateMap<UserEntitlementModel, UserEntitlementEagerDTO>();
+            CreateMap<UserEntitlementEagerDTO, UserEntitlementModel>();
+            CreateMap<UserEntitlementSimpleDTO, UserEntitlementEagerDTO>();
+            CreateMap<UserEntitlementEagerDTO, UserEntitlementSimpleDTO>();
         }
     }
 }
