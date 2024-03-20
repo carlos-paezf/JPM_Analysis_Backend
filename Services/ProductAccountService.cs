@@ -85,7 +85,7 @@ namespace BackendJPMAnalysis.Services
                                         .Include(c => c.Product)
                                         .Include(c => c.Account)
                                         .FirstOrDefaultAsync(c => c.Id == id)
-                                        ?? throw new ItemNotFoundException(id.ToString());
+                                        ?? throw new ItemNotFoundException(id);
 
                 var productDTO = (client.Product == null) ? null : new ProductSimpleDTO(client.Product);
                 var accountDTO = (client.Account == null) ? null : new AccountSimpleDTO(client.Account);
@@ -205,7 +205,7 @@ namespace BackendJPMAnalysis.Services
         {
             try
             {
-                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id.ToString());
+                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
 
                 if ((updatedBody.ProductId != null && !await ProductExistsAsync(updatedBody.ProductId))
                     || (updatedBody.AccountNumber != null && !await AccountExistsAsync(updatedBody.AccountNumber)))
@@ -242,7 +242,7 @@ namespace BackendJPMAnalysis.Services
         {
             try
             {
-                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id.ToString());
+                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
 
                 existingProductAccount.DeletedAt = DateTime.UtcNow;
 
@@ -270,7 +270,7 @@ namespace BackendJPMAnalysis.Services
         {
             try
             {
-                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id.ToString());
+                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
 
                 existingProductAccount.DeletedAt = null;
 

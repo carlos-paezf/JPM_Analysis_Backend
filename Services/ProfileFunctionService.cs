@@ -84,7 +84,7 @@ namespace BackendJPMAnalysis.Services
                                         .Include(p => p.Function)
                                         .Include(p => p.Profile)
                                         .FirstOrDefaultAsync()
-                                        ?? throw new ItemNotFoundException(id.ToString());
+                                        ?? throw new ItemNotFoundException(id);
 
                 var functionDTO = new FunctionSimpleDTO(profileFunction.Function!);
                 var profileDTO = new ProfileSimpleDTO(profileFunction.Profile!);
@@ -199,7 +199,7 @@ namespace BackendJPMAnalysis.Services
         {
             try
             {
-                var existingProfileFunction = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id.ToString());
+                var existingProfileFunction = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
 
                 var existingEntity = await _context.ProfilesFunctions
                                                     .FirstOrDefaultAsync(pf => pf.ProfileId == updatedBody.ProfileId && pf.FunctionId == updatedBody.FunctionId);
@@ -244,7 +244,7 @@ namespace BackendJPMAnalysis.Services
         {
             try
             {
-                var existingProfileFunction = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id.ToString());
+                var existingProfileFunction = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
 
                 _context.ProfilesFunctions.Remove(existingProfileFunction);
 
