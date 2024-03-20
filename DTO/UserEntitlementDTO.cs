@@ -23,10 +23,10 @@ namespace BackendJPMAnalysis.DTO
         {
             Id = userEntitlement.Id;
             AccessId = userEntitlement.AccessId;
-            FunctionType = userEntitlement.FunctionType;
             AccountNumber = userEntitlement.AccountNumber;
             ProductId = userEntitlement.ProductId;
             FunctionId = userEntitlement.FunctionId;
+            FunctionType = userEntitlement.FunctionType;
             CreatedAt = userEntitlement.CreatedAt;
             UpdatedAt = userEntitlement.UpdatedAt;
             DeletedAt = userEntitlement.DeletedAt;
@@ -37,25 +37,25 @@ namespace BackendJPMAnalysis.DTO
     public class UserEntitlementEagerDTO : UserEntitlementDTO
     {
         public CompanyUserSimpleDTO? CompanyUser { get; set; }
-        public AccountSimpleDTO? AccountNumberNavigation { get; set; }
+        public AccountSimpleDTO? Account { get; set; }
         public FunctionSimpleDTO? Function { get; set; }
         public ProductSimpleDTO? Product { get; set; }
 
         public UserEntitlementEagerDTO(
             UserEntitlementModel userEntitlement, CompanyUserSimpleDTO companyUserDTO,
-            AccountSimpleDTO accountDTO, FunctionSimpleDTO functionDTO, ProductSimpleDTO productDTO
+            AccountSimpleDTO? accountDTO, ProductSimpleDTO productDTO, FunctionSimpleDTO? functionDTO
             )
         {
             Id = userEntitlement.Id;
             AccessId = userEntitlement.AccessId;
-            FunctionType = userEntitlement.FunctionType;
             AccountNumber = userEntitlement.AccountNumber;
             ProductId = userEntitlement.ProductId;
             FunctionId = userEntitlement.FunctionId;
             CompanyUser = companyUserDTO;
-            AccountNumberNavigation = accountDTO;
-            Function = functionDTO;
+            Account = accountDTO;
             Product = productDTO;
+            Function = functionDTO;
+            FunctionType = userEntitlement.FunctionType;
             CreatedAt = userEntitlement.CreatedAt;
             UpdatedAt = userEntitlement.UpdatedAt;
             DeletedAt = userEntitlement.DeletedAt;
