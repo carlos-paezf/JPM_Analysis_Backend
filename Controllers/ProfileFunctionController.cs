@@ -117,7 +117,6 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="409">Returns an error message if a duplicate ID is detected.</response>
         /// <response code="500">Returns an Internal Server Error alert if an exception occurs during the process.</response>
         [HttpPost(Name = "PostProfileFunction")]
-
         public async Task<ActionResult> Post([FromBody] ProfileFunctionModel body)
         {
             try
@@ -161,7 +160,6 @@ namespace BackendJPMAnalysis.Controllers
         /// <response code="400">If the provided ID does not match the ID in the body.</response>
         /// <response code="500">Returns an Internal Server Error alert if an exception occurs during the process.</response>
         [HttpPut("update/{id}", Name = "UpdateProfileFunction")]
-
         public async Task<ActionResult> UpdateByPK([FromRoute] string id, [FromBody] ProfileFunctionSimpleDTO body)
         {
             try
