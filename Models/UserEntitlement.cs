@@ -7,16 +7,16 @@ namespace BackendJPMAnalysis.Models
 {
     public partial class UserEntitlementModel : BaseModel
     {
+        private string? _functionType;
+
         /// <summary>
-        /// Auto-incremental ID
+        /// Join AccessID, AccountNumber, ProductID, FunctionID and FunctionType in snake_case
         /// </summary>
         [Key]
-        public string Id { get; } = null!;
+        public string Id { get; private set; } = null!;
 
         [Required(ErrorMessage = "La propiedad `accessId` es requerida")]
         public string AccessId { get; set; } = null!;
-
-        public string? FunctionType { get; set; }
 
         public string? AccountNumber { get; set; }
 
@@ -25,11 +25,26 @@ namespace BackendJPMAnalysis.Models
 
         public string? FunctionId { get; set; }
 
+        public string? FunctionType
+        {
+            get => _functionType;
+            set
+            {
+                _functionType = value;
+                Id ??= StringUtil.SnakeCase(
+                    AccessId + '_'
+                    + (AccountNumber ?? string.Empty) + '_'
+                    + ProductId + '_'
+                    + (FunctionId ?? string.Empty) + '_'
+                    + (FunctionType ?? string.Empty));
+            }
+        }
+
         [JsonIgnore]
         public virtual CompanyUserModel? CompanyUser { get; set; }
 
         [JsonIgnore]
-        public virtual AccountModel? AccountNumberNavigation { get; set; }
+        public virtual AccountModel? Account { get; set; }
 
         [JsonIgnore]
         public virtual FunctionModel? Function { get; set; }
