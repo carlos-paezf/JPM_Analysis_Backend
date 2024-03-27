@@ -115,7 +115,7 @@ namespace BackendJPMAnalysis.Services
 
             if (
                 postBody.ProfileId != null
-                && !await _dataAccessService.ProfileExistsAsync(postBody.ProfileId))
+                && !await _dataAccessService.EntityExistsAsync<ProfileModel>(postBody.ProfileId))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil exista en la base de datos");
             }
@@ -147,7 +147,7 @@ namespace BackendJPMAnalysis.Services
 
             if (
                 updatedBody.ProfileId != null
-                && !await _dataAccessService.ProfileExistsAsync(updatedBody.ProfileId))
+                && !await _dataAccessService.EntityExistsAsync<ProfileModel>(updatedBody.ProfileId))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil exista en la base de datos");
             }

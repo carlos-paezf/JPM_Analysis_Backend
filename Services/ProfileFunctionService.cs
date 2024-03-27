@@ -116,8 +116,8 @@ namespace BackendJPMAnalysis.Services
             if (existingEntity != null)
                 throw new DuplicateException(postBody.ToString()!);
 
-            if ((postBody.ProfileId != null && !await _dataAccessService.ProfileExistsAsync(postBody.ProfileId))
-                || (postBody.FunctionId != null && !await _dataAccessService.FunctionExistsAsync(postBody.FunctionId)))
+            if ((postBody.ProfileId != null && !await _dataAccessService.EntityExistsAsync<ProfileModel>(postBody.ProfileId))
+                || (postBody.FunctionId != null && !await _dataAccessService.EntityExistsAsync<FunctionModel>(postBody.FunctionId)))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos");
             }
@@ -151,8 +151,8 @@ namespace BackendJPMAnalysis.Services
             if (existingEntity != null)
                 throw new DuplicateException(updatedBody.ToString()!);
 
-            if ((updatedBody.ProfileId != null && !await _dataAccessService.ProfileExistsAsync(updatedBody.ProfileId))
-                || (updatedBody.FunctionId != null && !await _dataAccessService.FunctionExistsAsync(updatedBody.FunctionId)))
+            if ((updatedBody.ProfileId != null && !await _dataAccessService.EntityExistsAsync<ProfileModel>(updatedBody.ProfileId))
+                || (updatedBody.FunctionId != null && !await _dataAccessService.EntityExistsAsync<FunctionModel>(updatedBody.FunctionId)))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos");
             }
@@ -204,8 +204,8 @@ namespace BackendJPMAnalysis.Services
             var profilesIds = collectionBody.Select(pf => pf.ProfileId).Distinct().ToList();
             var functionsIds = collectionBody.Select(pf => pf.FunctionId).Distinct().ToList();
 
-            var existingProfiles = await _dataAccessService.CheckExistingProfilesAsync(profilesIds);
-            var existingFunctions = await _dataAccessService.CheckExistingFunctionsAsync(functionsIds);
+            var existingProfiles = await _dataAccessService.CheckExistingEntitiesAsync<ProfileModel>(profilesIds);
+            var existingFunctions = await _dataAccessService.CheckExistingEntitiesAsync<FunctionModel>(functionsIds);
 
             var invalidProfilesIds = profilesIds.Where(id => !existingProfiles.Contains(id)).ToList();
             var invalidFunctionsIds = functionsIds.Where(id => !existingFunctions.Contains(id)).ToList();

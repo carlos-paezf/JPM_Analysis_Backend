@@ -120,8 +120,8 @@ namespace BackendJPMAnalysis.Services
             if (existingEntity != null)
                 throw new DuplicateException(postBody.ToString()!);
 
-            if ((postBody.ProductId != null && !await _dataAccessService.ProductExistsAsync(postBody.ProductId))
-                || (postBody.AccountNumber != null && !await _dataAccessService.AccountExistsAsync(postBody.AccountNumber)))
+            if ((postBody.ProductId != null && !await _dataAccessService.EntityExistsAsync<ProductModel>(postBody.ProductId))
+                || (postBody.AccountNumber != null && !await _dataAccessService.EntityExistsAsync<AccountModel>(postBody.AccountNumber)))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el producto o la cuenta existan en la base de datos");
             }
@@ -152,8 +152,8 @@ namespace BackendJPMAnalysis.Services
             var existingProductAccount = await GetByPkNoTracking(id)
                 ?? throw new ItemNotFoundException(id);
 
-            if ((updatedBody.ProductId != null && !await _dataAccessService.ProductExistsAsync(updatedBody.ProductId))
-                || (updatedBody.AccountNumber != null && !await _dataAccessService.AccountExistsAsync(updatedBody.AccountNumber)))
+            if ((updatedBody.ProductId != null && !await _dataAccessService.EntityExistsAsync<ProductModel>(updatedBody.ProductId))
+                || (updatedBody.AccountNumber != null && !await _dataAccessService.EntityExistsAsync<AccountModel>(updatedBody.AccountNumber)))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el producto o la cuenta existan en la base de datos");
             }

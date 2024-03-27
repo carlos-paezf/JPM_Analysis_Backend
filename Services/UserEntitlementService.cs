@@ -86,10 +86,10 @@ namespace BackendJPMAnalysis.Services
 
             if (existingEntity != null) throw new DuplicateException(postBody.Id);
 
-            if ((postBody.AccessId != null && !await _dataAccessService.CompanyUserExistsAsync(postBody.AccessId))
-                || (postBody.AccountNumber != null && !await _dataAccessService.AccountExistsAsync(postBody.AccountNumber))
-                || (postBody.ProductId != null && !await _dataAccessService.ProductExistsAsync(postBody.ProductId))
-                || (postBody.FunctionId != null && !await _dataAccessService.FunctionExistsAsync(postBody.FunctionId)))
+            if ((postBody.AccessId != null && !await _dataAccessService.EntityExistsAsync<CompanyUserModel>(postBody.AccessId))
+                || (postBody.AccountNumber != null && !await _dataAccessService.EntityExistsAsync<AccountModel>(postBody.AccountNumber))
+                || (postBody.ProductId != null && !await _dataAccessService.EntityExistsAsync<ProductModel>(postBody.ProductId))
+                || (postBody.FunctionId != null && !await _dataAccessService.EntityExistsAsync<FunctionModel>(postBody.FunctionId)))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el el usuario, cuenta, producto o función existan en la base de datos");
             }
@@ -114,10 +114,10 @@ namespace BackendJPMAnalysis.Services
 
             if (existingEntity != null) throw new DuplicateException(updatedBody.ToString()!);
 
-            if ((updatedBody.AccessId != null && !await _dataAccessService.CompanyUserExistsAsync(updatedBody.AccessId))
-               || (updatedBody.AccountNumber != null && !await _dataAccessService.AccountExistsAsync(updatedBody.AccountNumber))
-               || (updatedBody.ProductId != null && !await _dataAccessService.ProductExistsAsync(updatedBody.ProductId))
-               || (updatedBody.FunctionId != null && !await _dataAccessService.FunctionExistsAsync(updatedBody.FunctionId)))
+            if ((updatedBody.AccessId != null && !await _dataAccessService.EntityExistsAsync<CompanyUserModel>(updatedBody.AccessId))
+               || (updatedBody.AccountNumber != null && !await _dataAccessService.EntityExistsAsync<AccountModel>(updatedBody.AccountNumber))
+               || (updatedBody.ProductId != null && !await _dataAccessService.EntityExistsAsync<ProductModel>(updatedBody.ProductId))
+               || (updatedBody.FunctionId != null && !await _dataAccessService.EntityExistsAsync<FunctionModel>(updatedBody.FunctionId)))
             {
                 throw new BadRequestException("Propiedades Invalidas, por favor revisar que el usuario, cuenta, producto o función existan en la base de datos");
             }
