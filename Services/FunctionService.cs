@@ -10,20 +10,14 @@ namespace BackendJPMAnalysis.Services
     public class FunctionService : IBaseService<FunctionModel, FunctionEagerDTO, FunctionSimpleDTO>, ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
-        private readonly ILogger<FunctionService> _logger;
-        private readonly IErrorHandlingService _errorHandlingService;
         private readonly IMapper _mapper;
 
         public FunctionService(
             JPMDatabaseContext context,
-            ILogger<FunctionService> logger,
-            ErrorHandlingService errorHandlingService,
             IMapper mapper
         )
         {
             _context = context;
-            _logger = logger;
-            _errorHandlingService = errorHandlingService;
             _mapper = mapper;
         }
 
@@ -38,26 +32,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<FunctionModel>> GetAll()
         {
-            try
-            {
-                List<FunctionModel> data = await _context.Functions.ToListAsync();
-                int totalResults = data.Count;
+            List<FunctionModel> data = await _context.Functions.ToListAsync();
+            int totalResults = data.Count;
 
-                var response = new ListResponseDTO<FunctionModel>
-                {
-                    TotalResults = totalResults,
-                    Data = data
-                };
-
-                return response;
-            }
-            catch (Exception ex)
+            var response = new ListResponseDTO<FunctionModel>
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(GetAll));
-                throw;
-            }
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
         }
 
 
@@ -76,27 +60,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<FunctionEagerDTO?> GetByPk(string id)
         {
-            try
-            {
-                var function = await _context.Functions
-                                        .Where(f => f.Id == id)
-                                        .Include(f => f.ProfilesFunctions)
-                                        .Include(f => f.UserEntitlements)
-                                        .FirstOrDefaultAsync()
-                                        ?? throw new ItemNotFoundException(id);
+            var function = await _context.Functions
+                .Where(f => f.Id == id)
+                .Include(f => f.ProfilesFunctions)
+                .Include(f => f.UserEntitlements)
+                .FirstOrDefaultAsync()
+                ?? throw new ItemNotFoundException(id);
 
-                var profilesFunctionsDTO = function.ProfilesFunctions.Select(pf => new ProfileFunctionSimpleDTO(pf)).ToList();
-                var userEntitlementDTOs = function.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
+            var profilesFunctionsDTO = function.ProfilesFunctions.Select(pf => new ProfileFunctionSimpleDTO(pf)).ToList();
+            var userEntitlementDTOs = function.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-                return new FunctionEagerDTO(function, profilesFunctionsDTO, userEntitlementDTOs);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(GetByPk));
-                throw;
-            }
+            return new FunctionEagerDTO(function, profilesFunctionsDTO, userEntitlementDTOs);
         }
 
 
@@ -113,19 +87,9 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<FunctionModel?> GetByPkNoTracking(string id)
         {
-            try
-            {
-                return await _context.Functions
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(f => f.Id == id);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(GetByPkNoTracking));
-                throw;
-            }
+            return await _context.Functions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(f => f.Id == id);
         }
 
 
@@ -139,20 +103,11 @@ namespace BackendJPMAnalysis.Services
         /// passed as the postBody parameter to the Post method for creating a</param>
         public async Task Post(FunctionModel postBody)
         {
-            try
-            {
-                if (await GetByPkNoTracking(postBody.Id) != null) throw new DuplicateException(postBody.Id);
+            if (await GetByPkNoTracking(postBody.Id) != null)
+                throw new DuplicateException(postBody.Id);
 
-                _context.Functions.Add(postBody);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(Post));
-                throw;
-            }
+            _context.Functions.Add(postBody);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -173,27 +128,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<FunctionSimpleDTO> UpdateByPK(string id, FunctionSimpleDTO updatedBody)
         {
-            try
-            {
-                var existingFunction = await _context.Functions
-                                                        .FirstOrDefaultAsync(f => f.Id == id)
-                                                        ?? throw new ItemNotFoundException(id); ;
+            var existingFunction = await _context.Functions
+                .FirstOrDefaultAsync(f => f.Id == id)
+                ?? throw new ItemNotFoundException(id);
 
-                _mapper.Map(updatedBody, existingFunction);
+            _mapper.Map(updatedBody, existingFunction);
 
-                _context.Entry(existingFunction).State = EntityState.Modified;
+            _context.Entry(existingFunction).State = EntityState.Modified;
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return new FunctionSimpleDTO(existingFunction);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(UpdateByPK));
-                throw;
-            }
+            return new FunctionSimpleDTO(existingFunction);
         }
 
 
@@ -205,24 +150,16 @@ namespace BackendJPMAnalysis.Services
         /// primary key of the item that needs to be deleted from the database.</param>
         public async Task SoftDelete(string pk)
         {
-            try
-            {
-                var existingFunction = await GetByPkNoTracking(pk) ?? throw new ItemNotFoundException(pk);
+            var existingFunction = await GetByPkNoTracking(pk)
+                ?? throw new ItemNotFoundException(pk);
 
-                existingFunction.DeletedAt = DateTime.UtcNow;
+            existingFunction.DeletedAt = DateTime.UtcNow;
 
-                _context.Functions.Update(existingFunction);
+            _context.Functions.Update(existingFunction);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(SoftDelete));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
+
 
 
         /// <summary>
@@ -233,23 +170,14 @@ namespace BackendJPMAnalysis.Services
         /// primary key of the item that needs to be restored.</param>
         public async Task Restore(string pk)
         {
-            try
-            {
-                var existingFunction = await GetByPkNoTracking(pk) ?? throw new ItemNotFoundException(pk);
+            var existingFunction = await GetByPkNoTracking(pk)
+                ?? throw new ItemNotFoundException(pk);
 
-                existingFunction.DeletedAt = null;
+            existingFunction.DeletedAt = null;
 
-                _context.Functions.Update(existingFunction);
+            _context.Functions.Update(existingFunction);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(FunctionService), methodName: nameof(Restore));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
     }
 }

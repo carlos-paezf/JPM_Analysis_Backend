@@ -10,21 +10,19 @@ namespace BackendJPMAnalysis.Services
     public class CompanyUserService : IBaseService<CompanyUserModel, CompanyUserEagerDTO, CompanyUserSimpleDTO>, ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
-        private readonly ILogger<CompanyUserService> _logger;
-        private readonly IErrorHandlingService _errorHandlingService;
         private readonly IMapper _mapper;
+        private readonly DataAccessService _dataAccessService;
+
 
         public CompanyUserService(
             JPMDatabaseContext context,
-            ILogger<CompanyUserService> logger,
-            ErrorHandlingService errorHandlingService,
-            IMapper mapper
+            IMapper mapper,
+            DataAccessService dataAccessService
         )
         {
             _context = context;
-            _logger = logger;
-            _errorHandlingService = errorHandlingService;
             _mapper = mapper;
+            _dataAccessService = dataAccessService;
         }
 
 
@@ -39,26 +37,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<CompanyUserModel>> GetAll()
         {
-            try
-            {
-                List<CompanyUserModel> data = await _context.CompanyUsers.ToListAsync();
-                int totalResults = data.Count;
+            List<CompanyUserModel> data = await _context.CompanyUsers.ToListAsync();
+            int totalResults = data.Count;
 
-                var response = new ListResponseDTO<CompanyUserModel>
-                {
-                    TotalResults = totalResults,
-                    Data = data
-                };
-
-                return response;
-            }
-            catch (Exception ex)
+            var response = new ListResponseDTO<CompanyUserModel>
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(GetAll));
-                throw;
-            }
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
         }
 
 
@@ -77,27 +65,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<CompanyUserEagerDTO?> GetByPk(string accessId)
         {
-            try
-            {
-                var companyUser = await _context.CompanyUsers
-                                        .Where(cu => cu.AccessId == accessId)
-                                        .Include(cu => cu.Profile)
-                                        .Include(cu => cu.UserEntitlements)
-                                        .FirstOrDefaultAsync()
-                                        ?? throw new ItemNotFoundException(accessId);
+            var companyUser = await _context.CompanyUsers
+                .Where(cu => cu.AccessId == accessId)
+                .Include(cu => cu.Profile)
+                .Include(cu => cu.UserEntitlements)
+                .FirstOrDefaultAsync()
+                ?? throw new ItemNotFoundException(accessId);
 
-                var profileDTO = new ProfileSimpleDTO(companyUser.Profile!);
-                var userEntitlementDTOs = companyUser.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
+            var profileDTO = new ProfileSimpleDTO(companyUser.Profile!);
+            var userEntitlementDTOs = companyUser.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-                return new CompanyUserEagerDTO(companyUser, profileDTO, userEntitlementDTOs);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(GetByPk));
-                throw;
-            }
+            return new CompanyUserEagerDTO(companyUser, profileDTO, userEntitlementDTOs);
         }
 
 
@@ -116,38 +94,11 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<CompanyUserModel?> GetByPkNoTracking(string accessId)
         {
-            try
-            {
-                return await _context.CompanyUsers
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(cu => cu.AccessId == accessId);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(GetByPkNoTracking));
-                throw;
-            }
+            return await _context.CompanyUsers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(cu => cu.AccessId == accessId);
         }
 
-
-        /// <summary>
-        /// The function ProfileExistsAsync checks if a profile with a specific ID exists in the
-        /// database asynchronously.
-        /// </summary>
-        /// <param name="profileId">The `profileId` parameter is a string representing the unique
-        /// identifier of a profile that you want to check for existence in the database.</param>
-        /// <returns>
-        /// The method `ProfileExistsAsync` returns a `Task` of `bool` which represents an asynchronous
-        /// operation that will eventually return a boolean value indicating whether a profile with the
-        /// specified `profileId` exists in the database.
-        /// </returns>
-        private async Task<bool> ProfileExistsAsync(string profileId)
-        {
-            return await _context.Profiles
-                            .FirstOrDefaultAsync(p => p.Id == profileId) != null;
-        }
 
 
         /// <summary>
@@ -159,25 +110,18 @@ namespace BackendJPMAnalysis.Services
         /// of the method and its parameters:</param>
         public async Task Post(CompanyUserModel postBody)
         {
-            try
-            {
-                if (await GetByPkNoTracking(postBody.AccessId) != null) throw new DuplicateException(postBody.AccessId);
+            if (await GetByPkNoTracking(postBody.AccessId) != null)
+                throw new DuplicateException(postBody.AccessId);
 
-                if (postBody.ProfileId != null && !await ProfileExistsAsync(postBody.ProfileId))
-                {
-                    throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil exista en la base de datos");
-                }
-
-                _context.CompanyUsers.Add(postBody);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
+            if (
+                postBody.ProfileId != null
+                && !await _dataAccessService.ProfileExistsAsync(postBody.ProfileId))
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(Post));
-                throw;
+                throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil exista en la base de datos");
             }
+
+            _context.CompanyUsers.Add(postBody);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -198,30 +142,23 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<CompanyUserSimpleDTO> UpdateByPK(string accessId, CompanyUserSimpleDTO updatedBody)
         {
-            try
+            var existingCompanyUser = await GetByPkNoTracking(accessId)
+                ?? throw new ItemNotFoundException(accessId);
+
+            if (
+                updatedBody.ProfileId != null
+                && !await _dataAccessService.ProfileExistsAsync(updatedBody.ProfileId))
             {
-                var existingCompanyUser = await GetByPkNoTracking(accessId) ?? throw new ItemNotFoundException(accessId);
-
-                if (updatedBody.ProfileId != null && !await ProfileExistsAsync(updatedBody.ProfileId))
-                {
-                    throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil exista en la base de datos");
-                }
-
-                _mapper.Map(updatedBody, existingCompanyUser);
-
-                _context.Entry(existingCompanyUser).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
-
-                return new CompanyUserSimpleDTO(existingCompanyUser);
+                throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil exista en la base de datos");
             }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(UpdateByPK));
-                throw;
-            }
+
+            _mapper.Map(updatedBody, existingCompanyUser);
+
+            _context.Entry(existingCompanyUser).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return new CompanyUserSimpleDTO(existingCompanyUser);
         }
 
 
@@ -234,23 +171,14 @@ namespace BackendJPMAnalysis.Services
         /// that is being targeted for deletion.</param>
         public async Task SoftDelete(string accessId)
         {
-            try
-            {
-                var existingCompanyUser = await GetByPkNoTracking(accessId) ?? throw new ItemNotFoundException(accessId);
+            var existingCompanyUser = await GetByPkNoTracking(accessId)
+                ?? throw new ItemNotFoundException(accessId);
 
-                existingCompanyUser.DeletedAt = DateTime.UtcNow;
+            existingCompanyUser.DeletedAt = DateTime.UtcNow;
 
-                _context.CompanyUsers.Update(existingCompanyUser);
+            _context.CompanyUsers.Update(existingCompanyUser);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(SoftDelete));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
 
 
@@ -264,23 +192,14 @@ namespace BackendJPMAnalysis.Services
         /// the `DeletedAt` property to null.</param>
         public async Task Restore(string accessId)
         {
-            try
-            {
-                var existingCompanyUser = await GetByPkNoTracking(accessId) ?? throw new ItemNotFoundException(accessId);
+            var existingCompanyUser = await GetByPkNoTracking(accessId)
+                ?? throw new ItemNotFoundException(accessId);
 
-                existingCompanyUser.DeletedAt = null;
+            existingCompanyUser.DeletedAt = null;
 
-                _context.CompanyUsers.Update(existingCompanyUser);
+            _context.CompanyUsers.Update(existingCompanyUser);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(CompanyUserService), methodName: nameof(Restore));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
     }
 }

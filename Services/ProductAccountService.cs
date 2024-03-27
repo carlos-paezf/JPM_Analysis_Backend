@@ -12,21 +12,19 @@ namespace BackendJPMAnalysis.Services
             , ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
-        private readonly ILogger<ProductAccountService> _logger;
-        private readonly IErrorHandlingService _errorHandlingService;
         private readonly IMapper _mapper;
+        private readonly DataAccessService _dataAccessService;
+
 
         public ProductAccountService(
             JPMDatabaseContext context,
-            ILogger<ProductAccountService> logger,
-            ErrorHandlingService errorHandlingService,
-            IMapper mapper
+            IMapper mapper,
+            DataAccessService dataAccessService
         )
         {
             _context = context;
-            _logger = logger;
-            _errorHandlingService = errorHandlingService;
             _mapper = mapper;
+            _dataAccessService = dataAccessService;
         }
 
         /// <summary>
@@ -40,26 +38,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<ProductAccountModel>> GetAll()
         {
-            try
-            {
-                List<ProductAccountModel> data = await _context.ProductsAccounts.ToListAsync();
-                int totalResults = data.Count;
+            List<ProductAccountModel> data = await _context.ProductsAccounts.ToListAsync();
+            int totalResults = data.Count;
 
-                var response = new ListResponseDTO<ProductAccountModel>
-                {
-                    TotalResults = totalResults,
-                    Data = data
-                };
-
-                return response;
-            }
-            catch (Exception ex)
+            var response = new ListResponseDTO<ProductAccountModel>
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(GetAll));
-                throw;
-            }
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
         }
 
 
@@ -79,26 +67,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProductAccountEagerDTO?> GetByPk(string id)
         {
-            try
-            {
-                var client = await _context.ProductsAccounts
-                                        .Include(c => c.Product)
-                                        .Include(c => c.Account)
-                                        .FirstOrDefaultAsync(c => c.Id == id)
-                                        ?? throw new ItemNotFoundException(id);
+            var client = await _context.ProductsAccounts
+                .Include(c => c.Product)
+                .Include(c => c.Account)
+                .FirstOrDefaultAsync(c => c.Id == id)
+                ?? throw new ItemNotFoundException(id);
 
-                var productDTO = (client.Product == null) ? null : new ProductSimpleDTO(client.Product);
-                var accountDTO = (client.Account == null) ? null : new AccountSimpleDTO(client.Account);
+            var productDTO = (client.Product == null) ? null : new ProductSimpleDTO(client.Product);
+            var accountDTO = (client.Account == null) ? null : new AccountSimpleDTO(client.Account);
 
-                return new ProductAccountEagerDTO(client, productDTO, accountDTO);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(GetByPk));
-                throw;
-            }
+            return new ProductAccountEagerDTO(client, productDTO, accountDTO);
         }
 
 
@@ -115,33 +93,11 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProductAccountModel?> GetByPkNoTracking(string id)
         {
-            try
-            {
-                return await _context.ProductsAccounts
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(c => c.Id == id);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(GetByPkNoTracking));
-                throw;
-            }
+            return await _context.ProductsAccounts
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-
-        private async Task<bool> ProductExistsAsync(string producId)
-        {
-            return await _context.Products
-                            .FirstOrDefaultAsync(p => p.Id == producId) != null;
-        }
-
-        private async Task<bool> AccountExistsAsync(string accountNumber)
-        {
-            return await _context.Accounts
-                            .FirstOrDefaultAsync(a => a.AccountNumber == accountNumber) != null;
-        }
 
         /// <summary>
         /// The function `Post` asynchronously adds a new client to the database if it doesn't already
@@ -158,30 +114,20 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task Post(ProductAccountModel postBody)
         {
-            try
+            var existingEntity = await _context.ProductsAccounts
+                .FirstOrDefaultAsync(c => c.ProductId == postBody.ProductId && c.AccountNumber == postBody.AccountNumber);
+
+            if (existingEntity != null)
+                throw new DuplicateException(postBody.ToString()!);
+
+            if ((postBody.ProductId != null && !await _dataAccessService.ProductExistsAsync(postBody.ProductId))
+                || (postBody.AccountNumber != null && !await _dataAccessService.AccountExistsAsync(postBody.AccountNumber)))
             {
-                var existingEntity = await _context.ProductsAccounts
-                                    .FirstOrDefaultAsync(c => c.ProductId == postBody.ProductId && c.AccountNumber == postBody.AccountNumber);
-
-                if (existingEntity != null) throw new DuplicateException(postBody.ToString()!);
-
-                if ((postBody.ProductId != null && !await ProductExistsAsync(postBody.ProductId))
-                    || (postBody.AccountNumber != null && !await AccountExistsAsync(postBody.AccountNumber)))
-                {
-                    throw new BadRequestException("Propiedades Invalidas, por favor revisar que el producto o la cuenta existan en la base de datos");
-                }
-
-                _context.ProductsAccounts.Add(postBody);
-                await _context.SaveChangesAsync();
+                throw new BadRequestException("Propiedades Invalidas, por favor revisar que el producto o la cuenta existan en la base de datos");
             }
 
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(Post));
-                throw;
-            }
+            _context.ProductsAccounts.Add(postBody);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -203,31 +149,22 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProductAccountSimpleDTO> UpdateByPK(string id, ProductAccountSimpleDTO updatedBody)
         {
-            try
+            var existingProductAccount = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
+
+            if ((updatedBody.ProductId != null && !await _dataAccessService.ProductExistsAsync(updatedBody.ProductId))
+                || (updatedBody.AccountNumber != null && !await _dataAccessService.AccountExistsAsync(updatedBody.AccountNumber)))
             {
-                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
-
-                if ((updatedBody.ProductId != null && !await ProductExistsAsync(updatedBody.ProductId))
-                    || (updatedBody.AccountNumber != null && !await AccountExistsAsync(updatedBody.AccountNumber)))
-                {
-                    throw new BadRequestException("Propiedades Invalidas, por favor revisar que el producto o la cuenta existan en la base de datos");
-                }
-
-                _mapper.Map(updatedBody, existingProductAccount);
-
-                _context.Entry(existingProductAccount).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
-
-                return new ProductAccountSimpleDTO(existingProductAccount);
+                throw new BadRequestException("Propiedades Invalidas, por favor revisar que el producto o la cuenta existan en la base de datos");
             }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(UpdateByPK));
-                throw;
-            }
+
+            _mapper.Map(updatedBody, existingProductAccount);
+
+            _context.Entry(existingProductAccount).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return new ProductAccountSimpleDTO(existingProductAccount);
         }
 
 
@@ -240,23 +177,14 @@ namespace BackendJPMAnalysis.Services
         /// primary key of the client that needs to be deleted.</param>
         public async Task SoftDelete(string id)
         {
-            try
-            {
-                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
+            var existingProductAccount = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
 
-                existingProductAccount.DeletedAt = DateTime.UtcNow;
+            existingProductAccount.DeletedAt = DateTime.UtcNow;
 
-                _context.ProductsAccounts.Update(existingProductAccount);
+            _context.ProductsAccounts.Update(existingProductAccount);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(SoftDelete));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
 
 
@@ -268,23 +196,14 @@ namespace BackendJPMAnalysis.Services
         /// primary key of the client that needs to be restored.</param>
         public async Task Restore(string id)
         {
-            try
-            {
-                var existingProductAccount = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
+            var existingProductAccount = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
 
-                existingProductAccount.DeletedAt = null;
+            existingProductAccount.DeletedAt = null;
 
-                _context.ProductsAccounts.Update(existingProductAccount);
+            _context.ProductsAccounts.Update(existingProductAccount);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductAccountService), methodName: nameof(Restore));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
     }
 }

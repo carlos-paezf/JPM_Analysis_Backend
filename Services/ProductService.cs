@@ -10,20 +10,14 @@ namespace BackendJPMAnalysis.Services
     public class ProductService : IBaseService<ProductModel, ProductEagerDTO, ProductSimpleDTO>, ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
-        private readonly ILogger<ProductService> _logger;
-        private readonly IErrorHandlingService _errorHandlingService;
         private readonly IMapper _mapper;
 
         public ProductService(
             JPMDatabaseContext context,
-            ILogger<ProductService> logger,
-            ErrorHandlingService errorHandlingService,
             IMapper mapper
         )
         {
             _context = context;
-            _logger = logger;
-            _errorHandlingService = errorHandlingService;
             _mapper = mapper;
         }
 
@@ -39,26 +33,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<ProductModel>> GetAll()
         {
-            try
-            {
-                List<ProductModel> data = await _context.Products.ToListAsync();
-                int totalResults = data.Count;
+            List<ProductModel> data = await _context.Products.ToListAsync();
+            int totalResults = data.Count;
 
-                var response = new ListResponseDTO<ProductModel>
-                {
-                    TotalResults = totalResults,
-                    Data = data
-                };
-
-                return response;
-            }
-            catch (Exception ex)
+            var response = new ListResponseDTO<ProductModel>
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(GetAll));
-                throw;
-            }
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
         }
 
 
@@ -76,27 +60,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProductEagerDTO?> GetByPk(string id)
         {
-            try
-            {
-                var product = await _context.Products
-                                        .Where(p => p.Id == id)
-                                        .Include(p => p.ProductsAccounts)
-                                        .Include(p => p.UserEntitlements)
-                                        .FirstOrDefaultAsync()
-                                        ?? throw new ItemNotFoundException(id);
+            var product = await _context.Products
+                .Where(p => p.Id == id)
+                .Include(p => p.ProductsAccounts)
+                .Include(p => p.UserEntitlements)
+                .FirstOrDefaultAsync()
+                ?? throw new ItemNotFoundException(id);
 
-                var productsAccountsDTO = product.ProductsAccounts.Select(pf => new ProductAccountSimpleDTO(pf)).ToList();
-                var userEntitlementDTOs = product.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
+            var productsAccountsDTO = product.ProductsAccounts.Select(pf => new ProductAccountSimpleDTO(pf)).ToList();
+            var userEntitlementDTOs = product.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-                return new ProductEagerDTO(product, productsAccountsDTO, userEntitlementDTOs);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(GetByPk));
-                throw;
-            }
+            return new ProductEagerDTO(product, productsAccountsDTO, userEntitlementDTOs);
         }
 
 
@@ -112,19 +86,9 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProductModel?> GetByPkNoTracking(string id)
         {
-            try
-            {
-                return await _context.Products
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(p => p.Id == id);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(GetByPkNoTracking));
-                throw;
-            }
+            return await _context.Products
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
 
@@ -137,21 +101,13 @@ namespace BackendJPMAnalysis.Services
         /// a new product in the system.</param>
         public async Task Post(ProductModel postBody)
         {
-            try
-            {
-                if (await GetByPkNoTracking(postBody.Id) != null) throw new DuplicateException(postBody.Id);
+            if (await GetByPkNoTracking(postBody.Id) != null)
+                throw new DuplicateException(postBody.Id);
 
-                _context.Products.Add(postBody);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(Post));
-                throw;
-            }
+            _context.Products.Add(postBody);
+            await _context.SaveChangesAsync();
         }
+
 
 
         /// <summary>
@@ -172,27 +128,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProductSimpleDTO> UpdateByPK(string id, ProductSimpleDTO updatedBody)
         {
-            try
-            {
-                var existingProduct = await _context.Products
-                                                        .FirstOrDefaultAsync(f => f.Id == id)
-                                                        ?? throw new ItemNotFoundException(id); ;
+            var existingProduct = await _context.Products
+                .FirstOrDefaultAsync(f => f.Id == id)
+                ?? throw new ItemNotFoundException(id); ;
 
-                _mapper.Map(updatedBody, existingProduct);
+            _mapper.Map(updatedBody, existingProduct);
 
-                _context.Entry(existingProduct).State = EntityState.Modified;
+            _context.Entry(existingProduct).State = EntityState.Modified;
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return new ProductSimpleDTO(existingProduct);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(UpdateByPK));
-                throw;
-            }
+            return new ProductSimpleDTO(existingProduct);
         }
 
 
@@ -204,23 +150,14 @@ namespace BackendJPMAnalysis.Services
         /// that needs to be deleted from the database.</param>
         public async Task SoftDelete(string id)
         {
-            try
-            {
-                var existingProduct = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
+            var existingProduct = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
 
-                existingProduct.DeletedAt = DateTime.UtcNow;
+            existingProduct.DeletedAt = DateTime.UtcNow;
 
-                _context.Products.Update(existingProduct);
+            _context.Products.Update(existingProduct);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(SoftDelete));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
 
 
@@ -232,23 +169,14 @@ namespace BackendJPMAnalysis.Services
         /// unique identifier of the product that needs to be restored.</param>
         public async Task Restore(string id)
         {
-            try
-            {
-                var existingProduct = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
+            var existingProduct = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
 
-                existingProduct.DeletedAt = null;
+            existingProduct.DeletedAt = null;
 
-                _context.Products.Update(existingProduct);
+            _context.Products.Update(existingProduct);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProductService), methodName: nameof(Restore));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
     }
 }

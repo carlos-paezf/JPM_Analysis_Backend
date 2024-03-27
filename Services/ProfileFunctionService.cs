@@ -14,20 +14,17 @@ namespace BackendJPMAnalysis.Services
             , IBulkHardDeleteService
     {
         private readonly JPMDatabaseContext _context;
-        private readonly ILogger<ProfileFunctionService> _logger;
-        private readonly IErrorHandlingService _errorHandlingService;
         private readonly IMapper _mapper;
+        public readonly DataAccessService _dataAccessService;
 
         public ProfileFunctionService(
             JPMDatabaseContext context,
-            ILogger<ProfileFunctionService> logger,
-            ErrorHandlingService errorHandlingService,
+            DataAccessService dataAccessService,
             IMapper mapper
         )
         {
             _context = context;
-            _logger = logger;
-            _errorHandlingService = errorHandlingService;
+            _dataAccessService = dataAccessService;
             _mapper = mapper;
         }
 
@@ -42,26 +39,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<ProfileFunctionModel>> GetAll()
         {
-            try
-            {
-                List<ProfileFunctionModel> data = await _context.ProfilesFunctions.ToListAsync();
-                int totalResults = data.Count;
+            List<ProfileFunctionModel> data = await _context.ProfilesFunctions.ToListAsync();
+            int totalResults = data.Count;
 
-                var response = new ListResponseDTO<ProfileFunctionModel>
-                {
-                    TotalResults = totalResults,
-                    Data = data
-                };
-
-                return response;
-            }
-            catch (Exception ex)
+            var response = new ListResponseDTO<ProfileFunctionModel>
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(GetAll));
-                throw;
-            }
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
         }
 
 
@@ -77,27 +64,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProfileFunctionEagerDTO?> GetByPk(string id)
         {
-            try
-            {
-                var profileFunction = await _context.ProfilesFunctions
-                                        .Where(pf => pf.Id == id)
-                                        .Include(p => p.Function)
-                                        .Include(p => p.Profile)
-                                        .FirstOrDefaultAsync()
-                                        ?? throw new ItemNotFoundException(id);
+            var profileFunction = await _context.ProfilesFunctions
+                .Where(pf => pf.Id == id)
+                .Include(p => p.Function)
+                .Include(p => p.Profile)
+                .FirstOrDefaultAsync()
+                ?? throw new ItemNotFoundException(id);
 
-                var functionDTO = new FunctionSimpleDTO(profileFunction.Function!);
-                var profileDTO = new ProfileSimpleDTO(profileFunction.Profile!);
+            var functionDTO = new FunctionSimpleDTO(profileFunction.Function!);
+            var profileDTO = new ProfileSimpleDTO(profileFunction.Profile!);
 
-                return new ProfileFunctionEagerDTO(profileFunction, functionDTO, profileDTO);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(GetByPk));
-                throw;
-            }
+            return new ProfileFunctionEagerDTO(profileFunction, functionDTO, profileDTO);
         }
 
 
@@ -113,33 +90,9 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProfileFunctionModel?> GetByPkNoTracking(string id)
         {
-            try
-            {
-                return await _context.ProfilesFunctions
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(f => f.Id == id);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(GetByPkNoTracking));
-                throw;
-            }
-        }
-
-
-        private async Task<bool> ProfileExistsAsync(string producId)
-        {
-            return await _context.Profiles
-                            .FirstOrDefaultAsync(p => p.Id == producId) != null;
-        }
-
-
-        private async Task<bool> FunctionExistsAsync(string functionId)
-        {
-            return await _context.Functions
-                            .FirstOrDefaultAsync(a => a.Id == functionId) != null;
+            return await _context.ProfilesFunctions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(f => f.Id == id);
         }
 
 
@@ -156,29 +109,21 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task Post(ProfileFunctionModel postBody)
         {
-            try
+            var existingEntity = await _context.ProfilesFunctions
+                .FirstOrDefaultAsync(pf => pf.ProfileId == postBody.ProfileId
+                    && pf.FunctionId == postBody.FunctionId);
+
+            if (existingEntity != null)
+                throw new DuplicateException(postBody.ToString()!);
+
+            if ((postBody.ProfileId != null && !await _dataAccessService.ProfileExistsAsync(postBody.ProfileId))
+                || (postBody.FunctionId != null && !await _dataAccessService.FunctionExistsAsync(postBody.FunctionId)))
             {
-                var existingEntity = await _context.ProfilesFunctions
-                                    .FirstOrDefaultAsync(pf => pf.ProfileId == postBody.ProfileId && pf.FunctionId == postBody.FunctionId);
-
-                if (existingEntity != null) throw new DuplicateException(postBody.ToString()!);
-
-                if ((postBody.ProfileId != null && !await ProfileExistsAsync(postBody.ProfileId))
-                    || (postBody.FunctionId != null && !await FunctionExistsAsync(postBody.FunctionId)))
-                {
-                    throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos");
-                }
-
-                _context.ProfilesFunctions.Add(postBody);
-                await _context.SaveChangesAsync();
+                throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos");
             }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(Post));
-                throw;
-            }
+
+            _context.ProfilesFunctions.Add(postBody);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -197,36 +142,28 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ProfileFunctionSimpleDTO> UpdateByPK(string id, ProfileFunctionSimpleDTO updatedBody)
         {
-            try
+            var existingProfileFunction = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
+
+            var existingEntity = await _context.ProfilesFunctions
+                .FirstOrDefaultAsync(pf => pf.ProfileId == updatedBody.ProfileId && pf.FunctionId == updatedBody.FunctionId);
+
+            if (existingEntity != null)
+                throw new DuplicateException(updatedBody.ToString()!);
+
+            if ((updatedBody.ProfileId != null && !await _dataAccessService.ProfileExistsAsync(updatedBody.ProfileId))
+                || (updatedBody.FunctionId != null && !await _dataAccessService.FunctionExistsAsync(updatedBody.FunctionId)))
             {
-                var existingProfileFunction = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
-
-                var existingEntity = await _context.ProfilesFunctions
-                                                    .FirstOrDefaultAsync(pf => pf.ProfileId == updatedBody.ProfileId && pf.FunctionId == updatedBody.FunctionId);
-
-                if (existingEntity != null) throw new DuplicateException(updatedBody.ToString()!);
-
-                if ((updatedBody.ProfileId != null && !await ProfileExistsAsync(updatedBody.ProfileId))
-                                    || (updatedBody.FunctionId != null && !await FunctionExistsAsync(updatedBody.FunctionId)))
-                {
-                    throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos");
-                }
-
-                _mapper.Map(updatedBody, existingProfileFunction);
-
-                _context.Entry(existingProfileFunction).State = EntityState.Modified;
-
-                await _context.SaveChangesAsync();
-
-                return new ProfileFunctionSimpleDTO(existingProfileFunction);
+                throw new BadRequestException("Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos");
             }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(UpdateByPK));
-                throw;
-            }
+
+            _mapper.Map(updatedBody, existingProfileFunction);
+
+            _context.Entry(existingProfileFunction).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+
+            return new ProfileFunctionSimpleDTO(existingProfileFunction);
         }
 
 
@@ -242,21 +179,12 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task HardDelete(string id)
         {
-            try
-            {
-                var existingProfileFunction = await GetByPkNoTracking(id) ?? throw new ItemNotFoundException(id);
+            var existingProfileFunction = await GetByPkNoTracking(id)
+                ?? throw new ItemNotFoundException(id);
 
-                _context.ProfilesFunctions.Remove(existingProfileFunction);
+            _context.ProfilesFunctions.Remove(existingProfileFunction);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(HardDelete));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
 
 
@@ -273,49 +201,43 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<ProfileFunctionModel>> BulkPost(ICollection<ProfileFunctionModel> collectionBody)
         {
-            try
+            var profilesIds = collectionBody.Select(pf => pf.ProfileId).Distinct().ToList();
+            var functionsIds = collectionBody.Select(pf => pf.FunctionId).Distinct().ToList();
+
+            var existingProfiles = await _dataAccessService.CheckExistingProfilesAsync(profilesIds);
+            var existingFunctions = await _dataAccessService.CheckExistingFunctionsAsync(functionsIds);
+
+            var invalidProfilesIds = profilesIds.Where(id => !existingProfiles.Contains(id)).ToList();
+            var invalidFunctionsIds = functionsIds.Where(id => !existingFunctions.Contains(id)).ToList();
+
+            var invalidIds = invalidProfilesIds.Concat(invalidFunctionsIds).Distinct().ToList();
+
+            if (invalidIds.Any())
             {
-                foreach (var profileFunction in collectionBody)
-                {
-                    if (!await ProfileExistsAsync(profileFunction.FunctionId) || !await FunctionExistsAsync(profileFunction.FunctionId))
-                    {
-                        throw new BadRequestException($"Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos para el registro '{profileFunction.Id}'");
-                    }
-                }
-
-                var existingEntries = await _context.ProfilesFunctions.ToListAsync();
-
-                var duplicateEntries = collectionBody.Join(
-                                                        existingEntries,
-                                                        newEntry => newEntry.Id,
-                                                        existingEntry => existingEntry.Id,
-                                                        (newEntry, existingEntry) => newEntry);
-
-                if (duplicateEntries.Any())
-                {
-                    throw new BadRequestException("Se encontraron registros duplicados en la base de datos");
-                }
-
-                await _context.ProfilesFunctions.AddRangeAsync(collectionBody);
-                await _context.SaveChangesAsync();
-
-                int totalResults = collectionBody.Count;
-
-                var response = new ListResponseDTO<ProfileFunctionModel>
-                {
-                    TotalResults = totalResults,
-                    Data = (List<ProfileFunctionModel>)collectionBody
-                };
-
-                return response;
+                throw new BadRequestException($"Propiedades Invalidas, por favor revisar que el perfil o la función existan en la base de datos para los registros con Ids '{string.Join(", ", invalidIds)}'");
             }
-            catch (Exception ex)
+
+            var existingProfileFunctionIds = await _context.ProfilesFunctions.Select(pf => pf.Id).ToListAsync();
+            var duplicateEntries = collectionBody.Where(pf => existingProfileFunctionIds.Contains(pf.Id)).ToList();
+
+            if (duplicateEntries.Any())
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(BulkPost));
-                throw;
+                throw new BadRequestException($"Se encontraron {duplicateEntries.Count()} registros duplicados en la base de datos para 'profiles_functions'. Estos registros ya existen y no pueden ser agregados nuevamente.");
             }
+
+
+            await _context.ProfilesFunctions.AddRangeAsync(collectionBody);
+            await _context.SaveChangesAsync();
+
+            int totalResults = collectionBody.Count;
+
+            var response = new ListResponseDTO<ProfileFunctionModel>
+            {
+                TotalResults = totalResults,
+                Data = (List<ProfileFunctionModel>)collectionBody
+            };
+
+            return response;
         }
 
 
@@ -331,30 +253,20 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<int> BulkHardDelete(ICollection<string> pks)
         {
-            try
+            var entitiesToDelete = await _context.ProfilesFunctions
+                .Where(pf => pks.Contains(pf.Id))
+                .ToListAsync();
+
+            var nonExistentPks = pks.Except(entitiesToDelete.Select(pf => pf.Id));
+            if (nonExistentPks.Any())
             {
-                var entitiesToDelete = await _context.ProfilesFunctions
-                                                        .Where(pf => pks.Contains(pf.Id))
-                                                        .ToListAsync();
-
-                var nonExistentPks = pks.Except(entitiesToDelete.Select(pf => pf.Id));
-                if (nonExistentPks.Any())
-                {
-                    throw new BadRequestException($"Los siguientes PKs no existen en la base de datos: {string.Join(", ", nonExistentPks)}");
-                }
-
-                _context.ProfilesFunctions.RemoveRange(entitiesToDelete);
-                var affectedRecordsCount = await _context.SaveChangesAsync();
-
-                return affectedRecordsCount;
+                throw new BadRequestException($"Los siguientes PKs no existen en la base de datos: {string.Join(", ", nonExistentPks)}");
             }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(ProfileFunctionService), methodName: nameof(BulkHardDelete));
-                throw;
-            }
+
+            _context.ProfilesFunctions.RemoveRange(entitiesToDelete);
+            var affectedRecordsCount = await _context.SaveChangesAsync();
+
+            return affectedRecordsCount;
         }
     }
 }

@@ -12,20 +12,15 @@ namespace BackendJPMAnalysis.Services
             , ISoftDeleteService
     {
         private readonly JPMDatabaseContext _context;
-        private readonly ILogger<AccountService> _logger;
-        private readonly IErrorHandlingService _errorHandlingService;
         private readonly IMapper _mapper;
 
         public AccountService(
             JPMDatabaseContext context,
             ILogger<AccountService> logger,
-            ErrorHandlingService errorHandlingService,
             IMapper mapper
         )
         {
             _context = context;
-            _logger = logger;
-            _errorHandlingService = errorHandlingService;
             _mapper = mapper;
         }
 
@@ -40,26 +35,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<ListResponseDTO<AccountModel>> GetAll()
         {
-            try
-            {
-                List<AccountModel> data = await _context.Accounts.ToListAsync();
-                int totalResults = data.Count;
+            List<AccountModel> data = await _context.Accounts.ToListAsync();
+            int totalResults = data.Count;
 
-                var response = new ListResponseDTO<AccountModel>
-                {
-                    TotalResults = totalResults,
-                    Data = data
-                };
-
-                return response;
-            }
-            catch (Exception ex)
+            var response = new ListResponseDTO<AccountModel>
             {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(GetAll));
-                throw;
-            }
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
         }
 
 
@@ -79,27 +64,17 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<AccountEagerDTO?> GetByPk(string accountNumber)
         {
-            try
-            {
-                var account = await _context.Accounts
-                                        .Where(a => a.AccountNumber == accountNumber)
-                                        .Include(a => a.ProductsAccounts)
-                                        .Include(a => a.UserEntitlements)
-                                        .FirstOrDefaultAsync()
-                                        ?? throw new ItemNotFoundException(accountNumber);
+            var account = await _context.Accounts
+                .Where(a => a.AccountNumber == accountNumber)
+                .Include(a => a.ProductsAccounts)
+                .Include(a => a.UserEntitlements)
+                .FirstOrDefaultAsync()
+                ?? throw new ItemNotFoundException(accountNumber);
 
-                var productAccountDTOs = account.ProductsAccounts.Select(c => new ProductAccountSimpleDTO(c)).ToList();
-                var userEntitlementDTOs = account.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
+            var productAccountDTOs = account.ProductsAccounts.Select(c => new ProductAccountSimpleDTO(c)).ToList();
+            var userEntitlementDTOs = account.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-                return new AccountEagerDTO(account, productAccountDTOs, userEntitlementDTOs);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(GetByPk));
-                throw;
-            }
+            return new AccountEagerDTO(account, productAccountDTOs, userEntitlementDTOs);
         }
 
 
@@ -116,19 +91,9 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<AccountModel?> GetByPkNoTracking(string pk)
         {
-            try
-            {
-                return await _context.Accounts
-                                    .AsNoTracking()
-                                    .FirstOrDefaultAsync(a => a.AccountNumber == pk);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(GetByPkNoTracking));
-                throw;
-            }
+            return await _context.Accounts
+                .AsNoTracking()
+                .FirstOrDefaultAsync(a => a.AccountNumber == pk);
         }
 
 
@@ -147,20 +112,11 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task Post(AccountModel postBody)
         {
-            try
-            {
-                if (await GetByPkNoTracking(postBody.AccountNumber) != null) throw new DuplicateException(postBody.AccountNumber);
+            if (await GetByPkNoTracking(postBody.AccountNumber) != null)
+                throw new DuplicateException(postBody.AccountNumber);
 
-                _context.Accounts.Add(postBody);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(Post));
-                throw;
-            }
+            _context.Accounts.Add(postBody);
+            await _context.SaveChangesAsync();
         }
 
 
@@ -182,25 +138,16 @@ namespace BackendJPMAnalysis.Services
         /// </returns>
         public async Task<AccountSimpleDTO> UpdateByPK(string pk, AccountSimpleDTO updatedBody)
         {
-            try
-            {
-                var existingAccount = await GetByPkNoTracking(pk) ?? throw new ItemNotFoundException(pk);
+            var existingAccount = await GetByPkNoTracking(pk)
+                ?? throw new ItemNotFoundException(pk);
 
-                _mapper.Map(updatedBody, existingAccount);
+            _mapper.Map(updatedBody, existingAccount);
 
-                _context.Entry(existingAccount).State = EntityState.Modified;
+            _context.Entry(existingAccount).State = EntityState.Modified;
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return new AccountSimpleDTO(existingAccount);
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(UpdateByPK));
-                throw;
-            }
+            return new AccountSimpleDTO(existingAccount);
         }
 
 
@@ -213,23 +160,15 @@ namespace BackendJPMAnalysis.Services
         /// primary key of the account that needs to be deleted.</param>
         public async Task SoftDelete(string pk)
         {
-            try
-            {
-                var existingAccount = await GetByPkNoTracking(pk) ?? throw new ItemNotFoundException(pk);
+            var existingAccount = await GetByPkNoTracking(pk)
+                ?? throw new ItemNotFoundException(pk);
 
-                existingAccount.DeletedAt = DateTime.UtcNow;
+            existingAccount.DeletedAt = DateTime.UtcNow;
 
-                _context.Accounts.Update(existingAccount);
+            _context.Accounts.Update(existingAccount);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(SoftDelete));
-                throw;
-            }
+            await _context.SaveChangesAsync();
+
         }
 
 
@@ -241,23 +180,14 @@ namespace BackendJPMAnalysis.Services
         /// primary key of the account that needs to be restored.</param>
         public async Task Restore(string pk)
         {
-            try
-            {
-                var existingAccount = await GetByPkNoTracking(pk) ?? throw new ItemNotFoundException(pk);
+            var existingAccount = await GetByPkNoTracking(pk)
+                ?? throw new ItemNotFoundException(pk);
 
-                existingAccount.DeletedAt = null;
+            existingAccount.DeletedAt = null;
 
-                _context.Accounts.Update(existingAccount);
+            _context.Accounts.Update(existingAccount);
 
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                await _errorHandlingService.HandleExceptionAsync(
-                    ex: ex, logger: _logger,
-                    className: nameof(AccountService), methodName: nameof(Restore));
-                throw;
-            }
+            await _context.SaveChangesAsync();
         }
     }
 }
