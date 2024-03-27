@@ -74,6 +74,10 @@ public class Startup
         services.AddScoped<ProfileService>();
         services.AddScoped<ProfileFunctionService>();
         services.AddScoped<UserEntitlementService>();
+        services.AddScoped<DataAccessService>();
+        services.AddScoped<ExcelProcessingService>();
+        services.AddScoped<NormalizeEntitiesService>();
+        services.AddScoped<BulkSeedService>();
     }
 
 
