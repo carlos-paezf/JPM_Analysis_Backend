@@ -49,7 +49,7 @@ namespace BackendJPMAnalysis.Helpers
                     new
                     {
                         message = ex.Message,
-                        status = 404,
+                        status = 400,
                         error = true
                     }
                 );
