@@ -1,4 +1,3 @@
-using System.Data.Entity;
 using BackendJPMAnalysis.Helpers;
 using BackendJPMAnalysis.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,10 +23,12 @@ namespace BackendJPMAnalysis.Services
         /// <returns>A list of existing entity IDs found in the database.</returns>
         public async Task<List<string>> CheckExistingEntitiesAsync<T>(List<string> entitiesIds) where T : class
         {
-            return await _context.Set<T>()
+            var allEntities = await _context.Set<T>().ToListAsync();
+
+            return allEntities
                 .Where(e => entitiesIds.Contains(e.GetId()))
                 .Select(e => e.GetId())
-                .ToListAsync();
+                .ToList();
         }
 
 
