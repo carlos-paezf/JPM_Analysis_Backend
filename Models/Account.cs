@@ -36,4 +36,12 @@ namespace BackendJPMAnalysis.Models
             return $"AccountNumber: {AccountNumber}, AccountName: {AccountName}, AccountType: {AccountType}, BankCurrency: {BankCurrency}";
         }
     }
+
+    public static class AccountModelExtensions
+    {
+        public static string GetId(this AccountModel account)
+        {
+            return EntityExtensions.GetId(account);
+        }
+    }
 }

@@ -57,4 +57,13 @@ namespace BackendJPMAnalysis.Models
             return $"Id: {Id}, AccessId: {AccessId}, AccountNumber: {AccountNumber}, ProductId: {ProductId}, FunctionId: {FunctionId}, FunctionType: {FunctionType}";
         }
     }
+
+
+    public static class UserEntitlementModelExtensions
+    {
+        public static string GetId(this UserEntitlementModel userEntitlement)
+        {
+            return EntityExtensions.GetId(userEntitlement);
+        }
+    }
 }

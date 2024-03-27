@@ -40,4 +40,13 @@ namespace BackendJPMAnalysis.Models
             return $"Id: {Id}, ProfileId: {ProfileId}, FunctionId: {FunctionId}";
         }
     }
+
+
+    public static class ProfileFunctionModelExtensions
+    {
+        public static string GetId(this ProfileFunctionModel profileFunction)
+        {
+            return EntityExtensions.GetId(profileFunction);
+        }
+    }
 }

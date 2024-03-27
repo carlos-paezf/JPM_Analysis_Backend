@@ -43,4 +43,13 @@ namespace BackendJPMAnalysis.Models
             return $"Id: {Id}, FunctionName: {FunctionName}";
         }
     }
+
+
+    public static class FunctionModelExtensions
+    {
+        public static string GetId(this FunctionModel function)
+        {
+            return EntityExtensions.GetId(function);
+        }
+    }
 }

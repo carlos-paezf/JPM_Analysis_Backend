@@ -45,4 +45,13 @@ namespace BackendJPMAnalysis.Models
             return $"Id: {Id}, ProductName: {ProductName}, SubProduct: {SubProduct}";
         }
     }
+
+
+    public static class ProductModelExtensions
+    {
+        public static string GetId(this ProductModel product)
+        {
+            return EntityExtensions.GetId(product);
+        }
+    }
 }
