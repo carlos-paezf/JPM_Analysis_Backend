@@ -31,3 +31,15 @@ $: dotnet ef dbcontext scaffold "Server=localhost;Uid=root;Pwd=1234;Database=jpm
 ```txt
 $: dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection
 ```
+
+```txt
+$: dotnet add package OfficeOpenXml.Core.ExcelPackage
+```
+
+```txt
+$: dotnet add package EPPlus
+```
+
+```txt
+$:  dotnet add package Newtonsoft.Json
+```
