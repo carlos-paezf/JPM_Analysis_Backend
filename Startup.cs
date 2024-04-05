@@ -12,6 +12,8 @@ public class Startup
 {
     public IConfiguration Configuration { get; }
 
+    public string CORSOrigins = "AllowAnyOriginPolicy";
+
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
@@ -20,6 +22,21 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddCors(
+            options =>
+            {
+                options.AddPolicy(
+                    CORSOrigins,
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod();
+                    }
+                );
+            }
+        );
+
         // Configure the naming strategy for properties in response and request
         services.AddControllers()
                 .AddJsonOptions(
@@ -78,6 +95,7 @@ public class Startup
         services.AddScoped<ExcelProcessingService>();
         services.AddScoped<NormalizeEntitiesService>();
         services.AddScoped<BulkSeedService>();
+        services.AddScoped<CompareSeedService>();
     }
 
 
@@ -92,6 +110,8 @@ public class Startup
         app.UseHttpsRedirection();
 
         app.UseRouting();
+
+        app.UseCors(CORSOrigins);
 
         app.UseAuthorization();
 
