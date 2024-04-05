@@ -40,8 +40,8 @@ namespace BackendJPMAnalysis.Services
         /// <returns>True if an entity with the specified ID exists; otherwise, false.</returns>
         public async Task<bool> EntityExistsAsync<T>(string entityId) where T : class
         {
-            return await _context.Set<T>()
-                .FirstOrDefaultAsync(e => e.GetId() == entityId) != null;
+            var result = await _context.Set<T>().ToListAsync();
+            return result.Any(e => e.GetId() == entityId);
         }
     }
 }
