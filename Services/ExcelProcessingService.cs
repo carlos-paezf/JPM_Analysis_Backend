@@ -9,6 +9,7 @@ namespace BackendJPMAnalysis.Services
     {
         private readonly Dictionary<string, string> new_names = new()
         {
+            { "Summary", "summary" },
             { "Users", "company-users" },
             { "UserEntitlements", "users-entitlements" },
             { "Client", "products-accounts" },
@@ -30,10 +31,15 @@ namespace BackendJPMAnalysis.Services
         /// Extracts data from an Excel file stream, processes it, and returns it as an ExcelDataDTO object.
         /// </summary>
         /// <param name="fileStream">The stream of the Excel file to extract data from.</param>
+        /// <param name="fileName">The Excel file name.</param>
         /// <returns>An ExcelDataDTO object containing the extracted and normalized data.</returns>
-        public ExcelDataDTO ExtractDataFromExcelFile(Stream fileStream)
+        public ExcelDataDTO ExtractDataFromExcelFile(Stream fileStream, string fileName)
         {
             var result = ExtractsSheetsData(fileStream);
+
+            var runReportDate = StringUtil.ParseDateTime(result["summary"][3][1]);
+
+            result.Remove("summary");
 
             var customFormatData = ConvertToCustomFormat(result);
 
@@ -52,6 +58,8 @@ namespace BackendJPMAnalysis.Services
 
             var data = new ExcelDataDTO
             (
+                fileName,
+                runReportDate,
                 normalizedAccounts,
                 normalizedProducts,
                 normalizedFunctions,
