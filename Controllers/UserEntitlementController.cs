@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendJPMAnalysis.Controllers
 {
     [ApiController]
-    [Route("userEntitlement", Name = "UserEntitlement")]
+    [Route("usersEntitlements", Name = "UserEntitlement")]
     [Produces("application/json")]
     public class UserEntitlementController
         : ControllerBase
@@ -38,6 +38,13 @@ namespace BackendJPMAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Retrieves all user entitlements.
+        /// </summary>
+        /// <returns>
+        /// ActionResult containing a list response DTO with all user entitlements,
+        /// or an error response if the operation fails.
+        /// </returns>
         [HttpGet(Name = "GetUserEntitlements")]
         public async Task<ActionResult<ListResponseDTO<UserEntitlementModel>>> GetAll()
         {
@@ -55,6 +62,14 @@ namespace BackendJPMAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Retrieves a user entitlement by its primary key.
+        /// </summary>
+        /// <param name="id">The primary key of the user entitlement to retrieve.</param>
+        /// <returns>
+        /// ActionResult containing the user entitlement with the specified primary key,
+        /// or an error response if the operation fails.
+        /// </returns>
         [HttpGet("{id}", Name = "GetUserEntitlementById")]
         public async Task<ActionResult<UserEntitlementModel>> GetByPk([FromRoute] string id)
         {
@@ -73,6 +88,14 @@ namespace BackendJPMAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Creates a new user entitlement.
+        /// </summary>
+        /// <param name="body">The user entitlement data to be created.</param>
+        /// <returns>
+        /// ActionResult containing the newly created user entitlement,
+        /// or an error response if the operation fails.
+        /// </returns>
         [HttpPost(Name = "PostUserEntitlement")]
         public async Task<ActionResult> Post([FromBody] UserEntitlementModel body)
         {
@@ -95,6 +118,15 @@ namespace BackendJPMAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Updates an existing user entitlement by its primary key.
+        /// </summary>
+        /// <param name="id">The primary key of the user entitlement to update.</param>
+        /// <param name="body">The updated user entitlement data.</param>
+        /// <returns>
+        /// ActionResult containing the updated user entitlement,
+        /// or an error response if the operation fails.
+        /// </returns>
         [HttpPut("update/{id}", Name = "UpdateUserEntitlement")]
         public async Task<ActionResult> UpdateByPK([FromRoute] string id, [FromBody] UserEntitlementSimpleDTO body)
         {
@@ -115,6 +147,14 @@ namespace BackendJPMAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Soft deletes a user entitlement by its primary key.
+        /// </summary>
+        /// <param name="id">The primary key of the user entitlement to delete.</param>
+        /// <returns>
+        /// NoContent response if the user entitlement is successfully soft deleted,
+        /// or an error response if the operation fails.
+        /// </returns>
         [HttpPatch("delete/{id}", Name = "DeleteUserEntitlement")]
         public async Task<ActionResult> SoftDelete([FromRoute] string id)
         {
@@ -133,6 +173,14 @@ namespace BackendJPMAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Restores a soft-deleted user entitlement by its primary key.
+        /// </summary>
+        /// <param name="id">The primary key of the soft-deleted user entitlement to restore.</param>
+        /// <returns>
+        /// NoContent response if the user entitlement is successfully restored,
+        /// or an error response if the operation fails.
+        /// </returns>
         [HttpPatch("restore/{id}", Name = "RestoreUserEntitlement")]
         public async Task<ActionResult> Restore([FromRoute] string id)
         {
