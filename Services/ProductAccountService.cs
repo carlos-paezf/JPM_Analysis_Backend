@@ -52,6 +52,37 @@ namespace BackendJPMAnalysis.Services
 
 
         /// <summary>
+        /// Retrieves all ProductAccount entities from the database eagerly loading related Account and Product entities, and returns them wrapped in a response DTO containing total results count.
+        /// </summary>
+        /// <returns>A response DTO containing a list of ProductAccountEagerDTOs, each representing a ProductAccount entity with eagerly loaded related Account and Product entities, along with the total count of results.</returns>
+        public async Task<ListResponseDTO<ProductAccountEagerDTO>> GetAllEager()
+        {
+            List<ProductAccountModel> resultsQuery = await _context.ProductsAccounts
+                .Include(pa => pa.Account)
+                .Include(pa => pa.Product)
+                .ToListAsync();
+
+            int totalResults = resultsQuery.Count;
+
+            List<ProductAccountEagerDTO> data = resultsQuery.Select(
+                pa => new ProductAccountEagerDTO(
+                        pa,
+                        pa.Product != null ? new ProductSimpleDTO(pa.Product) : null,
+                        pa.Account != null ? new AccountSimpleDTO(pa.Account) : null
+                    )
+            ).ToList();
+
+            var response = new ListResponseDTO<ProductAccountEagerDTO>
+            {
+                TotalResults = totalResults,
+                Data = data
+            };
+
+            return response;
+        }
+
+
+        /// <summary>
         /// The function retrieves client details along with associated clients and user entitlements
         /// based on the provided client number.
         /// </summary>
