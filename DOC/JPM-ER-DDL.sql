@@ -64,7 +64,7 @@ CREATE TABLE `products_accounts` (
     `account_number` varchar(255),
     `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
     `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` datetime DEFAULT null
+    `deleted_at` datetime DEFAULT NULL
 );
 CREATE TABLE `accounts` (
     `account_number` varchar(255) PRIMARY KEY COMMENT 'Los valores que sean null se reemplazan por un 0',
@@ -113,7 +113,9 @@ CREATE TABLE `app_history` (
 CREATE TABLE `report_history` (
     `id` varchar(255) PRIMARY KEY,
     `app_user_id` varchar(255),
-    `report_name` varchar(255),
+    `report_name` varchar(255) NOT NULL,
+    `report_comments` text(500),
+    `run_report_date` datetime,
     `report_upload_date` datetime DEFAULT (NOW())
 );
 CREATE UNIQUE INDEX `profiles_functions_index_0` ON `profiles_functions` (`profile_id`, `function_id`);
