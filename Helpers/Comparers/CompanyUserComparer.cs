@@ -16,8 +16,9 @@ namespace BackendJPMAnalysis.Helpers
                 && x.UserLocation == y.UserLocation
                 && x.UserCountry == y.UserCountry
                 && x.UserLogonType == y.UserLogonType
-                && x.UserLastLogonDt == y.UserLastLogonDt
-                && x.UserLogonStatus == y.UserLogonStatus
+                // TODO: Evaluar la necesidad de usar estas propiedades en la comparación
+                // && x.UserLastLogonDt == y.UserLastLogonDt
+                // && x.UserLogonStatus == y.UserLogonStatus
                 && x.UserGroupMembership == y.UserGroupMembership
                 && x.UserRole == y.UserRole
                 && x.ProfileId == y.ProfileId;
