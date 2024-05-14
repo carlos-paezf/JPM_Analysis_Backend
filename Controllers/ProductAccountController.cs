@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendJPMAnalysis.Controllers
 {
     [ApiController]
-    [Route("productAccount", Name = "ProductAccountController")]
+    [Route("productsAccounts", Name = "ProductAccountController")]
     [Produces("application/json")]
     public class ProductAccountController
         : ControllerBase
@@ -60,6 +60,30 @@ namespace BackendJPMAnalysis.Controllers
                 return await _errorHandlingService.HandleExceptionAsync(
                     ex: ex, logger: _logger,
                     className: nameof(ProductAccountController), methodName: nameof(GetAll));
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves all product accounts along with their associated product and account details in an eager-loaded manner.
+        /// </summary>
+        /// <returns>
+        /// ActionResult containing a list response DTO with product account data along with their associated product and account details,
+        /// or an error response if the operation fails.
+        /// </returns>
+        [HttpGet("eager", Name = "GetProductsAccountsEager")]
+        public async Task<ActionResult<ListResponseDTO<ProductAccountEagerDTO>>> GetAllEager()
+        {
+            try
+            {
+                var response = await _service.GetAllEager();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return await _errorHandlingService.HandleExceptionAsync(
+                    ex: ex, logger: _logger,
+                    className: nameof(ProductAccountController), methodName: nameof(GetAllEager));
             }
         }
 
