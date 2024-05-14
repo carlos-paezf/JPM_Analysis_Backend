@@ -14,6 +14,15 @@ namespace BackendJPMAnalysis.Models
         {
         }
 
+
+        public async Task DropTablesAsync()
+        {
+            await Database.ExecuteSqlRawAsync(
+                "DROP TABLE IF EXISTS accounts, app_history, app_users, company_users, functions, " +
+                "products, products_accounts, profiles, profiles_functions, report_history, user_entitlements;"
+            );
+        }
+
         public virtual DbSet<AccountModel> Accounts { get; set; } = null!;
         public virtual DbSet<AppHistoryModel> AppHistories { get; set; } = null!;
         public virtual DbSet<AppUserModel> AppUsers { get; set; } = null!;
@@ -396,14 +405,21 @@ namespace BackendJPMAnalysis.Models
                 entity.HasIndex(e => e.AppUserId, "app_user_id");
 
                 entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasComment("Autoincremental");
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AppUserId).HasColumnName("app_user_id");
+
+                entity.Property(e => e.ReportComments)
+                    .HasMaxLength(500)
+                    .HasColumnName("report_comments");
 
                 entity.Property(e => e.ReportName)
                     .HasMaxLength(255)
                     .HasColumnName("report_name");
+
+                entity.Property(e => e.RunReportDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("run_report_date");
 
                 entity.Property(e => e.ReportUploadDate)
                     .HasColumnType("datetime")
@@ -429,8 +445,8 @@ namespace BackendJPMAnalysis.Models
                 entity.HasIndex(e => e.ProductId, "product_id");
 
                 entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasComment("Autoincremental");
+                    .HasMaxLength(255)
+                    .HasColumnName("id");
 
                 entity.Property(e => e.AccessId).HasColumnName("access_id");
 

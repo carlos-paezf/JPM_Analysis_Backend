@@ -5,12 +5,11 @@ namespace BackendJPMAnalysis.Models
 {
     public partial class ReportHistoryModel
     {
-        /// <summary>
-        /// Autoincremental
-        /// </summary>
-        public int Id { get; set; }
-        public int? AppUserId { get; set; }
-        public string? ReportName { get; set; }
+        public string Id { get; set; } = null!;
+        public string? AppUserId { get; set; }
+        public string ReportName { get; set; } = null!;
+        public string? ReportComments { get; set; }
+        public DateTime? RunReportDate { get; set; }
         public DateTime? ReportUploadDate { get; set; }
 
         [JsonIgnore]
@@ -18,7 +17,9 @@ namespace BackendJPMAnalysis.Models
 
         public override string ToString()
         {
-            return $"Id: {Id}, AppUserId: {AppUserId}, ReportName: {ReportName}, ReportUploadDate: {ReportUploadDate}";
+            return $"Id: {Id}, AppUserId: {AppUserId}, ReportName: {ReportName}, RunReportDate: {RunReportDate}, ReportComments: '{ReportComments}', ReportUploadDate: {ReportUploadDate}";
         }
     }
+
+    public enum QueryOption { load, compare }
 }

@@ -14,7 +14,7 @@ namespace BackendJPMAnalysis.Models
         /// <summary>
         /// Autoincremental
         /// </summary>
-        public int Id { get; set; }
+        public string Id { get; set; } = null!;
         public string? Username { get; set; }
         public string? Name { get; set; }
         public string? AppRole { get; set; }

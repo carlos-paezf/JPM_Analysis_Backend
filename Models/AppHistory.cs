@@ -9,7 +9,7 @@ namespace BackendJPMAnalysis.Models
         /// Autoincremental
         /// </summary>
         public int Id { get; set; }
-        public int? AppUserId { get; set; }
+        public string? AppUserId { get; set; }
         public string? AppFunction { get; set; }
         public string? AppTable { get; set; }
 
