@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BackendJPMAnalysis.Controllers
 {
     [ApiController]
-    [Route("profileFunction", Name = "ProfileFunction")]
+    [Route("profilesFunctions", Name = "ProfileFunction")]
     [Produces("application/json")]
     public class ProfileFunctionController
         : ControllerBase
@@ -98,6 +98,59 @@ namespace BackendJPMAnalysis.Controllers
                     className: nameof(ProfileFunctionController), methodName: nameof(GetByPk));
             }
         }
+
+
+        /// <summary>
+        /// Retrieves the functions associated with a profile based on the provided profile ID.
+        /// </summary>
+        /// <param name="id">The ID of the profile.</param>
+        /// <returns>
+        /// ActionResult containing a list response DTO with function data associated with the specified profile ID,
+        /// or an error response if the operation fails.
+        /// </returns>
+        [HttpGet("functions-by-profile-id/{id}", Name = "GetFunctionsByProfileId")]
+        public async Task<ActionResult<ListResponseDTO<FunctionSimpleDTO>>> GetFunctionsByProfileId([FromRoute] string id)
+        {
+            try
+            {
+                var response = await _service.GetFunctionsByProfileId(id);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return await _errorHandlingService.HandleExceptionAsync(
+                    ex: ex, logger: _logger,
+                    className: nameof(ProfileFunctionController), methodName: nameof(GetFunctionsByProfileId));
+            }
+        }
+
+
+        /// <summary>
+        /// Retrieves the functions not associated with a profile based on the provided profile ID.
+        /// </summary>
+        /// <param name="id">The ID of the profile.</param>
+        /// <returns>
+        /// ActionResult containing a list response DTO with function data not associated with the specified profile ID,
+        /// or an error response if the operation fails.
+        /// </returns>
+        [HttpGet("functions-no-associated-by-profile-id/{id}", Name = "GetFunctionsNoAssociatedByProfileId")]
+        public async Task<ActionResult<ListResponseDTO<FunctionSimpleDTO>>> GetFunctionsNoAssociatedByProfileId([FromRoute] string id)
+        {
+            try
+            {
+                var response = await _service.GetFunctionsNoAssociatedByProfileId(id);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return await _errorHandlingService.HandleExceptionAsync(
+                    ex: ex, logger: _logger,
+                    className: nameof(ProfileFunctionController), methodName: nameof(GetFunctionsNoAssociatedByProfileId));
+            }
+        }
+
 
 
         /// <summary>
