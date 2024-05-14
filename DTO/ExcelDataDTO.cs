@@ -4,6 +4,8 @@ namespace BackendJPMAnalysis.DTO
 {
     public class ExcelDataDTO
     {
+        public string FileName { get; set; } = null!;
+        public DateTime? RunReportDate { get; set; }
         public List<AccountModel> Accounts { get; set; } = null!;
         public List<ProductModel> Products { get; set; } = null!;
         public List<FunctionModel> Functions { get; set; } = null!;
@@ -15,6 +17,8 @@ namespace BackendJPMAnalysis.DTO
 
 
         public ExcelDataDTO(
+            string fileName,
+            DateTime? runReportDate,
             List<AccountModel> accounts,
             List<ProductModel> products,
             List<FunctionModel> functions,
@@ -25,6 +29,8 @@ namespace BackendJPMAnalysis.DTO
             List<ProfileFunctionModel> profilesFunctions
         )
         {
+            FileName = fileName;
+            RunReportDate = runReportDate;
             Accounts = accounts;
             Products = products;
             Functions = functions;
