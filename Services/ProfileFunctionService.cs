@@ -79,6 +79,64 @@ namespace BackendJPMAnalysis.Services
 
 
         /// <summary>
+        /// Retrieves a list of FunctionSimpleDTOs representing functions associated with the specified profile ID from the database.
+        /// </summary>
+        /// <param name="id">The ID of the profile for which to retrieve associated functions.</param>
+        /// <returns>A response DTO containing the list of associated functions and the total count of such functions.</returns>
+        public async Task<ListResponseDTO<FunctionSimpleDTO>> GetFunctionsByProfileId(string id)
+        {
+            var profilesFunctions = await _context.ProfilesFunctions
+                .Where(pf => pf.ProfileId == id)
+                .Include(pf => pf.Function)
+                .ToListAsync();
+
+            List<FunctionSimpleDTO> data = profilesFunctions
+                .Where(pf => pf.Function != null)
+                .Select(pf => new FunctionSimpleDTO(pf.Function!))
+                .ToList();
+
+            var response = new ListResponseDTO<FunctionSimpleDTO>
+            {
+                TotalResults = data.Count,
+                Data = data
+            };
+
+            return response;
+        }
+
+
+        /// <summary>
+        /// Retrieves a list of FunctionSimpleDTOs representing functions that are not associated with the specified profile ID from the database.
+        /// </summary>
+        /// <param name="id">The ID of the profile for which to retrieve unassociated functions.</param>
+        /// <returns>A response DTO containing the list of unassociated functions and the total count of such functions.</returns>
+        public async Task<ListResponseDTO<FunctionSimpleDTO>> GetFunctionsNoAssociatedByProfileId(string id)
+        {
+            var allFunctions = await _context.Functions.ToListAsync();
+
+            // Obtener las funciones asociadas al perfil especificado
+            var profilesFunctions = await _context.ProfilesFunctions
+                .Where(pf => pf.ProfileId == id)
+                .Include(pf => pf.Function)
+                .ToListAsync();
+
+            // Filtrar las funciones no asociadas al perfil
+            var unassociatedFunctions = allFunctions
+                .Where(func => !profilesFunctions.Any(pf => pf.FunctionId == func.Id))
+                .Select(func => new FunctionSimpleDTO(func))
+                .ToList();
+
+            var response = new ListResponseDTO<FunctionSimpleDTO>
+            {
+                TotalResults = unassociatedFunctions.Count,
+                Data = unassociatedFunctions
+            };
+
+            return response;
+        }
+
+
+        /// <summary>
         /// Retrieves a profile function by its primary key without tracking changes.
         /// </summary>
         /// <param name="id">The unique identifier of the profile function.</param>
