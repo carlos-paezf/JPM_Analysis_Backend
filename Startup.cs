@@ -96,6 +96,8 @@ public class Startup
         services.AddScoped<NormalizeEntitiesService>();
         services.AddScoped<BulkSeedService>();
         services.AddScoped<CompareSeedService>();
+        services.AddScoped<ReportValidationsService>();
+        services.AddScoped<AdminAppService>();
     }
 
 
