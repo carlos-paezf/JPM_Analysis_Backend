@@ -35,3 +35,6 @@ Publish/
 # Bind Volume Docker
 mysql
 DOC
+
+# Environments
+.env
