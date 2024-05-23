@@ -38,3 +38,4 @@ DOC
 
 # Environments
 .env
+appsettings.json
