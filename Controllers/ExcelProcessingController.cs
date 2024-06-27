@@ -50,17 +50,12 @@ namespace BackendJPMAnalysis.Controllers
         public async Task<ActionResult> UploadExcelFileReport(
             [FromForm] QueryOption action,
             [FromForm] string? observations,
-            [FromForm] string? appUserId,
+            [FromForm] string appUserId,
             [FromForm] IFormFile file
         )
         {
             try
             {
-                // if (!action.HasValue)
-                // {
-                //     action = QueryOption.compare;
-                // }
-
                 if (file == null || file.Length <= 0)
                     return BadRequest("No se proporcionó ningún archivo, o el archivo está vacío");
 
