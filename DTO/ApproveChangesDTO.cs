@@ -6,6 +6,6 @@ namespace BackendJPMAnalysis.DTO
         public string FileName { get; set; } = null!;
         public DateTime? RunReportDate { get; set; }
         public string? Observations { get; set; }
-        public string? AppUserId { get; set; }
+        public string AppUserId { get; set; } = null!;
     }
 }
