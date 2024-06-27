@@ -120,14 +120,14 @@ namespace BackendJPMAnalysis.Services
         /// <param name="appUserId">The ID of the user who uploaded the report (optional).</param>
         /// <param name="observations">Observations or comments related to the report (optional).</param>
         /// <param name="runReportDate">The date when the report was run (optional).</param>
-        public async Task UpdateReportHistory(string fileName, string? appUserId, string? observations, DateTime? runReportDate)
+        public async Task UpdateReportHistory(string fileName, string appUserId, string? observations, DateTime? runReportDate)
         {
             _context.ReportHistories.Add(
                 new ReportHistoryModel
                 {
                     Id = fileName + DateTime.Now.ToString(),
-                    // AppUserId = appUserId,
-                    AppUserId = null,
+                    AppUserId = appUserId,
+                    // AppUserId = null,
                     ReportName = fileName,
                     ReportComments = (observations != "" && observations != null) ? observations : null,
                     ReportUploadDate = DateTime.Now,
