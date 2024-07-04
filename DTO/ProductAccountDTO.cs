@@ -52,4 +52,37 @@ namespace BackendJPMAnalysis.DTO
             DeletedAt = productAccount.DeletedAt;
         }
     }
+
+
+    public class ProductAccountEagerV2DTO : ProductAccountDTO
+    {
+        public string? ProductName { get; set; } = null!;
+        public string? SubProduct { get; set; } = null!;
+        public string? AccountName { get; set; } = null!;
+        public string? AccountType { get; set; } = null!;
+        public string? BankCurrency { get; set; } = null!;
+
+        public ProductAccountEagerV2DTO(ProductAccountModel productAccount, ProductSimpleDTO? product, AccountSimpleDTO? account)
+        {
+            Id = productAccount.Id;
+            ProductId = productAccount.ProductId;
+            if (product != null)
+            {
+                ProductName = product.ProductName;
+                SubProduct = product.SubProduct;
+            }
+
+            if (account != null)
+            {
+                AccountNumber = productAccount.AccountNumber;
+                AccountName = account.AccountName;
+                AccountType = account.AccountType;
+                BankCurrency = account.BankCurrency;
+            }
+
+            CreatedAt = productAccount.CreatedAt;
+            UpdatedAt = productAccount.UpdatedAt;
+            DeletedAt = productAccount.DeletedAt;
+        }
+    }
 }

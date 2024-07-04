@@ -72,7 +72,7 @@ namespace BackendJPMAnalysis.Controllers
         /// or an error response if the operation fails.
         /// </returns>
         [HttpGet("eager", Name = "GetProductsAccountsEager")]
-        public async Task<ActionResult<ListResponseDTO<ProductAccountEagerDTO>>> GetAllEager()
+        public async Task<ActionResult<ListResponseDTO<ProductAccountEagerV2DTO>>> GetAllEager()
         {
             try
             {

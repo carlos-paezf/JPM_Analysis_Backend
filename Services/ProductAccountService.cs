@@ -55,7 +55,7 @@ namespace BackendJPMAnalysis.Services
         /// Retrieves all ProductAccount entities from the database eagerly loading related Account and Product entities, and returns them wrapped in a response DTO containing total results count.
         /// </summary>
         /// <returns>A response DTO containing a list of ProductAccountEagerDTOs, each representing a ProductAccount entity with eagerly loaded related Account and Product entities, along with the total count of results.</returns>
-        public async Task<ListResponseDTO<ProductAccountEagerDTO>> GetAllEager()
+        public async Task<ListResponseDTO<ProductAccountEagerV2DTO>> GetAllEager()
         {
             List<ProductAccountModel> resultsQuery = await _context.ProductsAccounts
                 .Include(pa => pa.Account)
@@ -64,15 +64,15 @@ namespace BackendJPMAnalysis.Services
 
             int totalResults = resultsQuery.Count;
 
-            List<ProductAccountEagerDTO> data = resultsQuery.Select(
-                pa => new ProductAccountEagerDTO(
+            List<ProductAccountEagerV2DTO> data = resultsQuery.Select(
+                pa => new ProductAccountEagerV2DTO(
                         pa,
                         pa.Product != null ? new ProductSimpleDTO(pa.Product) : null,
                         pa.Account != null ? new AccountSimpleDTO(pa.Account) : null
                     )
             ).ToList();
 
-            var response = new ListResponseDTO<ProductAccountEagerDTO>
+            var response = new ListResponseDTO<ProductAccountEagerV2DTO>
             {
                 TotalResults = totalResults,
                 Data = data
