@@ -17,6 +17,15 @@ namespace BackendJPMAnalysis.Services
         }
 
 
+        public async Task<ReportHistoryModel?> GetReportById(string id)
+        {
+            return await _context.ReportHistories
+                .Where(r => r.Id == id)
+                .FirstOrDefaultAsync()
+                ?? throw new ItemNotFoundException(id);
+        }
+
+
         /// <summary>
         /// Retrieves the data of the last uploaded report from the database.
         /// </summary>

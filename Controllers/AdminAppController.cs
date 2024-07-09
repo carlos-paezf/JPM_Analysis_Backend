@@ -1,4 +1,5 @@
 using BackendJPMAnalysis.Helpers;
+using BackendJPMAnalysis.Models;
 using BackendJPMAnalysis.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,23 @@ namespace BackendJPMAnalysis.Controllers
             _adminAppService = service;
             _logger = logger;
             _errorHandlingService = errorHandlingService;
+        }
+
+
+        [HttpGet("report-by-id/{reportId}", Name = "GetReportById")]
+        public async Task<ActionResult<ReportHistoryModel>> GetReportById([FromRoute] string reportId)
+        {
+            try
+            {
+                var response = await _adminAppService.GetReportById(reportId);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return await _errorHandlingService.HandleExceptionAsync(
+                    ex: ex, logger: _logger,
+                    className: nameof(AdminAppController), methodName: nameof(GetReportById));
+            }
         }
 
 
