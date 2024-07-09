@@ -125,7 +125,7 @@ namespace BackendJPMAnalysis.Services
             _context.ReportHistories.Add(
                 new ReportHistoryModel
                 {
-                    Id = fileName + DateTime.Now.ToString(),
+                    Id = (fileName + DateTime.Now.ToString()).Replace(' ', '_').Replace('.', '_').Replace('/', '-').Replace(':', '-'),
                     AppUserId = appUserId,
                     // AppUserId = null,
                     ReportName = fileName,
