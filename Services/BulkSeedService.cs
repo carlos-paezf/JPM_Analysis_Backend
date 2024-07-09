@@ -58,16 +58,26 @@ namespace BackendJPMAnalysis.Services
         /// <param name="data">The ExcelDataDTO object containing seed data to post.</param>
         public async Task PostSeedInDatabase(ExcelDataDTO data)
         {
-            await ClearDatabase();
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-            await BulkPost(data.Accounts, "accounts");
-            await BulkPost(data.Products, "products");
-            await BulkPost(data.Functions, "functions");
-            await BulkPost(data.Profiles, "profiles");
-            await BulkPost(data.CompanyUsers, "companyUsers", _reportValidationsService.ValidateProfiles);
-            await BulkPost(data.ProductsAccounts, "productsAccounts", _reportValidationsService.ValidateProductsAndAccounts);
-            await BulkPost(data.UsersEntitlements, "usersEntitlements", _reportValidationsService.ValidateRelationsForUserEntitlement);
-            await BulkPost(data.ProfilesFunctions, "profiles_functions", _reportValidationsService.ValidateProfilesAndFunctions);
+            try
+            {
+                await ClearDatabase();
+
+                await BulkPost(data.Accounts, "accounts");
+                await BulkPost(data.Products, "products");
+                await BulkPost(data.Functions, "functions");
+                await BulkPost(data.Profiles, "profiles");
+                await BulkPost(data.CompanyUsers, "companyUsers", _reportValidationsService.ValidateProfiles);
+                await BulkPost(data.ProductsAccounts, "productsAccounts", _reportValidationsService.ValidateProductsAndAccounts);
+                await BulkPost(data.UsersEntitlements, "usersEntitlements", _reportValidationsService.ValidateRelationsForUserEntitlement);
+                await BulkPost(data.ProfilesFunctions, "profiles_functions", _reportValidationsService.ValidateProfilesAndFunctions);
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
 
 
