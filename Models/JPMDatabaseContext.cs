@@ -226,6 +226,10 @@ namespace BackendJPMAnalysis.Models
                     .HasMaxLength(255)
                     .HasColumnName("email_address");
 
+                entity.Property(e => e.WindowsUserId)
+                    .HasMaxLength(255)
+                    .HasColumnName("windows_user_id");
+
                 entity.Property(e => e.EmployeeId)
                     .HasMaxLength(255)
                     .HasColumnName("employee_id");

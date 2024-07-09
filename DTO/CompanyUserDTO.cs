@@ -26,6 +26,9 @@ namespace BackendJPMAnalysis.DTO
         [Required(ErrorMessage = "La propiedad `emailAddress` es requerida")]
         public string EmailAddress { get; set; } = null!;
 
+        [Required(ErrorMessage = "La propiedad `windowsUserId` es requerida")]
+        public string WindowsUserId { get; set; } = null!;
+
         public string? UserLocation { get; set; }
 
         [Required(ErrorMessage = "La propiedad `userCountry` es requerida")]
@@ -59,6 +62,7 @@ namespace BackendJPMAnalysis.DTO
             UserType = companyUser.UserType;
             EmployeeId = companyUser.EmployeeId;
             EmailAddress = companyUser.EmailAddress;
+            WindowsUserId = companyUser.WindowsUserId;
             UserLocation = companyUser.UserLocation;
             UserCountry = companyUser.UserCountry;
             UserLogonType = companyUser.UserLogonType;
@@ -92,6 +96,7 @@ namespace BackendJPMAnalysis.DTO
             UserType = companyUser.UserType;
             EmployeeId = companyUser.EmployeeId;
             EmailAddress = companyUser.EmailAddress;
+            WindowsUserId = companyUser.WindowsUserId;
             UserLocation = companyUser.UserLocation;
             UserCountry = companyUser.UserCountry;
             UserLogonType = companyUser.UserLogonType;

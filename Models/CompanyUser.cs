@@ -7,6 +7,8 @@ namespace BackendJPMAnalysis.Models
 {
     public partial class CompanyUserModel : BaseModel
     {
+        private string _emailAddress = "";
+
         public CompanyUserModel()
         {
             UserEntitlements = new HashSet<UserEntitlementModel>();
@@ -28,7 +30,19 @@ namespace BackendJPMAnalysis.Models
         public string? EmployeeId { get; set; }
 
         [Required(ErrorMessage = "La propiedad `emailAddress` es requerida")]
-        public string EmailAddress { get; set; } = null!;
+        public string EmailAddress
+        {
+            get => _emailAddress;
+            set
+            {
+                _emailAddress = value;
+                WindowsUserId = _emailAddress.Split('@')[0];
+            }
+        }
+
+        [Required(ErrorMessage = "La propiedad `windowsUserId` es requerida")]
+        public string WindowsUserId { get; set; } = null!;
+
 
         public string? UserLocation { get; set; }
 
