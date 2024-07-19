@@ -72,6 +72,8 @@ namespace BackendJPMAnalysis.Services
                 await BulkPost(data.ProductsAccounts, "productsAccounts", _reportValidationsService.ValidateProductsAndAccounts);
                 await BulkPost(data.UsersEntitlements, "usersEntitlements", _reportValidationsService.ValidateRelationsForUserEntitlement);
                 await BulkPost(data.ProfilesFunctions, "profiles_functions", _reportValidationsService.ValidateProfilesAndFunctions);
+
+                await transaction.CommitAsync();
             }
             catch (Exception)
             {

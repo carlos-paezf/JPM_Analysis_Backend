@@ -36,7 +36,7 @@ namespace BackendJPMAnalysis.Models
             set
             {
                 _emailAddress = value;
-                WindowsUserId = _emailAddress.Split('@')[0];
+                WindowsUserId = _emailAddress.Split('@')[0].ToLower();
             }
         }
 
@@ -67,11 +67,15 @@ namespace BackendJPMAnalysis.Models
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
 
+        public string? DepartmentId { get; set; }
+
         [JsonIgnore]
         public virtual ProfileModel? Profile { get; set; } = null!;
 
         [JsonIgnore]
         public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
+
+        public virtual DepartmentModel Department { get; set; } = null!;
 
         public override string ToString()
         {

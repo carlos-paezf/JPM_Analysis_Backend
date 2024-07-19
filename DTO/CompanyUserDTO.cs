@@ -47,6 +47,8 @@ namespace BackendJPMAnalysis.DTO
 
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
+
+        public string? Department { get; set; }
     }
 
 

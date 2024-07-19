@@ -34,6 +34,8 @@ namespace BackendJPMAnalysis.Models
         public virtual DbSet<ProfileFunctionModel> ProfilesFunctions { get; set; } = null!;
         public virtual DbSet<ReportHistoryModel> ReportHistories { get; set; } = null!;
         public virtual DbSet<UserEntitlementModel> UserEntitlements { get; set; } = null!;
+        public virtual DbSet<DepartmentModel> Departments { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -159,6 +161,33 @@ namespace BackendJPMAnalysis.Models
                 entity.Property(e => e.Username).HasColumnName("username");
             });
 
+            modelBuilder.Entity<DepartmentModel>(entity =>
+            {
+                entity.ToTable("departments");
+
+                entity.HasKey(e => e.Initials)
+                    .HasName("PRIMARY");
+
+                entity.Property(e => e.DepartmentName)
+                    .HasMaxLength(255)
+                    .HasColumnName("department_name");
+
+                entity.Property(e => e.CreatedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("created_at")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                entity.Property(e => e.DeletedAt)
+                    .HasColumnType("datetime")
+                    .HasColumnName("deleted_at");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasColumnType("datetime")
+                    .ValueGeneratedOnAddOrUpdate()
+                    .HasColumnName("updated_at")
+                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+            });
+
             modelBuilder.Entity<ProductAccountModel>(entity =>
             {
                 entity.ToTable("products_accounts");
@@ -211,6 +240,8 @@ namespace BackendJPMAnalysis.Models
 
                 entity.HasIndex(e => e.ProfileId, "profile_id");
 
+                entity.HasIndex(e => e.DepartmentId, "department_id");
+
                 entity.Property(e => e.AccessId).HasColumnName("access_id");
 
                 entity.Property(e => e.CreatedAt)
@@ -235,6 +266,8 @@ namespace BackendJPMAnalysis.Models
                     .HasColumnName("employee_id");
 
                 entity.Property(e => e.ProfileId).HasColumnName("profile_id");
+
+                entity.Property(e => e.DepartmentId).HasColumnName("department_id");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
@@ -286,6 +319,11 @@ namespace BackendJPMAnalysis.Models
                     .WithMany(p => p.CompanyUsers)
                     .HasForeignKey(d => d.ProfileId)
                     .HasConstraintName("company_users_ibfk_1");
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.CompanyUsers)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .HasConstraintName("company_users_ibfk_2");
             });
 
             modelBuilder.Entity<FunctionModel>(entity =>
@@ -384,8 +422,7 @@ namespace BackendJPMAnalysis.Models
                     .IsUnique();
 
                 entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasComment("Autoincremental");
+                    .HasColumnName("id");
 
                 entity.Property(e => e.FunctionId).HasColumnName("function_id");
 
