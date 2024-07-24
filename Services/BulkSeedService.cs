@@ -1,3 +1,4 @@
+using System.Data.Entity;
 using BackendJPMAnalysis.DTO;
 using BackendJPMAnalysis.Helpers;
 using BackendJPMAnalysis.Models;
@@ -31,22 +32,21 @@ namespace BackendJPMAnalysis.Services
         {
             await _context.Database.ExecuteSqlRawAsync("SET FOREIGN_KEY_CHECKS = 0;");
 
-            try
-            {
-                _context.Accounts.RemoveRange(_context.Accounts);
-                _context.CompanyUsers.RemoveRange(_context.CompanyUsers);
-                _context.Functions.RemoveRange(_context.Functions);
-                _context.Profiles.RemoveRange(_context.Profiles);
-                _context.ProfilesFunctions.RemoveRange(_context.ProfilesFunctions);
-                _context.Products.RemoveRange(_context.Products);
-                _context.ProductsAccounts.RemoveRange(_context.ProductsAccounts);
-                _context.UserEntitlements.RemoveRange(_context.UserEntitlements);
+            var tables = new string[] {
+                    "user_entitlements",
+                    "products_accounts",
+                    "profiles_functions",
+                    "accounts",
+                    "company_users",
+                    "departments",
+                    "functions",
+                    "profiles",
+                    "products",
+                };
 
-                await _context.SaveChangesAsync();
-            }
-            finally
+            foreach (var table in tables)
             {
-                await _context.Database.ExecuteSqlRawAsync("SET FOREIGN_KEY_CHECKS = 1;");
+                await _context.Database.ExecuteSqlRawAsync($"DELETE FROM {table};");
             }
         }
 
@@ -58,12 +58,12 @@ namespace BackendJPMAnalysis.Services
         /// <param name="data">The ExcelDataDTO object containing seed data to post.</param>
         public async Task PostSeedInDatabase(ExcelDataDTO data)
         {
+            await ClearDatabase();
+
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
             {
-                await ClearDatabase();
-
                 await BulkPost(data.Accounts, "accounts");
                 await BulkPost(data.Products, "products");
                 await BulkPost(data.Functions, "functions");
