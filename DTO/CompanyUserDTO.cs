@@ -48,7 +48,7 @@ namespace BackendJPMAnalysis.DTO
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
 
-        public string? Department { get; set; }
+        public string? DepartmentId { get; set; }
     }
 
 
@@ -73,6 +73,7 @@ namespace BackendJPMAnalysis.DTO
             UserGroupMembership = companyUser.UserGroupMembership;
             UserRole = companyUser.UserRole;
             ProfileId = companyUser.ProfileId;
+            DepartmentId = companyUser.DepartmentId;
             CreatedAt = companyUser.CreatedAt;
             UpdatedAt = companyUser.UpdatedAt;
             DeletedAt = companyUser.DeletedAt;
@@ -88,9 +89,10 @@ namespace BackendJPMAnalysis.DTO
     public class CompanyUserEagerDTO : CompanyUserDTO
     {
         public ProfileSimpleDTO Profile { get; set; }
+        public DepartmentSimpleDTO? Department { get; set; }
         public ICollection<UserEntitlementSimpleDTO> UserEntitlements { get; set; } = null!;
 
-        public CompanyUserEagerDTO(CompanyUserModel companyUser, ProfileSimpleDTO profile, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
+        public CompanyUserEagerDTO(CompanyUserModel companyUser, ProfileSimpleDTO profile, DepartmentSimpleDTO? department, ICollection<UserEntitlementSimpleDTO> userEntitlementDTOs)
         {
             AccessId = companyUser.AccessId;
             UserName = companyUser.UserName;
@@ -108,6 +110,8 @@ namespace BackendJPMAnalysis.DTO
             UserRole = companyUser.UserRole;
             ProfileId = companyUser.ProfileId;
             Profile = profile;
+            DepartmentId = companyUser.DepartmentId;
+            Department = department;
             UserEntitlements = userEntitlementDTOs;
             CreatedAt = companyUser.CreatedAt;
             UpdatedAt = companyUser.UpdatedAt;
