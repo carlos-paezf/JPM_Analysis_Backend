@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using BackendJPMAnalysis.Helpers;
 
 namespace BackendJPMAnalysis.Models
@@ -11,6 +12,7 @@ namespace BackendJPMAnalysis.Models
         [Required(ErrorMessage = "La propiedad `departmentName` es requerida")]
         public string DepartmentName { get; set; } = null!;
 
+        [JsonIgnore]
         public virtual ICollection<CompanyUserModel> CompanyUsers { get; set; } = null!;
 
         public override string ToString()

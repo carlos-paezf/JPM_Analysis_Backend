@@ -73,9 +73,10 @@ namespace BackendJPMAnalysis.Models
         public virtual ProfileModel? Profile { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
+        public virtual DepartmentModel? Department { get; set; } = null!;
 
-        public virtual DepartmentModel Department { get; set; } = null!;
+        [JsonIgnore]
+        public virtual ICollection<UserEntitlementModel> UserEntitlements { get; set; }
 
         public override string ToString()
         {
