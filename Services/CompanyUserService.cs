@@ -73,9 +73,11 @@ namespace BackendJPMAnalysis.Services
                 ?? throw new ItemNotFoundException(accessId);
 
             var profileDTO = new ProfileSimpleDTO(companyUser.Profile!);
+            var departmentDTO = (companyUser.Department == null)
+                ? null : new DepartmentSimpleDTO(companyUser.Department);
             var userEntitlementDTOs = companyUser.UserEntitlements.Select(ue => new UserEntitlementSimpleDTO(ue)).ToList();
 
-            return new CompanyUserEagerDTO(companyUser, profileDTO, userEntitlementDTOs);
+            return new CompanyUserEagerDTO(companyUser, profileDTO, departmentDTO, userEntitlementDTOs);
         }
 
 
