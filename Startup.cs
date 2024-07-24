@@ -98,6 +98,7 @@ public class Startup
         services.AddScoped<CompareSeedService>();
         services.AddScoped<ReportValidationsService>();
         services.AddScoped<AdminAppService>();
+        services.AddScoped<DepartmentService>();
     }
 
 
