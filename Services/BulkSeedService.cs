@@ -1,4 +1,3 @@
-using System.Data.Entity;
 using BackendJPMAnalysis.DTO;
 using BackendJPMAnalysis.Helpers;
 using BackendJPMAnalysis.Models;
