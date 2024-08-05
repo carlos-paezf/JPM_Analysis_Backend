@@ -99,6 +99,7 @@ public class Startup
         services.AddScoped<ReportValidationsService>();
         services.AddScoped<AdminAppService>();
         services.AddScoped<DepartmentService>();
+        services.AddScoped<UserCircularizationService>();
     }
 
 
