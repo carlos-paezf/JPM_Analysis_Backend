@@ -6,6 +6,11 @@ namespace BackendJPMAnalysis.Models
 {
     public class DepartmentModel : BaseModel
     {
+        public DepartmentModel()
+        {
+            CompanyUsers = new HashSet<CompanyUserModel>();
+        }
+
         [Key]
         public string Initials { get; set; } = null!;
 
@@ -13,7 +18,7 @@ namespace BackendJPMAnalysis.Models
         public string DepartmentName { get; set; } = null!;
 
         [JsonIgnore]
-        public virtual ICollection<CompanyUserModel> CompanyUsers { get; set; } = null!;
+        public virtual ICollection<CompanyUserModel> CompanyUsers { get; set; }
 
         public override string ToString()
         {
