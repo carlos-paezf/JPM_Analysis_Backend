@@ -102,6 +102,26 @@ namespace BackendJPMAnalysis.Services
         }
 
 
+        /// <summary>
+        /// The function `GetByPksNoTracking` retrieves a list of `CompanyUserModel` objects based on a
+        /// list of accessIds without tracking changes.
+        /// </summary>
+        /// <param name="accessIds">The `GetByPksNoTracking` method retrieves a list of
+        /// `CompanyUserModel` objects from the database based on the provided list of `accessIds`. The
+        /// method filters the results to include only those `CompanyUserModel` objects whose `AccessId`
+        /// property matches any of the `access</param>
+        /// <returns>
+        /// A list of CompanyUserModel objects that match the accessIds provided, without tracking
+        /// changes in the context.
+        /// </returns>
+        public async Task<List<CompanyUserModel>> GetByPksNoTracking(List<string> accessIds)
+        {
+            return await _context.CompanyUsers
+                .Where(companyUser => accessIds.Contains(companyUser.AccessId))
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
 
         /// <summary>
         /// The function `Post` in C# asynchronously adds a `CompanyUserModel` to the database after
