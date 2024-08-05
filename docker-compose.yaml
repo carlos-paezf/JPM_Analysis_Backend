@@ -11,6 +11,8 @@ services:
           - 3306:3306
         volumes:
           - ./mysql:/var/lib/mysql
+          - /etc/timezone:/etc/timezone:ro
+          - /etc/localtime:/etc/localtime:ro
     
     phpmyadmin:
         depends_on:
@@ -21,3 +23,6 @@ services:
           - 8080:80
         environment:
             PMA_ARBITRARY: 1
+        volumes:
+          - /etc/timezone:/etc/timezone:ro
+          - /etc/localtime:/etc/localtime:ro
