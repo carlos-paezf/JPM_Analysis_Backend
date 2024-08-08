@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using BackendJPMAnalysis.DTO;
 using BackendJPMAnalysis.Helpers;
@@ -15,17 +11,23 @@ namespace BackendJPMAnalysis.Services
         private readonly IMapper _mapper;
 
         private readonly CompanyUserService _companyUserService;
+        private readonly DepartmentService _departmentService;
+        private readonly ProfileService _profileService;
 
         public UserCircularizationService(
             JPMDatabaseContext context,
             ILogger<UserCircularizationService> logger,
             IMapper mapper,
-            CompanyUserService companyUserService
+            CompanyUserService companyUserService,
+            DepartmentService departmentService,
+            ProfileService profileService
         )
         {
             _context = context;
             _mapper = mapper;
             _companyUserService = companyUserService;
+            _departmentService = departmentService;
+            _profileService = profileService;
         }
 
 
@@ -42,12 +44,62 @@ namespace BackendJPMAnalysis.Services
 
                 if (companyUser != null)
                 {
-                    companyUser.DepartmentId = assignment.DepartmentInitials;
+                    companyUser.DepartmentInitials = assignment.DepartmentInitials;
                     _context.CompanyUsers.Update(companyUser);
                 }
             }
 
             await _context.SaveChangesAsync();
+        }
+
+
+        /// <summary>
+        /// Generates a user circularization report, grouping users by their department.
+        /// </summary>
+        /// <returns>
+        /// A task that represents the asynchronous operation. The task result contains a dictionary where the keys are department initials 
+        /// and the values are lists of UserCircularizationDTO objects representing users in those departments.
+        /// </returns>
+        /// <remarks>
+        /// This method fetches all departments, profiles, and company users, and then constructs a list of UserCircularizationDTO objects.
+        /// Each user is associated with their department and profile. Users are then grouped by their department initials.
+        /// </remarks>
+        public async Task<object> GenerateUserCircularization()
+        {
+            var departmentsResponse = await _departmentService.GetAll();
+            var profilesResponse = await _profileService.GetAll();
+            var companyUsersResponse = await _companyUserService.GetAll();
+
+            var departments = departmentsResponse.Data.ToDictionary(d => d.Initials);
+            var profiles = profilesResponse.Data.ToDictionary(p => p.Id);
+
+            var userCircularizationList = companyUsersResponse.Data
+                .Select(companyUser =>
+                {
+                    var department = companyUser.DepartmentInitials != null
+                        ? departments.GetValueOrDefault(companyUser.DepartmentInitials)
+                        : null;
+                    var profile = profiles.GetValueOrDefault(companyUser.ProfileId);
+
+                    if (profile != null)
+                    {
+                        return new UserCircularizationDTO(companyUser, department, profile);
+                    }
+
+                    return null;
+                })
+                .Where(dto => dto != null)
+                .ToList();
+
+            var groupedByDepartment = userCircularizationList
+                .GroupBy(dto => dto!.DepartmentInitials)
+                .Select(group => new
+                {
+                    Department = group.Key ?? "No Department",
+                    Users = group.ToList()
+                }).ToList();
+
+            return groupedByDepartment;
         }
     }
 }
