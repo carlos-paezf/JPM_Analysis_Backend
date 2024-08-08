@@ -240,7 +240,7 @@ namespace BackendJPMAnalysis.Models
 
                 entity.HasIndex(e => e.ProfileId, "profile_id");
 
-                entity.HasIndex(e => e.DepartmentId, "department_id");
+                entity.HasIndex(e => e.DepartmentInitials, "department_initials");
 
                 entity.Property(e => e.AccessId).HasColumnName("access_id");
 
@@ -267,7 +267,7 @@ namespace BackendJPMAnalysis.Models
 
                 entity.Property(e => e.ProfileId).HasColumnName("profile_id");
 
-                entity.Property(e => e.DepartmentId).HasColumnName("department_id");
+                entity.Property(e => e.DepartmentInitials).HasColumnName("department_id");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
@@ -322,7 +322,7 @@ namespace BackendJPMAnalysis.Models
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.CompanyUsers)
-                    .HasForeignKey(d => d.DepartmentId)
+                    .HasForeignKey(d => d.DepartmentInitials)
                     .HasConstraintName("company_users_ibfk_2");
             });
 

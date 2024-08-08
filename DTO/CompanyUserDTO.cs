@@ -48,7 +48,7 @@ namespace BackendJPMAnalysis.DTO
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
 
-        public string? DepartmentId { get; set; }
+        public string? DepartmentInitials { get; set; }
     }
 
 
@@ -73,7 +73,7 @@ namespace BackendJPMAnalysis.DTO
             UserGroupMembership = companyUser.UserGroupMembership;
             UserRole = companyUser.UserRole;
             ProfileId = companyUser.ProfileId;
-            DepartmentId = companyUser.DepartmentId;
+            DepartmentInitials = companyUser.DepartmentInitials;
             CreatedAt = companyUser.CreatedAt;
             UpdatedAt = companyUser.UpdatedAt;
             DeletedAt = companyUser.DeletedAt;
@@ -110,7 +110,7 @@ namespace BackendJPMAnalysis.DTO
             UserRole = companyUser.UserRole;
             ProfileId = companyUser.ProfileId;
             Profile = profile;
-            DepartmentId = companyUser.DepartmentId;
+            DepartmentInitials = companyUser.DepartmentInitials;
             Department = department;
             UserEntitlements = userEntitlementDTOs;
             CreatedAt = companyUser.CreatedAt;

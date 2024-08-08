@@ -67,7 +67,7 @@ namespace BackendJPMAnalysis.Models
         [Required(ErrorMessage = "La propiedad `profileId` es requerida")]
         public string ProfileId { get; set; } = null!;
 
-        public string? DepartmentId { get; set; }
+        public string? DepartmentInitials { get; set; }
 
         [JsonIgnore]
         public virtual ProfileModel? Profile { get; set; } = null!;
