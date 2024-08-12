@@ -267,7 +267,7 @@ namespace BackendJPMAnalysis.Models
 
                 entity.Property(e => e.ProfileId).HasColumnName("profile_id");
 
-                entity.Property(e => e.DepartmentInitials).HasColumnName("department_id");
+                entity.Property(e => e.DepartmentInitials).HasColumnName("department_initials");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
