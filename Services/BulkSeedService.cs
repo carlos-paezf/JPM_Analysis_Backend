@@ -105,7 +105,7 @@ namespace BackendJPMAnalysis.Services
             affectedRows += await BulkUpdate(data.Products.ToChangesEntities);
             affectedRows += await BulkUpdate(data.Functions.ToChangesEntities);
             affectedRows += await BulkUpdate(data.Profiles.ToChangesEntities);
-            affectedRows += await BulkUpdate(data.CompanyUsers.ToChangesEntities);
+            affectedRows += await BulkUpdateCompanyUser(data.CompanyUsers.ToChangesEntities);
             affectedRows += await BulkUpdate(data.ProductsAccounts.ToChangesEntities);
             affectedRows += await BulkUpdate(data.UsersEntitlements.ToChangesEntities);
             affectedRows += await BulkUpdate(data.ProfilesFunctions.ToChangesEntities);
@@ -244,6 +244,26 @@ namespace BackendJPMAnalysis.Services
 
                 if (existingEntity != null)
                 {
+                    _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
+                }
+            }
+
+            int affectedRows = await _context.SaveChangesAsync();
+
+            return affectedRows;
+        }
+
+
+        private async Task<int> BulkUpdateCompanyUser(ICollection<CompanyUserModel> collectionBody)
+        {
+            foreach (var updatedEntity in collectionBody)
+            {
+                var pk = updatedEntity.GetId();
+                var existingEntity = await _context.Set<CompanyUserModel>().FindAsync(pk);
+
+                if (existingEntity != null)
+                {
+                    updatedEntity.DepartmentInitials = existingEntity.DepartmentInitials;
                     _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
                 }
             }
