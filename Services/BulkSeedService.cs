@@ -254,6 +254,18 @@ namespace BackendJPMAnalysis.Services
         }
 
 
+        /// <summary>
+        /// The function BulkUpdateCompanyUser asynchronously updates multiple CompanyUserModel entities
+        /// in a collection based on their primary keys.
+        /// </summary>
+        /// <param name="collectionBody">The `BulkUpdateCompanyUser` method you provided is used to
+        /// update multiple `CompanyUserModel` entities in bulk. The `collectionBody` parameter is an
+        /// `ICollection of CompanyUserModel` that contains the updated entities that need to be saved to
+        /// the database.</param>
+        /// <returns>
+        /// The method `BulkUpdateCompanyUser` returns an integer value representing the number of
+        /// affected rows after saving changes to the database using `_context.SaveChangesAsync()`.
+        /// </returns>
         private async Task<int> BulkUpdateCompanyUser(ICollection<CompanyUserModel> collectionBody)
         {
             foreach (var updatedEntity in collectionBody)
