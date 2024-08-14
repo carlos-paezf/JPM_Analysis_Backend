@@ -37,7 +37,6 @@ namespace BackendJPMAnalysis.Services
                     "profiles_functions",
                     "accounts",
                     "company_users",
-                    "departments",
                     "functions",
                     "profiles",
                     "products",
